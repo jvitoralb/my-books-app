@@ -19,28 +19,28 @@ class CheckRequestInputs implements ValidateUserInputs {
         const { id } = this.req.body;
 
         if (!id) {
-            throw new BadRequestError('missing required field');
+            throw new BadRequestError('Missing required field');
         }
     }
     checkForPassword(): void {
         const { password } = this.req.body;
 
         if (!password) {
-            throw new BadRequestError('missing required field');
+            throw new BadRequestError('Missing required field');
         }
     }
     checkForEmail(): void {
         const { email } = this.req.body;
 
         if (!email) {
-            throw new BadRequestError('missing required field');
+            throw new BadRequestError('Missing required field');
         }
     }
     checkForName(): void {
         const { name } = this.req.body;
 
         if (!name) {
-            throw new BadRequestError('missing required field');
+            throw new BadRequestError('Missing required field');
         }
     }
 }
@@ -65,7 +65,7 @@ class DeleteUserValidation extends CheckRequestInputs {
         const { id } = this.req.params;
 
         if (!id) {
-            throw new BadRequestError('missing user id');
+            throw new BadRequestError('Missing params');
         }
     }
 }
