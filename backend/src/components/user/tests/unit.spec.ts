@@ -4,7 +4,7 @@ import { BadRequestError } from '../../../lib/errors/custom';
 
 
 describe('User Validation Tests', () => {
-    test('should throw Error when there\'s no password in request body', () => {
+    test('should throw BadRequestError when there\'s no password in request body', () => {
         let req = httpMocks.createRequest({
             method: 'POST',
             path: '/users',
@@ -18,7 +18,8 @@ describe('User Validation Tests', () => {
 
         expect(() => validator.checkForPassword()).toThrow(BadRequestError);
     });
-    test('should throw Error when there\'s no email in request body', () => {
+
+    test('should throw BadRequestError when there\'s no email in request body', () => {
         let req = httpMocks.createRequest({
             method: 'POST',
             path: '/users',
@@ -32,7 +33,8 @@ describe('User Validation Tests', () => {
 
         expect(() => validator.checkForEmail()).toThrow(BadRequestError);
     });
-    test('should throw Error when there\'s no name in request body', () => {
+
+    test('should throw BadRequestError when there\'s no name in request body', () => {
         let req = httpMocks.createRequest({
             method: 'POST',
             path: '/users',
@@ -46,6 +48,7 @@ describe('User Validation Tests', () => {
 
         expect(() => validator.checkForName()).toThrow(BadRequestError);
     });
+
     test('should return undefined when all data exists in request body', () => {
         let req = httpMocks.createRequest({
             method: 'POST',
@@ -61,7 +64,8 @@ describe('User Validation Tests', () => {
 
         expect(validator.checkAllInputs()).toBe(undefined);
     });
-    test('should throw Error when there\'s no id in request params', () => {
+
+    test('should throw BadRequestError when there\'s no id in request params', () => {
         let req = httpMocks.createRequest({
             method: 'DELETE',
             path: '/users',
