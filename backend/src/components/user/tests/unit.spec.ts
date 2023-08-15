@@ -14,7 +14,8 @@ describe('User Validation Tests', () => {
             }
         });
 
-        let validator = new CreateUserValidation(req);
+        let validator = new CreateUserValidation();
+        validator.setRequest = req;
 
         expect(() => validator.checkForPassword()).toThrow(BadRequestError);
     });
@@ -29,7 +30,8 @@ describe('User Validation Tests', () => {
             }
         });
 
-        let validator = new CreateUserValidation(req);
+        let validator = new CreateUserValidation();
+        validator.setRequest = req;
 
         expect(() => validator.checkForEmail()).toThrow(BadRequestError);
     });
@@ -44,13 +46,14 @@ describe('User Validation Tests', () => {
             }
         });
 
-        let validator = new CreateUserValidation(req);
+        let validator = new CreateUserValidation();
+        validator.setRequest = req;
 
         expect(() => validator.checkForName()).toThrow(BadRequestError);
     });
 
     test('should return undefined when all data exists in request body', () => {
-        let req = httpMocks.createRequest({
+        let { req, res} = httpMocks.createMocks({
             method: 'POST',
             path: '/users',
             body: {
@@ -58,22 +61,22 @@ describe('User Validation Tests', () => {
                 name: 'user test',
                 password: 'stronguserpswd'
             }
-        });
+        }, {});
 
-        let validator = new CreateUserValidation(req);
+        let validator = new CreateUserValidation();
 
-        expect(validator.checkAllInputs()).toBe(undefined);
+        expect(validator.checkAllInputs(req, res, () => {})).toBe(undefined);
     });
 
     test('should throw BadRequestError when there\'s no id in request params', () => {
-        let req = httpMocks.createRequest({
+        let { req, res } = httpMocks.createMocks({
             method: 'DELETE',
             path: '/users',
             params: {}
-        });
+        }, {});
 
-        let validator = new DeleteUserValidation(req);
+        let validator = new DeleteUserValidation();
 
-        expect(() => validator.checkForId()).toThrow(BadRequestError);
+        expect(() => validator.checkIdentification(req, res, () => {})).toThrow(BadRequestError);
     });
 });
