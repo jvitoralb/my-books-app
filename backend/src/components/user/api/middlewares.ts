@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, request } from 'express';
 import { BadRequestError } from '../../../lib/errors/custom';
 
 interface ValidateUserInputs {
@@ -9,10 +9,18 @@ interface ValidateUserInputs {
 }
 
 class CheckRequestInputs implements ValidateUserInputs {
-    req: Request;
+    private req: Request;
 
-    constructor(req: Request) {
+    constructor() {
+        this.req = request;
+    }
+
+    set setRequest(req: Request) {
         this.req = req;
+    }
+
+    get getRequest(): Request {
+        return this.req;
     }
 
     checkForId(): void {
@@ -46,11 +54,13 @@ class CheckRequestInputs implements ValidateUserInputs {
 }
 
 class CreateUserValidation extends CheckRequestInputs {
-    constructor(req: Request) {
-        super(req);
+    constructor() {
+        super();
     }
 
-    checkAllInputs(): void {
+    checkAllInputs = (req: Request): void => {
+        this.setRequest = req;
+
         this.checkForName();
         this.checkForEmail();
         this.checkForPassword();
@@ -58,15 +68,22 @@ class CreateUserValidation extends CheckRequestInputs {
 }
 
 class DeleteUserValidation extends CheckRequestInputs {
-    constructor(req: Request) {
-        super(req);
+    constructor() {
+        super();
     }
-    checkForId(): void {
-        const { id } = this.req.params;
+
+    checkForId = (): void => {
+        const { id } = this.getRequest.params;
 
         if (!id) {
             throw new BadRequestError('Missing params');
         }
+    }
+
+    checkIdentification = (req: Request): void => {
+        this.setRequest = req;
+
+        this.checkForId();
     }
 }
 
