@@ -21,7 +21,14 @@ class BadRequestError extends AppError {
     }
 }
 
+class ServerError extends AppError {
+    constructor(message = 'Internal Server Error', name = 'SERVER ERROR', statusCode = 500) {
+        super(message, name, statusCode);
+    }
+}
+
 export {
     BadRequestError,
-    AuthenticationError
+    AuthenticationError,
+    ServerError
 };
