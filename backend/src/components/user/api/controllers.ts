@@ -32,7 +32,7 @@ class UserController implements Controller {
 
             res.status(201).json(newUser);
         } catch(err) {
-            console.error(err);
+            next(err);
         }
     }
 }

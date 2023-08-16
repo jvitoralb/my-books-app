@@ -9,7 +9,7 @@ describe('User Component Tests', () => {
         .post('/users')
         .send({
             name: 'user test',
-            email: 'user546.test@library.app',
+            email: 'user2.test@library.app',
             password: 'strongpswd123',
         }).set('Accept', 'application/json');
 
@@ -28,7 +28,7 @@ describe('User Component Tests', () => {
         );
     });
 
-    test('sends a BAD REQUEST when tries to create user with missing data', async () => {
+    test('answers a BAD REQUEST when trying to create user with missing data', async () => {
         const res = await request(app)
         .post('/users')
         .send({
@@ -43,6 +43,28 @@ describe('User Component Tests', () => {
             expect.objectContaining({
                 body: {
                     error: 'Missing required field'
+                },
+                statusCode: 400
+            })
+        );
+    });
+
+    test('answers with BAD REQUEST when trying to register with an email already registered', async () => {
+        const res = await request(app)
+        .post('/users')
+        .send({
+            name: 'user test2',
+            email: 'user.test@library.app',
+            password: 'strongpswd123',
+        }).set('Accept', 'application/json');
+
+        const serverResponse = jest.fn();
+        serverResponse({ body: res.body, statusCode: res.statusCode });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    error: 'Email already exists'
                 },
                 statusCode: 400
             })

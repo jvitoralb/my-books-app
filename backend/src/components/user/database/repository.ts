@@ -1,5 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { User } from '../service/services'
+import { BadRequestError, ServerError } from '../../../lib/errors/custom';
 
 
 class Repository {
@@ -11,7 +12,7 @@ class Repository {
 
     insert = async ({ email, name, pswd_hash, pswd_salt }: User): Promise<User | undefined> => {
         try {
-            const newUser = await this.prisma.user.create({
+            return await this.prisma.user.create({
                 data: {
                     email,
                     name,
@@ -19,9 +20,13 @@ class Repository {
                     pswd_salt
                 }
             });
-            return newUser;
         } catch(err) {
-            console.log(err);
+            if (err instanceof Prisma.PrismaClientKnownRequestError) {
+                if (err.code === 'P2002') {
+                    throw new BadRequestError('Email already exists');
+                }
+            }
+            throw new ServerError();
         } finally {
             this.prisma.$disconnect();
         }
