@@ -1,4 +1,4 @@
-import { Request, request } from 'express';
+import { NextFunction, Request, Response, request } from 'express';
 import { BadRequestError } from '../../../lib/errors/custom';
 
 interface ValidateUserInputs {
@@ -58,12 +58,14 @@ class CreateUserValidation extends CheckRequestInputs {
         super();
     }
 
-    checkAllInputs = (req: Request): void => {
+    checkAllInputs = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForName();
         this.checkForEmail();
         this.checkForPassword();
+        
+        next();
     }
 }
 
