@@ -28,7 +28,27 @@ describe('User Component Tests', () => {
         );
     });
 
-    test.todo('sends a BAD REQUEST when tries to create user with missing data');
+    test('sends a BAD REQUEST when tries to create user with missing data', async () => {
+        const res = await request(app)
+        .post('/users')
+        .send({
+            name: 'user test',
+            password: 'strongpswd123',
+        }).set('Accept', 'application/json');
+
+        const serverResponse = jest.fn();
+        serverResponse({ body: res.body, statusCode: res.statusCode });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    error: 'Missing required field'
+                },
+                statusCode: 400
+            })
+        );
+    });
+
     test.todo('updates a user data successfully');
     test.todo('fails to update user data with invalid id');
     test.todo('deletes a user successfully');
