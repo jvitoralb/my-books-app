@@ -21,7 +21,7 @@ interface Authentication {
     validate(authorizationHeader: string): boolean;
 }
 
-export class AuthToken implements Authentication {
+class AuthToken implements Authentication {
     private PUB_KEY: string
     private PRIV_KEY: string
     private EXPIRES: string;
