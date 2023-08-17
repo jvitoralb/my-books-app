@@ -1,8 +1,10 @@
 import 'dotenv/config'
+import fs from 'node:fs';
+import { join } from 'node:path';
 import jwt from 'jsonwebtoken';
 
 interface Data {
-    _id: String
+    id: String
     email: String
 }
 interface Payload {
@@ -10,36 +12,66 @@ interface Payload {
     email: String
     iat: Number
 }
-
-const generateSignature = (payload: Payload) => {
-    const PRIVATE_KEY = String(process.env.PRIVATE_KEY);
-    const expiresIn = '7d';
-    const algorithm = 'RS256';
-    const signed = jwt.sign(payload, PRIVATE_KEY, { expiresIn, algorithm });
-
-    return {
-        signature: signed,
-        age: expiresIn
-    }
+interface Token {
+    token: string;
+    expires: string;
+}
+interface Authentication { 
+    issue(data: Data): Token | undefined;
+    validate(authorizationHeader: string): boolean;
 }
 
-const issueToken = ({ _id, email }: Data) => {
-    const payload: Payload = {
-        sub: _id,
-        email: email,
-        iat: Date.now()
+export class AuthToken implements Authentication {
+    private PUB_KEY: string
+    private PRIV_KEY: string
+    private EXPIRES: string;
+
+    constructor() {
+        this.PRIV_KEY = String(process.env.PRIVATE_KEY);
+        this.PUB_KEY = fs.readFileSync(join(process.cwd(), '/pub-key.pem'), 'utf8');
+        this.EXPIRES = '7d';
     }
 
-    try {
-        const { signature, age } = generateSignature(payload);
-        
-        return {
-            token: 'Bearer ' + signature,
-            expires: age
+    public issue(data: Data): Token | undefined {
+        const payload: Payload = {
+            sub: data.id,
+            email: data.email,
+            iat: Date.now()
         }
-    } catch(err) {
-        console.log(err);
+    
+        try {
+            const signature = this.signature(payload);
+            
+            return {
+                token: 'Bearer ' + signature,
+                expires: this.EXPIRES
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+    private signature(payload: Payload): string {
+        const signed = jwt.sign(payload, this.PRIV_KEY, {
+            expiresIn: this.EXPIRES,
+            algorithm: 'RS256'
+        });
+    
+        return signed;
+    }
+    public validate(authorizationHeader: string): boolean {
+        const [ bearer, token ] = authorizationHeader.split(' ');
+
+        if (bearer === 'Bearer' && token.match(/\S+\.\S+\.\S+/)) {
+            try {
+                jwt.verify(token, this.PUB_KEY, { algorithms: ['RS256'] });
+                return true;
+            } catch(err) {
+                return false;
+            }
+        }
+    
+        return false;
     }
 }
 
-export default issueToken;
+export default AuthToken;

@@ -1,5 +1,4 @@
-import issueToken from '../jwt';
-import auth from '../auth';
+import AuthToken from '../jwt';
 import { generatePassword, validatePassword } from '../password';
 
 
@@ -7,7 +6,7 @@ describe('JWT Authentication', () => {
     const generatedToken = jest.fn();
 
     test('should issue a token and its age', () => {
-        let issued = issueToken({ _id: 'test-jwt-user-id', email: 'test-user@books.app' });
+        let issued = new AuthToken().issue({ id: 'test-jwt-user-id', email: 'test-user@books.app' });
         generatedToken(issued);
 
         expect(generatedToken).toHaveBeenCalledWith(
@@ -20,12 +19,16 @@ describe('JWT Authentication', () => {
 
     test('should successfully validate a token', () => {
         const authorizationHeader = generatedToken.mock.lastCall[0].token;
-        expect(auth(authorizationHeader)).toBe(true);
+        const auth = new AuthToken();
+
+        expect(auth.validate(authorizationHeader)).toBe(true);
     });
 
     test('should return false for a invalid token', () => {
         const authorizationHeader = 'Bearer tHiS.1s.4-1nVAL1d-_toK3N'
-        expect(auth(authorizationHeader)).toBe(false);
+        const auth = new AuthToken();
+
+        expect(auth.validate(authorizationHeader)).toBe(false);
     });
 });
 
