@@ -1,6 +1,6 @@
 import Repository from '../database/repository';
 import { generatePassword } from '../../../lib/auth/password';
-import issueToken from '../../../lib/auth/jwt';
+import AuthToken from '../../../lib/auth/jwt';
 
 interface ReturnData {
     id: string;
@@ -53,9 +53,9 @@ class UserData implements UserAccessor {
         this.email = email;
     }
 
-    public set setUserNameAndEmail(data: { email: string; name: string; }) {
-        this.setEmail = data.email;
+    public set setUserNameAndEmail(data: { name: string; email: string; }) {
         this.setName = data.name;
+        this.setEmail = data.email;
     }
 
     public get getUser(): User {
@@ -83,11 +83,11 @@ class UserService extends UserData implements Service {
         this.setPswd = pswdHashSalt;
 
         const insertedDoc = await this.repository.insert(this.getUser);
-        const userToken = issueToken({ _id: String(insertedDoc!.id), email: this.getUser.email });
+        const userToken = new AuthToken().issue({ id: String(insertedDoc!.id), email: this.getUser.email });
 
         return {
             ...userToken!,
-            id: insertedDoc!.id
+            id: insertedDoc!.id // no need to return id
         };
     }
 }
