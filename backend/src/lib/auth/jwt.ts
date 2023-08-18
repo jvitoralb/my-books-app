@@ -2,28 +2,30 @@ import 'dotenv/config'
 import fs from 'node:fs';
 import { join } from 'node:path';
 import jwt from 'jsonwebtoken';
+import { AuthenticationError, ServerError } from '../errors/custom';
 
 interface Data {
-    id: String
-    email: String
+    id: string;
+    email: string;
 }
 interface Payload {
-    sub: String
-    email: String
-    iat: Number
+    sub: string;
+    email: string;
+    iat: number;
 }
 interface Token {
     token: string;
     expires: string;
 }
-interface Authentication { 
+interface Authentication {
     issue(data: Data): Token | undefined;
     validate(authorizationHeader: string): boolean;
+    decode(bearerToken: string): jwt.JwtPayload | string;
 }
 
 class AuthToken implements Authentication {
-    private PUB_KEY: string
-    private PRIV_KEY: string
+    private PUB_KEY: string;
+    private PRIV_KEY: string;
     private EXPIRES: string;
 
     constructor() {
@@ -40,7 +42,7 @@ class AuthToken implements Authentication {
         }
     
         try {
-            const signature = this.signature(payload);
+            const signature = this.signPayload(payload);
             
             return {
                 token: 'Bearer ' + signature,
@@ -48,15 +50,35 @@ class AuthToken implements Authentication {
             }
         } catch(err) {
             console.log(err);
+            throw new ServerError('Internal Server Error', 'SERVER ERROR', 500, 'Token signature error');
         }
     }
-    private signature(payload: Payload): string {
+    private signPayload(payload: Payload): string {
         const signed = jwt.sign(payload, this.PRIV_KEY, {
             expiresIn: this.EXPIRES,
             algorithm: 'RS256'
         });
     
         return signed;
+    }
+    public decode(bearerToken: string): Payload {
+        const [b, token] = bearerToken.split(' ');
+
+        const decoded: unknown = jwt.verify(token, this.PUB_KEY, { algorithms: ['RS256'] });
+        const decodedPayload: Payload = this.verifyDecoded(decoded);
+
+        return decodedPayload;
+    }
+    private verifyDecoded(decoded: unknown): Payload {
+        if (!(decoded instanceof Object)) {
+            throw new AuthenticationError('Decoded token error', 'UNAUTHORIZED', 401, 'Token must be an object');
+        }
+
+        if (!(decoded!.hasOwnProperty('email')) || !(decoded!.hasOwnProperty('sub')) || !(decoded!.hasOwnProperty('iat'))) {
+            throw new AuthenticationError('Decoded token error', 'UNAUTHORIZED', 401, 'Missing required field in decoded token');
+        }
+
+        return decoded as Payload;
     }
     public validate(authorizationHeader: string): boolean {
         const [ bearer, token ] = authorizationHeader.split(' ');
