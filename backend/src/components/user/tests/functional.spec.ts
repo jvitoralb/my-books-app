@@ -4,18 +4,22 @@ import app from '../../../app';
 
 
 describe('User Component Tests', () => {
+    const tokens = jest.fn((token: string) => token);
     const serverResponse = jest.fn((call: { body: any, statusCode: number, equalTokens?: boolean }) => call);
+
+    afterEach(() => serverResponse.mockClear());
 
     test('creates a user successfully and returns user token and id', async () => {
         const res = await request(app)
         .post('/users')
         .send({
             name: 'user test',
-            email: 'user2.test@library.app',
+            email: 'user.test@library.app',
             password: 'strongpswd123',
         }).set('Accept', 'application/json');
 
         serverResponse({ body: res.body, statusCode: res.statusCode });
+        tokens(res.body.token);
 
         expect(serverResponse).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -74,13 +78,14 @@ describe('User Component Tests', () => {
         .put('/users/email')
         .send({
             new_email: 'user.test.novo@library.app'
-        }).set('Authorization', serverResponse.mock.calls[0][0].body.token);
+        }).set('Authorization', tokens.mock.results[0].value as string);
 
         serverResponse({
             body: res.body,
             statusCode: res.statusCode,
-            equalTokens: (serverResponse.mock.calls[0][0].body.token === res.body.token)
+            equalTokens: (tokens.mock.results[0].value === res.body.token)
         });
+        tokens(res.body.token);
 
         expect(serverResponse).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -99,7 +104,7 @@ describe('User Component Tests', () => {
         .put('/users/password')
         .send({
             new_password: 'strongpswd123NOVO'
-        }).set('Authorization', serverResponse.mock.calls[0][0].body.token);
+        }).set('Authorization', tokens.mock.results[0].value as string);
 
         serverResponse({ body: res.body, statusCode: res.statusCode });
 
@@ -110,7 +115,4 @@ describe('User Component Tests', () => {
             })
         );
     });
-
-    test.todo('deletes a user successfully');
-    test.todo('fails to delete user with invalid id');
 });
