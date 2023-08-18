@@ -1,6 +1,7 @@
 import Repository from '../database/repository';
-import { generatePassword } from '../../../lib/auth/password';
+import { generatePassword, validatePassword } from '../../../lib/auth/password';
 import AuthToken from '../../../lib/auth/jwt';
+import { BadRequestError } from '../../../lib/errors/custom';
 
 interface ReturnData {
     token: string;
@@ -9,9 +10,16 @@ interface ReturnData {
 
 interface Service {
     registerUser(password: string): Promise<ReturnData>;
+    logUser(password: string): Promise<ReturnData>;
+    searchUser(id: string): Promise<FoundUser>;
     changeEmail(id: string): Promise<ReturnData>;
     changePassword(data: { id: string, password: string }): Promise<void>;
     destroyUser(id: string): Promise<void>;
+}
+
+export interface FoundUser {
+    name: string;
+    email: string;
 }
 
 export interface User {
@@ -21,6 +29,7 @@ export interface User {
     pswd_hash: string;
     pswd_salt: string;
 }
+
 
 interface UserAccessor {
     getUser: User;
@@ -91,6 +100,28 @@ class UserService extends UserData implements Service {
             token: tokenInfo!.token,
             expires: tokenInfo!.expires
         };
+    }
+    logUser = async (password: string): Promise<ReturnData> => {
+        const userDoc = await this.repository.findDocument(this.getUser);
+        const validPswd = validatePassword(password, userDoc!.pswd_hash, userDoc!.pswd_salt);
+
+        if (!validPswd) {
+            throw new BadRequestError('Invalid password');
+        }
+
+        const tokenInfo = new AuthToken().issue({ id: userDoc!.id, email: userDoc!.email });
+
+        return {
+            token: tokenInfo!.token,
+            expires: tokenInfo!.expires
+        };
+    }
+    searchUser = async (id: string): Promise<FoundUser> => {
+        this.setId = id;
+
+        const userFound = await this.repository.find(this.getUser);
+
+        return userFound!;
     }
     changeEmail = async (id: string): Promise<ReturnData> => {
         this.setId = id;
