@@ -3,7 +3,6 @@ import { generatePassword } from '../../../lib/auth/password';
 import AuthToken from '../../../lib/auth/jwt';
 
 interface ReturnData {
-    id: string;
     token: string;
     expires: string;
 }
@@ -83,11 +82,11 @@ class UserService extends UserData implements Service {
         this.setPswd = pswdHashSalt;
 
         const insertedDoc = await this.repository.insert(this.getUser);
-        const userToken = new AuthToken().issue({ id: String(insertedDoc!.id), email: this.getUser.email });
+        const tokenInfo = new AuthToken().issue({ id: String(insertedDoc!.id), email: this.getUser.email });
 
         return {
-            ...userToken!,
-            id: insertedDoc!.id // no need to return id
+            token: tokenInfo!.token,
+            expires: tokenInfo!.expires
         };
     }
 }
