@@ -115,4 +115,19 @@ describe('User Component Tests', () => {
             })
         );
     });
+
+    test('deletes a user successfully and returns status code 204', async () => {
+        const res = await request(app)
+        .delete('/users')
+        .set('Authorization', tokens.mock.results[1].value as string);
+
+        serverResponse({ body: res.body, statusCode: res.statusCode });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {},
+                statusCode: 204
+            })
+        );
+    });
 });
