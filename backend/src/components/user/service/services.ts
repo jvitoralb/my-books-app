@@ -9,6 +9,8 @@ interface ReturnData {
 
 interface Service {
     registerUser(password: string): Promise<ReturnData>;
+    changeEmail(id: string): Promise<ReturnData>;
+    changePassword(data: { id: string, password: string }): Promise<void>;
 }
 
 export interface User {
@@ -88,6 +90,25 @@ class UserService extends UserData implements Service {
             token: tokenInfo!.token,
             expires: tokenInfo!.expires
         };
+    }
+    changeEmail = async (id: string): Promise<ReturnData> => {
+        this.setId = id;
+
+        const updatedDoc = await this.repository.updateEmail(this.getUser);
+        const tokenInfo = new AuthToken().issue({ id: updatedDoc.id, email: updatedDoc.email });
+
+        return {
+            token: tokenInfo!.token,
+            expires: tokenInfo!.expires
+        };
+    }
+    changePassword = async (data: { id: string; password: string; }): Promise<void> => {
+        const pswdHashSalt = generatePassword(data.password);
+
+        this.setId = data.id;
+        this.setPswd = pswdHashSalt;
+
+        await this.repository.updatePswd(this.getUser);
     }
 }
 

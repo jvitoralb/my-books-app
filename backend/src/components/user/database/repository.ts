@@ -26,6 +26,41 @@ class Repository {
                     throw new BadRequestError('Email already exists');
                 }
             }
+            console.log(err);
+            throw new ServerError();
+        } finally {
+            this.prisma.$disconnect();
+        }
+    }
+    updateEmail = async ({ id, email }: User): Promise<User> => {
+        try {
+            return await this.prisma.user.update({
+                where: { id },
+                data:{ email }
+            });
+        } catch(err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError) {
+                if (err.code === 'P2002') {
+                    throw new BadRequestError('Email already exists');
+                }
+            }
+            console.log(err);
+            throw new ServerError();
+        } finally {
+            this.prisma.$disconnect();
+        }
+    }
+    updatePswd= async ({ id, pswd_hash, pswd_salt }: User): Promise<void> => {
+        try {
+            await this.prisma.user.update({
+                where: { id },
+                data:{
+                    pswd_hash,
+                    pswd_salt
+                }
+            });
+        } catch(err) {
+            console.log(err);
             throw new ServerError();
         } finally {
             this.prisma.$disconnect();
