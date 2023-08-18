@@ -9,9 +9,9 @@ describe('User Component Tests', () => {
 
     afterEach(() => serverResponse.mockClear());
 
-    test('creates a user successfully and returns user token and id', async () => {
+    test('creates a user successfully and returns user token', async () => {
         const res = await request(app)
-        .post('/users')
+        .post('/users/register')
         .send({
             name: 'user test',
             email: 'user.test@library.app',
@@ -34,7 +34,7 @@ describe('User Component Tests', () => {
 
     test('answers a BAD REQUEST when trying to create user with missing data', async () => {
         const res = await request(app)
-        .post('/users')
+        .post('/users/register')
         .send({
             name: 'user test',
             password: 'strongpswd123',
@@ -54,7 +54,7 @@ describe('User Component Tests', () => {
 
     test('answers with BAD REQUEST when trying to register with an email already registered', async () => {
         const res = await request(app)
-        .post('/users')
+        .post('/users/register')
         .send({
             name: 'user test2',
             email: 'user.test@library.app',
