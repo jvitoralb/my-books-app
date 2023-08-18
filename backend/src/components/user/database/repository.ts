@@ -66,6 +66,21 @@ class Repository {
             this.prisma.$disconnect();
         }
     }
+    delete = async ({ id, email }: User): Promise<void> => {
+        try {
+            await this.prisma.user.delete({
+                where: {
+                    id,
+                    email
+                }
+            });
+        } catch(err) {
+            console.log(err);
+            throw new ServerError();
+        } finally {
+            this.prisma.$disconnect();
+        }
+    }
 }
 
 export default Repository;

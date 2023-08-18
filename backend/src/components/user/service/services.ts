@@ -11,6 +11,7 @@ interface Service {
     registerUser(password: string): Promise<ReturnData>;
     changeEmail(id: string): Promise<ReturnData>;
     changePassword(data: { id: string, password: string }): Promise<void>;
+    destroyUser(id: string): Promise<void>;
 }
 
 export interface User {
@@ -109,6 +110,11 @@ class UserService extends UserData implements Service {
         this.setPswd = pswdHashSalt;
 
         await this.repository.updatePswd(this.getUser);
+    }
+    destroyUser = async (id: string): Promise<void> => {
+        this.setId = id;
+
+        await this.repository.delete(this.getUser);
     }
 }
 
