@@ -13,6 +13,7 @@ interface Controller {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;
     updateEmail(req: Request, res: Response, next: NextFunction): Promise<void>;
     updatePswd(req: Request, res: Response, next: NextFunction): Promise<void>;
+    delete(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 
 class UserController implements Controller {
@@ -63,6 +64,19 @@ class UserController implements Controller {
             res.status(204).json();
         } catch(err) {
             next(err);
+        }
+    }
+    delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const bearerToken = req.get('Authorization');
+            const payload = new AuthToken().decode(bearerToken!);
+
+            this.service.setUserNameAndEmail = { name: '', email: payload.email }
+            await this.service.destroyUser(payload.sub);
+
+            res.status(204).json();
+        } catch(err) {
+            console.log(err);
         }
     }
 }
