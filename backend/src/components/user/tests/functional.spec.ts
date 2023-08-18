@@ -19,7 +19,6 @@ describe('User Component Tests', () => {
         expect(createdUser).toHaveBeenCalledWith(
             expect.objectContaining({
                 body: {
-                    id: expect.any(String),
                     token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
                     expires: '7d'
                 },
