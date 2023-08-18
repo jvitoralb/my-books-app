@@ -11,6 +11,8 @@ interface UserInputs {
 
 interface Controller {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;
+    read(req: Request, res: Response, next: NextFunction): Promise<void>;
+    readCredentials(req: Request, res: Response, next: NextFunction): Promise<void>;
     updateEmail(req: Request, res: Response, next: NextFunction): Promise<void>;
     updatePswd(req: Request, res: Response, next: NextFunction): Promise<void>;
     delete(req: Request, res: Response, next: NextFunction): Promise<void>;
@@ -37,6 +39,35 @@ class UserController implements Controller {
             res.status(201).json(newUser);
         } catch(err) {
             next(err);
+        }
+    }
+    readCredentials = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { email, password }: UserInputs = req.body;
+            
+            this.service.setUserNameAndEmail = {
+                name: '',
+                email: email
+            }
+            
+            const userAccess = await this.service.logUser(password);
+
+            res.status(200).json(userAccess);
+        } catch(err) {
+            next(err);
+        }
+    }
+    read = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const bearerToken = req.get('Authorization');
+            const payload = new AuthToken().decode(bearerToken!);
+
+            this.service.setUserNameAndEmail = { name: '', email: payload.email }
+            const user = await this.service.searchUser(payload.sub);
+
+            res.status(200).json(user);
+        } catch(err) {
+            console.log(err);
         }
     }
     updateEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
