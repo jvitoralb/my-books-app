@@ -32,6 +32,45 @@ describe('User Component Tests', () => {
         );
     });
 
+    test('reads user data using auth token', async () => {
+        const res = await request(app)
+        .get('/users')
+        .set('Authorization', tokens.mock.results[0].value as string);
+
+        serverResponse({ body: res.body, statusCode: 200 });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    name: 'user test',
+                    email: 'user.test@library.app'
+                },
+                statusCode: 200
+            })
+        );
+    });
+
+    test('issues a token when receives a valid password and email', async () => {
+        const res = await request(app)
+        .post('/users/login')
+        .send({
+            email: 'old-user.test@library.app',
+            password: 'old-strongpswd123',
+        }).set('Accept', 'application/json');
+
+        serverResponse({ body: res.body, statusCode: res.statusCode });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
+                    expires: '7d'
+                },
+                statusCode: 200
+            })
+        );
+    });
+
     test('answers a BAD REQUEST when trying to create user with missing data', async () => {
         const res = await request(app)
         .post('/users/register')
