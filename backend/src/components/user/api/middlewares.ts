@@ -1,64 +1,70 @@
 import { NextFunction, Request, Response, request } from 'express';
 import { BadRequestError } from '../../../lib/errors/custom';
 
-interface ValidateUserInputs {
-    checkForId(): void
-    checkForPassword(): void
-    checkForEmail(): void
-    checkForName(): void
-}
 
-class CheckRequestInputs implements ValidateUserInputs {
+class CheckRequestInputs {
     private req: Request;
 
     constructor() {
         this.req = request;
     }
 
-    set setRequest(req: Request) {
+    protected set setRequest(req: Request) {
         this.req = req;
     }
-
-    get getRequest(): Request {
+    protected get getRequest(): Request {
         return this.req;
     }
 
-    checkForId(): void {
-        const { id } = this.req.body;
-
-        if (!id) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
-    checkForPassword(): void {
+    protected checkForPassword(): void {
         const { password } = this.req.body;
 
         if (!password) {
             throw new BadRequestError('Missing required field');
         }
     }
-    checkForEmail(): void {
+    protected checkForEmail(): void {
         const { email } = this.req.body;
 
         if (!email) {
             throw new BadRequestError('Missing required field');
         }
     }
-    checkForName(): void {
+    protected checkForName(): void {
         const { name } = this.req.body;
 
         if (!name) {
             throw new BadRequestError('Missing required field');
         }
     }
+    protected checkForNewEmail(): void {
+        const { new_email } = this.req.body;
+
+        if (!new_email) {
+            throw new BadRequestError('Missing required field');
+        }
+    }
+    protected checkForNewPassword(): void {
+        const { new_password } = this.req.body;
+
+        if (!new_password) {
+            throw new BadRequestError('Missing required field');
+        }
+    }
 }
 
-class CreateUserValidation extends CheckRequestInputs {
+interface Middleware {
+    validateCreate(req: Request, res: Response, next: NextFunction): void
+    validateReadCredentials(req: Request, res: Response, next: NextFunction): void
+    validateUpdateEmail(req: Request, res: Response, next: NextFunction): void
+    validateUpdatePswd(req: Request, res: Response, next: NextFunction): void
+}
+
+class UserMiddleware extends CheckRequestInputs implements Middleware {
     constructor() {
         super();
     }
-
-    checkAllInputs = (req: Request, res: Response, next: NextFunction): void => {
+    validateCreate = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForName();
@@ -67,29 +73,28 @@ class CreateUserValidation extends CheckRequestInputs {
         
         next();
     }
-}
-
-class DeleteUserValidation extends CheckRequestInputs {
-    constructor() {
-        super();
-    }
-
-    checkForId = (): void => {
-        const { id } = this.getRequest.params;
-
-        if (!id) {
-            throw new BadRequestError('Missing params');
-        }
-    }
-
-    checkIdentification = (req: Request): void => {
+    validateReadCredentials = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
-        this.checkForId();
+        this.checkForEmail();
+        this.checkForPassword();
+        
+        next();
+    }
+    validateUpdateEmail = (req: Request, res: Response, next: NextFunction): void => {
+        this.setRequest = req;
+
+        this.checkForNewEmail();
+
+        next();
+    }
+    validateUpdatePswd = (req: Request, res: Response, next: NextFunction): void => {
+        this.setRequest = req;
+
+        this.checkForNewPassword();
+
+        next();
     }
 }
 
-export {
-    CreateUserValidation,
-    DeleteUserValidation
-}
+export default UserMiddleware;
