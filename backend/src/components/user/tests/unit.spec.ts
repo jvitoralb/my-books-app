@@ -1,82 +1,68 @@
+import { expect, test } from '@jest/globals';
 import httpMocks from 'node-mocks-http';
-import { CreateUserValidation, DeleteUserValidation } from '../api/middlewares';
+import UserMiddleware from '../api/middlewares';
 import { BadRequestError } from '../../../lib/errors/custom';
 
 
 describe('User Validation Tests', () => {
-    test('should throw BadRequestError when there\'s no password in request body', () => {
-        let req = httpMocks.createRequest({
-            method: 'POST',
-            path: '/users',
-            body: {
-                email: 'user-test@library.com',
-                name: 'user test'
-            }
-        });
-
-        let validator = new CreateUserValidation();
-        validator.setRequest = req;
-
-        expect(() => validator.checkForPassword()).toThrow(BadRequestError);
-    });
-
-    test('should throw BadRequestError when there\'s no email in request body', () => {
-        let req = httpMocks.createRequest({
-            method: 'POST',
-            path: '/users',
-            body: {
-                name: 'user test',
-                password: 'stronguserpswd'
-            }
-        });
-
-        let validator = new CreateUserValidation();
-        validator.setRequest = req;
-
-        expect(() => validator.checkForEmail()).toThrow(BadRequestError);
-    });
-
-    test('should throw BadRequestError when there\'s no name in request body', () => {
-        let req = httpMocks.createRequest({
-            method: 'POST',
-            path: '/users',
-            body: {
-                email: 'user-test@library.com',
-                password: 'stronguserpswd'
-            }
-        });
-
-        let validator = new CreateUserValidation();
-        validator.setRequest = req;
-
-        expect(() => validator.checkForName()).toThrow(BadRequestError);
-    });
-
-    test('should return undefined when all data exists in request body', () => {
-        let { req, res} = httpMocks.createMocks({
-            method: 'POST',
-            path: '/users',
-            body: {
-                email: 'user-test@library.com',
-                name: 'user test',
-                password: 'stronguserpswd'
-            }
-        }, {});
-
-        let validator = new CreateUserValidation();
-
-        expect(validator.checkAllInputs(req, res, () => {})).toBe(undefined);
-    });
-
-    test('should throw BadRequestError when there\'s no id in request params', () => {
+    test('throws a BadRequestError when is missing data for logging a user', () => {
         let { req, res } = httpMocks.createMocks({
-            method: 'DELETE',
-            path: '/users',
-            params: {}
+            method: 'POST',
+            path: '/users/login',
+            body: {
+                email: 'user.test@library.app'
+            }
         }, {});
+        let next = () => {};
 
-        let validator = new DeleteUserValidation();
+        let middleware = new UserMiddleware();
 
-        expect(() => validator.checkIdentification(req, res, () => {})).toThrow(BadRequestError);
+        expect(() => middleware.validateReadCredentials(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
+    });
+
+    test('throws BadRequestError when is missing data for creating a user', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'POST',
+            path: '/users/register',
+            body: {
+                name: 'user test',
+                password: 'strongpswd123'
+            }
+        }, {});
+        let next = () => {};
+
+        let middleware = new UserMiddleware();
+
+        expect(() => middleware.validateCreate(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
+    });
+
+    test('throws BadRequestError when is missing data to update a user email', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'PUT',
+            path: '/users/email',
+            body: {}
+        }, {});
+        let next = () => {};
+
+        let middleware = new UserMiddleware();
+
+        expect(() => middleware.validateUpdateEmail(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
+    });
+
+    test('throws BadRequestError when is missing data to update a user password', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'PUT',
+            path: '/users/password',
+            body: {}
+        }, {});
+        let next = () => {};
+
+        let middleware = new UserMiddleware();
+
+        expect(() => middleware.validateUpdatePswd(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
     });
 });
