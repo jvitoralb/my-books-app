@@ -11,7 +11,7 @@ interface PasswordUtils {
     validate(): boolean;
 }
 
-export class PasswordsHandler implements PasswordUtils {
+class PasswordsHandler implements PasswordUtils {
     private pswd: crypto.BinaryLike;
     private hash: string;
     private salt: crypto.BinaryLike;
