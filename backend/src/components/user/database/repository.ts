@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client'
 import { User, FoundUser } from '../service/services'
-import { BadRequestError, ServerError } from '../../../lib/errors/custom';
+import { BadRequestError } from '../../../lib/errors/custom';
 
 class Repository {
     private prisma: PrismaClient;
@@ -25,8 +25,7 @@ class Repository {
                     throw new BadRequestError('Email already exists');
                 }
             }
-            console.log(err);
-            throw new ServerError();
+            throw err;
         } finally {
             this.prisma.$disconnect();
         }
@@ -36,17 +35,11 @@ class Repository {
             const doc = await this.prisma.user.findUnique({ where: { email } });
 
             if (doc === null) {
-                throw new Error('null');
+                throw new BadRequestError('User does not exists');
             }
             return doc;
         } catch(err) {
-            if (err instanceof Error) {
-                if (err.message === 'null') {
-                    throw new BadRequestError('User does not exists');
-                }
-            }
-            console.log(err);
-            throw new ServerError();
+            throw err;
         } finally {
             this.prisma.$disconnect();
         }
@@ -64,8 +57,7 @@ class Repository {
                 }
             });
         } catch(err) {
-            console.log(err);
-            throw new ServerError();
+            throw err;
         } finally {
             this.prisma.$disconnect();
         }
@@ -82,8 +74,7 @@ class Repository {
                     throw new BadRequestError('Email already exists');
                 }
             }
-            console.log(err);
-            throw new ServerError();
+            throw err;
         } finally {
             this.prisma.$disconnect();
         }
@@ -98,8 +89,7 @@ class Repository {
                 }
             });
         } catch(err) {
-            console.log(err);
-            throw new ServerError();
+            throw err;
         } finally {
             this.prisma.$disconnect();
         }
@@ -113,8 +103,7 @@ class Repository {
                 }
             });
         } catch(err) {
-            console.log(err);
-            throw new ServerError();
+            throw err;
         } finally {
             this.prisma.$disconnect();
         }
