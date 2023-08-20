@@ -66,7 +66,7 @@ class UserController implements Controller {
 
             res.status(200).json(user);
         } catch(err) {
-            console.log(err);
+            next(err);
         }
     }
     updateEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -106,7 +106,7 @@ class UserController implements Controller {
 
             res.status(204).json();
         } catch(err) {
-            console.log(err);
+            next(err);
         }
     }
 }
