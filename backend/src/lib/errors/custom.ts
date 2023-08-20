@@ -31,5 +31,6 @@ class ServerError extends AppError {
 export {
     BadRequestError,
     AuthenticationError,
-    ServerError
+    ServerError,
+    AppError
 };
