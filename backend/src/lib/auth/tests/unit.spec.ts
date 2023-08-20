@@ -1,5 +1,5 @@
 import AuthToken from '../jwt';
-import { generatePassword, validatePassword } from '../password';
+import PasswordsHandler from '../password';
 
 
 describe('JWT Authentication', () => {
@@ -44,8 +44,8 @@ describe('Password Functions', () => {
     });
 
     test('should generate a hash and salt', () => {
-        let hashAndSalt = generatePassword(mock.pswd);
-        generatedHashAndSalt(hashAndSalt);
+        let handler = new PasswordsHandler(mock.pswd);
+        generatedHashAndSalt(handler.generate());
         
         expect(generatedHashAndSalt).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -56,12 +56,12 @@ describe('Password Functions', () => {
     });
 
     test('should validate the password', () => {
-        let validPswd = validatePassword(mock.pswd, mock.hash, mock.salt);
-        expect(validPswd).toBeTruthy();
+        let handler = new PasswordsHandler(mock.pswd, mock.hash, mock.salt);
+        expect(handler.validate()).toBeTruthy();
     });
 
     test('should return false for the wrong password', () => {
-        let invalidPswd = validatePassword('321wrongpassword', mock.hash, mock.salt);
-        expect(invalidPswd).toBeFalsy();
+        let handler = new PasswordsHandler('321wrongpassword', mock.hash, mock.salt);
+        expect(handler.validate()).toBeFalsy();
     });
 });
