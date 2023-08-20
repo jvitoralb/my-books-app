@@ -54,6 +54,10 @@ class Repository {
 
         this.prisma.$disconnect();
 
+        if (userFound === null) {
+            throw new BadRequestError('User does not exists');
+        }
+
         return userFound;
     }
     updateEmail = async ({ id, email }: User): Promise<User> => {
