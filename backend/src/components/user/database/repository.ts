@@ -31,36 +31,30 @@ class Repository {
         }
     }
     findDocument = async ({ email }: User): Promise<User | undefined> => {
-        try {
-            const doc = await this.prisma.user.findUnique({ where: { email } });
+        const doc = await this.prisma.user.findUnique({ where: { email } });
 
-            if (doc === null) {
-                throw new BadRequestError('User does not exists');
-            }
-            return doc;
-        } catch(err) {
-            throw err;
-        } finally {
-            this.prisma.$disconnect();
+        this.prisma.$disconnect();
+
+        if (doc === null) {
+            throw new BadRequestError('User does not exists');
         }
+        return doc;
     }
     find = async ({ id, email }: User): Promise<FoundUser | null> => {
-        try {
-            return await this.prisma.user.findUnique({
-                where: {
-                    id,
-                    email
-                },
-                select: {
-                    email: true,
-                    name: true
-                }
-            });
-        } catch(err) {
-            throw err;
-        } finally {
-            this.prisma.$disconnect();
-        }
+        const userFound = await this.prisma.user.findUnique({
+            where: {
+                id,
+                email
+            },
+            select: {
+                email: true,
+                name: true
+            }
+        });
+
+        this.prisma.$disconnect();
+
+        return userFound;
     }
     updateEmail = async ({ id, email }: User): Promise<User> => {
         try {
@@ -80,33 +74,25 @@ class Repository {
         }
     }
     updatePswd= async ({ id, pswd_hash, pswd_salt }: User): Promise<void> => {
-        try {
-            await this.prisma.user.update({
-                where: { id },
-                data:{
-                    pswd_hash,
-                    pswd_salt
-                }
-            });
-        } catch(err) {
-            throw err;
-        } finally {
-            this.prisma.$disconnect();
-        }
+        await this.prisma.user.update({
+            where: { id },
+            data:{
+                pswd_hash,
+                pswd_salt
+            }
+        });
+
+        this.prisma.$disconnect();
     }
     delete = async ({ id, email }: User): Promise<void> => {
-        try {
-            await this.prisma.user.delete({
-                where: {
-                    id,
-                    email
-                }
-            });
-        } catch(err) {
-            throw err;
-        } finally {
-            this.prisma.$disconnect();
-        }
+        await this.prisma.user.delete({
+            where: {
+                id,
+                email
+            }
+        });
+
+        this.prisma.$disconnect();
     }
 }
 
