@@ -32,46 +32,7 @@ describe('User Component Tests', () => {
         );
     });
 
-    test('reads user data using auth token', async () => {
-        const res = await request(app)
-        .get('/users')
-        .set('Authorization', tokens.mock.results[0].value as string);
-
-        serverResponse({ body: res.body, statusCode: 200 });
-
-        expect(serverResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: {
-                    name: 'user test',
-                    email: 'user.test@library.app'
-                },
-                statusCode: 200
-            })
-        );
-    });
-
-    test('issues a token when receives a valid password and email', async () => {
-        const res = await request(app)
-        .post('/users/login')
-        .send({
-            email: 'old-user.test@library.app',
-            password: 'old-strongpswd123',
-        }).set('Accept', 'application/json');
-
-        serverResponse({ body: res.body, statusCode: res.statusCode });
-
-        expect(serverResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: {
-                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
-                    expires: '7d'
-                },
-                statusCode: 200
-            })
-        );
-    });
-
-    test('answers a BAD REQUEST when trying to create user with missing data', async () => {
+    test('answers with BAD REQUEST when trying to create user with missing data', async () => {
         const res = await request(app)
         .post('/users/register')
         .send({
@@ -112,7 +73,66 @@ describe('User Component Tests', () => {
         );
     });
 
-    test('updates a user email successfully', async () => {
+    test('reads user data using auth token', async () => {
+        const res = await request(app)
+        .get('/users')
+        .set('Authorization', tokens.mock.results[0].value as string);
+
+        serverResponse({ body: res.body, statusCode: 200 });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    name: 'user test',
+                    email: 'user.test@library.app'
+                },
+                statusCode: 200
+            })
+        );
+    });
+
+    test('issues a token when receives a valid password and email', async () => {
+        const res = await request(app)
+        .post('/users/login')
+        .send({
+            email: 'old-user.test@library.app',
+            password: 'old-strongpswd123',
+        }).set('Accept', 'application/json');
+
+        serverResponse({ body: res.body, statusCode: res.statusCode });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
+                    expires: '7d'
+                },
+                statusCode: 200
+            })
+        );
+    });
+
+    test('should answer with BAD REQUEST when trying to access a user that doesn\'t exists', async () => {
+        const res = await request(app)
+        .post('/users/login')
+        .send({
+            email: 'null.null@lib.app',
+            password: 'nullpswd123'
+        }).set('Accept', 'application/json');
+
+        serverResponse({ body: res.body, statusCode: res.statusCode});
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: {
+                    error: 'User does not exists'
+                },
+                statusCode: 400
+            })
+        );
+    });
+
+    test('updates a user email successfully and returns a new token', async () => {
         const res = await request(app)
         .put('/users/email')
         .send({
@@ -138,7 +158,7 @@ describe('User Component Tests', () => {
         );
     });
 
-    test('updates a user password successfully', async () => {
+    test('updates a user password successfully and returns status code 204', async () => {
         const res = await request(app)
         .put('/users/password')
         .send({
