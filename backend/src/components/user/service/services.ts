@@ -1,5 +1,5 @@
 import Repository from '../database/repository';
-import { generatePassword, validatePassword } from '../../../lib/auth/password';
+import PasswordsHandler from '../../../lib/auth/password';
 import AuthToken from '../../../lib/auth/jwt';
 import { BadRequestError } from '../../../lib/errors/custom';
 
@@ -89,7 +89,7 @@ class UserService extends UserData implements Service {
     }
 
     registerUser = async (password: string): Promise<ReturnData> => {
-        const pswdHashSalt = generatePassword(password);
+        const pswdHashSalt = new PasswordsHandler(password).generate();
 
         this.setPswd = pswdHashSalt;
 
@@ -103,7 +103,7 @@ class UserService extends UserData implements Service {
     }
     logUser = async (password: string): Promise<ReturnData> => {
         const userDoc = await this.repository.findDocument(this.getUser);
-        const validPswd = validatePassword(password, userDoc!.pswd_hash, userDoc!.pswd_salt);
+        const validPswd = new PasswordsHandler(password, userDoc!.pswd_hash, userDoc!.pswd_salt).validate();
 
         if (!validPswd) {
             throw new BadRequestError('Invalid password');
@@ -135,7 +135,7 @@ class UserService extends UserData implements Service {
         };
     }
     changePassword = async (data: { id: string; password: string; }): Promise<void> => {
-        const pswdHashSalt = generatePassword(data.password);
+        const pswdHashSalt = new PasswordsHandler(data.password).generate();
 
         this.setId = data.id;
         this.setPswd = pswdHashSalt;
