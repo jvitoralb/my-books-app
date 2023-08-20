@@ -3,7 +3,6 @@ import UserService from '../service/services';
 import AuthToken from '../../../lib/auth/jwt';
 
 interface UserInputs {
-    id?: string;
     email: string;
     name?: string;
     password: string;
