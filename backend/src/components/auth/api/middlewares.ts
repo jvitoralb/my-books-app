@@ -34,7 +34,7 @@ class AuthMiddleware extends Authenticate {
         super();
     }
 
-    authenticateRequest(req: Request, res: Response, next: NextFunction) {
+    authenticateRequest = (req: Request, res: Response, next: NextFunction) => {
         this.setRequest = req;
 
         this.checkToken();
