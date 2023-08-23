@@ -28,6 +28,9 @@ export interface User {
     name: string;
     pswd_hash: string;
     pswd_salt: string;
+    created_at: Date;
+    updated_at: Date;
+    last_access: Date | null;
 }
 
 
@@ -41,6 +44,9 @@ class UserData implements UserAccessor {
     private name: string;
     private pswd_hash: string;
     private pswd_salt: string;
+    private created_at: Date;
+    private updated_at: Date;
+    private last_access: Date | null;
 
     constructor() {
         this.id = '';
@@ -48,6 +54,9 @@ class UserData implements UserAccessor {
         this.name = '';
         this.pswd_hash = '';
         this.pswd_salt = '';
+        this.created_at = new Date();
+        this.updated_at = new Date();
+        this.last_access = null;
     }
 
     protected set setPswd(pswdHS: { hash: string; salt: string; }) {
@@ -75,7 +84,10 @@ class UserData implements UserAccessor {
             email: this.email,
             name: this.name,
             pswd_hash: this.pswd_hash,
-            pswd_salt: this.pswd_salt
+            pswd_salt: this.pswd_salt,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
+            last_access: this.last_access
         };
     }
 }
