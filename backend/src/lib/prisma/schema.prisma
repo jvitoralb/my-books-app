@@ -13,4 +13,7 @@ model User {
   name        String 
   pswd_hash   String 
   pswd_salt   String 
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  last_access DateTime? 
 }
