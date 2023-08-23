@@ -11,7 +11,7 @@ describe('User Component Tests', () => {
 
     test('creates a user successfully and returns user token', async () => {
         const res = await request(app)
-        .post('/users/register')
+        .post('/api/v1/users/register')
         .send({
             name: 'user test',
             email: 'user.test@library.app',
@@ -34,7 +34,7 @@ describe('User Component Tests', () => {
 
     test('answers with BAD REQUEST when trying to create user with missing data', async () => {
         const res = await request(app)
-        .post('/users/register')
+        .post('/api/v1/users/register')
         .send({
             name: 'user test',
             password: 'strongpswd123',
@@ -54,7 +54,7 @@ describe('User Component Tests', () => {
 
     test('answers with BAD REQUEST when trying to register with an email already registered', async () => {
         const res = await request(app)
-        .post('/users/register')
+        .post('/api/v1/users/register')
         .send({
             name: 'user test2',
             email: 'user.test@library.app',
@@ -75,7 +75,7 @@ describe('User Component Tests', () => {
 
     test('reads user data using auth token', async () => {
         const res = await request(app)
-        .get('/users')
+        .get('/api/v1/users')
         .set('Authorization', tokens.mock.results[0].value as string);
 
         serverResponse({ body: res.body, statusCode: 200 });
@@ -93,7 +93,7 @@ describe('User Component Tests', () => {
 
     test('issues a token when receives a valid password and email', async () => {
         const res = await request(app)
-        .post('/users/login')
+        .post('/api/v1/users/login')
         .send({
             email: 'old-user.test@library.app',
             password: 'old-strongpswd123',
@@ -114,7 +114,7 @@ describe('User Component Tests', () => {
 
     test('should answer with BAD REQUEST when trying to access a user that doesn\'t exists', async () => {
         const res = await request(app)
-        .post('/users/login')
+        .post('/api/v1/users/login')
         .send({
             email: 'null.null@lib.app',
             password: 'nullpswd123'
@@ -134,7 +134,7 @@ describe('User Component Tests', () => {
 
     test('updates a user email successfully and returns a new token', async () => {
         const res = await request(app)
-        .put('/users/email')
+        .put('/api/v1/users/email')
         .send({
             new_email: 'user.test.novo@library.app'
         }).set('Authorization', tokens.mock.results[0].value as string);
@@ -160,7 +160,7 @@ describe('User Component Tests', () => {
 
     test('updates a user password successfully and returns status code 204', async () => {
         const res = await request(app)
-        .put('/users/password')
+        .put('/api/v1/users/password')
         .send({
             new_password: 'strongpswd123NOVO'
         }).set('Authorization', tokens.mock.results[0].value as string);
@@ -177,7 +177,7 @@ describe('User Component Tests', () => {
 
     test('deletes a user successfully and returns status code 204', async () => {
         const res = await request(app)
-        .delete('/users')
+        .delete('/api/v1/users')
         .set('Authorization', tokens.mock.results[1].value as string);
 
         serverResponse({ body: res.body, statusCode: res.statusCode });

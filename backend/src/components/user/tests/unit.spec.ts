@@ -8,7 +8,7 @@ describe('User Validation Tests', () => {
     test('throws a BadRequestError when is missing data for logging a user', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'POST',
-            path: '/users/login',
+            path: '/api/v1/users/login',
             body: {
                 email: 'user.test@library.app'
             }
@@ -24,7 +24,7 @@ describe('User Validation Tests', () => {
     test('throws BadRequestError when is missing data for creating a user', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'POST',
-            path: '/users/register',
+            path: '/api/v1/users/register',
             body: {
                 name: 'user test',
                 password: 'strongpswd123'
@@ -41,7 +41,7 @@ describe('User Validation Tests', () => {
     test('throws BadRequestError when is missing data to update a user email', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'PUT',
-            path: '/users/email',
+            path: '/api/v1/users/email',
             body: {}
         }, {});
         let next = () => {};
@@ -55,7 +55,7 @@ describe('User Validation Tests', () => {
     test('throws BadRequestError when is missing data to update a user password', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'PUT',
-            path: '/users/password',
+            path: '/api/v1/users/password',
             body: {}
         }, {});
         let next = () => {};
