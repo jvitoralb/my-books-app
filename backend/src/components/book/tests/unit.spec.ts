@@ -1,7 +1,7 @@
 import { expect, test } from '@jest/globals';
 import httpMocks from 'node-mocks-http';
 import { BadRequestError } from '../../../lib/errors/custom';
-import BookMiddleware from '../api/middleware';
+import BookMiddleware from '../api/middlewares';
 
 
 describe('Books Components Validations', () => {
