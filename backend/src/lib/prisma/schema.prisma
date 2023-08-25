@@ -17,3 +17,12 @@ model User {
   updated_at  DateTime @updatedAt
   last_access DateTime? 
 }
+
+model Book {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  author      String?
+  about       String?
+  section     String?
+  created_at  DateTime @default(now())
+}
