@@ -10,11 +10,17 @@ export interface Book {
     created_at: Date;
 }
 
+type BookInfo = {
+    title: string;
+    author: string | null;
+    about: string | null;
+}
+
 interface Service {
-    saveBook(userId: string, bookInfo: Book): Promise<{ id: string; title: string }>;
+    saveBook(receivedData: Book): Promise<{ id: string; title: string }>;
     searchBooks(userId: string): Promise<Book[]>;
-    changeBookInfo(userId: string, receivedInfo: Book): Promise<void>;
-    changeBookSection(userId: string, id: string, section: string): Promise<void>;
+    changeBookInfo(receivedInfo: Book): Promise<void>;
+    changeBookSection(receivedData: Book): Promise<void>;
     destroyBook(userId: string, id: string): Promise<void>;
 }
 
@@ -43,13 +49,13 @@ abstract class BookData {
     protected set setUserId(userId: string) {
         this.user_id = userId;
     }
-    protected set setBookSection(section: string) {
-        this.section = section;
+    protected set setBookSection(section: string | null) {
+        this.section = section || '';
     }
-    protected set setBookInfo(receivedBook: Book) {
-        this.title = receivedBook.title || '';
-        this.author = receivedBook.author || '';
-        this.about = receivedBook.about || '';
+    protected set setBookInfo(info: BookInfo) {
+        this.title = info.title || '';
+        this.author = info.author || '';
+        this.about = info.about || '';
     }
     protected get getBook(): Book {
         return {
@@ -72,9 +78,13 @@ class BookService extends BookData implements Service {
         this.repository = new Repository();
     }
 
-    saveBook = async (userId: string, bookInfo: Book): Promise<{ id: string; title: string }> => {
-        this.setUserId = userId;
-        this.setBookInfo = bookInfo;
+    saveBook = async ({ user_id, ...rest }: Book): Promise<{ id: string; title: string }> => {
+        this.setUserId = user_id;
+        this.setBookInfo = {
+            title: rest.title,
+            author: rest.author,
+            about: rest.about
+        };
 
         const newBook = await this.repository.insert(this.getBook);
 
@@ -87,16 +97,20 @@ class BookService extends BookData implements Service {
         this.setUserId = userId;
         return await this.repository.findAll(this.getBook);
     }
-    changeBookInfo = async (userId: string, receivedInfo: Book): Promise<void> => {
-        this.setId = receivedInfo.id;
-        this.setUserId = userId;
-        this.setBookInfo = receivedInfo;
+    changeBookInfo = async ({ id, user_id, ...rest }: Book): Promise<void> => {
+        this.setId = id;
+        this.setUserId = user_id;
+        this.setBookInfo = {
+            title: rest.title,
+            author: rest.author,
+            about: rest.about
+        };
 
         await this.repository.updateInfo(this.getBook);
     }
-    changeBookSection = async (userId: string, id: string, section: string): Promise<void> => {
+    changeBookSection = async ({ user_id, id, section }: Book): Promise<void> => {
         this.setId = id;
-        this.setUserId = userId;
+        this.setUserId = user_id;
         this.setBookSection = section;
 
         await this.repository.updateSection(this.getBook);
