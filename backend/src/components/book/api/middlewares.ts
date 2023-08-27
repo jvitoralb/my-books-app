@@ -41,19 +41,6 @@ class CheckRequest {
             throw new BadRequestError('Missing required field');
         }
     }
-    protected checkForFields(): void {
-        let validFields = 0;
-
-        for(const prop in this.req.body) {
-            if (this.req.body[prop]) {
-                validFields++;
-            }
-        }
-
-        if (!validFields) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
 }
 
 interface Middleware {
