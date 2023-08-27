@@ -8,10 +8,12 @@ class Repository {
         this.prisma = new PrismaClient();
     }
 
-    insert = async ({ title }: Book): Promise<Book> => {
+    insert = async ({ title, author, about }: Book): Promise<Book> => {
         const createdBook = await this.prisma.book.create({
             data: {
-                title
+                title,
+                author,
+                about
             }
         });
 
