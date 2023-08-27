@@ -8,9 +8,10 @@ class Repository {
         this.prisma = new PrismaClient();
     }
 
-    insert = async ({ title, author, about }: Book): Promise<Book> => {
+    insert = async ({ user_id, title, author, about }: Book): Promise<Book> => {
         const createdBook = await this.prisma.book.create({
             data: {
+                user_id,
                 title,
                 author,
                 about
@@ -21,16 +22,21 @@ class Repository {
 
         return createdBook;
     }
-    findAll = async (): Promise<Book[]> => {
-        const foundBooks = await this.prisma.book.findMany();
+    findAll = async ({ user_id }: Book): Promise<Book[]> => {
+        const foundBooks = await this.prisma.book.findMany({
+            where: { user_id }
+        });
 
         this.prisma.$disconnect();
 
         return foundBooks;
     }
-    updateInfo = async ({ id, title, author, about }: Book): Promise<void> => {
+    updateInfo = async ({ id, user_id, title, author, about }: Book): Promise<void> => {
         await this.prisma.book.update({
-            where: { id },
+            where: {
+                id,
+                user_id
+            },
             data: {
                 title,
                 author,
@@ -40,17 +46,23 @@ class Repository {
 
         this.prisma.$disconnect();
     }
-    updateSection = async ({ id, section }: Book): Promise<void> => {
+    updateSection = async ({ id, user_id, section }: Book): Promise<void> => {
         await this.prisma.book.update({
-            where: { id },
+            where: {
+                id,
+                user_id
+            },
             data: { section }
         });
 
         this.prisma.$disconnect();
     }
-    delete = async ({ id }: Book): Promise<void> => {
+    delete = async ({ id, user_id }: Book): Promise<void> => {
         await this.prisma.book.delete({
-            where: { id }
+            where: {
+                id,
+                user_id
+            }
         });
 
         this.prisma.$disconnect();
