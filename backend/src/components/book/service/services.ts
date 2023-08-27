@@ -4,28 +4,19 @@ export interface Book {
     id: string;
     user_id: string;
     title: string;
-    author: string;
-    about: string;
-    section: string;
+    author: string | null;
+    about: string | null;
+    section: string | null;
     created_at: Date;
 }
 
 interface Service {
     saveBook(userId: string, bookInfo: Book): Promise<{ id: string; title: string }>;
-    searchBooks(userId: string): Promise<Books>;
+    searchBooks(userId: string): Promise<Book[]>;
     changeBookInfo(userId: string, receivedInfo: Book): Promise<void>;
     changeBookSection(userId: string, id: string, section: string): Promise<void>;
     destroyBook(userId: string, id: string): Promise<void>;
 }
-
-type Books = {
-    id: string;
-    title: string;
-    author: string | null;
-    about: string | null;
-    section: string | null;
-    created_at: Date;
-}[];
 
 abstract class BookData {
     private id: string;
@@ -92,7 +83,7 @@ class BookService extends BookData implements Service {
             title: newBook.title
         }
     }
-    searchBooks = async (userId: string): Promise<Books> => {
+    searchBooks = async (userId: string): Promise<Book[]> => {
         this.setUserId = userId;
         return await this.repository.findAll(this.getBook);
     }
