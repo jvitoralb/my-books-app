@@ -1,6 +1,6 @@
 import Repository from '../database/repository';
 
-interface Book {
+export interface Book {
     id: string;
     title: string;
     author: string;
@@ -26,8 +26,13 @@ abstract class BookData {
         this.created_at = new Date();
     }
 
-    protected set setTitle(title: string) {
-        this.title = title;
+    protected set setBookInfo(receivedBook: Book) {
+        this.title = receivedBook.title || '';
+        this.author = receivedBook.author || '';
+        this.about = receivedBook.about || '';
+    }
+    protected set setId(id: string) {
+        this.id = id;
     }
     protected get getBook(): Book {
         return {
@@ -42,7 +47,7 @@ abstract class BookData {
 }
 
 interface Service {
-    saveBook(bookTitle: string): Promise<{ id: string; title: string }>
+    saveBook(bookInfo: Book): Promise<{ id: string; title: string }>
 }
 
 class BookService extends BookData implements Service {
@@ -53,8 +58,8 @@ class BookService extends BookData implements Service {
         this.repository = new Repository();
     }
 
-    saveBook = async (bookTitle: string): Promise<{ id: string; title: string }> => {
-        this.setTitle = bookTitle;
+    saveBook = async (bookInfo: Book): Promise<{ id: string; title: string }> => {
+        this.setBookInfo = bookInfo;
 
         const newBook = await this.repository.insert(this.getBook);
 
