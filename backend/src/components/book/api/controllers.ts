@@ -20,11 +20,14 @@ class BookController implements Controller {
     create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const bearerToken = req.get('Authorization')!;
-            const authenticatedUser = new AuthToken().decode(bearerToken);
+            const userPayload = new AuthToken().decode(bearerToken);
             const bookInputs: Book = req.body;
 
-            const newBook = await this.service.saveBook(authenticatedUser.sub, bookInputs);
-    
+            const newBook = await this.service.saveBook({
+                ...bookInputs,
+                user_id: userPayload.sub
+            });
+
             res.status(201).json(newBook);
         } catch(err) {
             next(err);
@@ -33,9 +36,9 @@ class BookController implements Controller {
     read = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const bearerToken = req.get('Authorization')!;
-            const authenticatedUser = new AuthToken().decode(bearerToken);
+            const userPayload = new AuthToken().decode(bearerToken);
 
-            const books = await this.service.searchBooks(authenticatedUser.sub);
+            const books = await this.service.searchBooks(userPayload.sub);
     
             res.status(200).json(books);
         } catch(err) {
@@ -45,14 +48,15 @@ class BookController implements Controller {
     updateInfo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const bearerToken = req.get('Authorization')!;
-            const authenticatedUser = new AuthToken().decode(bearerToken);
+            const { sub } = new AuthToken().decode(bearerToken);
             const { id } = req.params;
-            const bookData: Book = {
+            const receivedData: Book = {
                 ...req.body,
-                id
-            };
+                id: id,
+                user_id: sub
+            }
 
-            await this.service.changeBookInfo(authenticatedUser.sub, bookData);
+            await this.service.changeBookInfo(receivedData);
 
             res.status(204).json();
         } catch(err) {
@@ -62,11 +66,15 @@ class BookController implements Controller {
     updateSection = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const bearerToken = req.get('Authorization')!;
-            const authenticatedUser = new AuthToken().decode(bearerToken);
+            const { sub } = new AuthToken().decode(bearerToken);
             const { id } = req.params;
-            const { section }: { section: string } = req.body;
-
-            await this.service.changeBookSection(authenticatedUser.sub, id, section);
+            const receivedData: Book = {
+                ...req.body,
+                id: id,
+                user_id: sub
+            };
+            
+            await this.service.changeBookSection(receivedData);
 
             res.status(204).json();
         } catch(err) {
@@ -76,10 +84,10 @@ class BookController implements Controller {
     delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const bearerToken = req.get('Authorization')!;
-            const authenticatedUser = new AuthToken().decode(bearerToken);
+            const { sub } = new AuthToken().decode(bearerToken);
             const { id } = req.params;
 
-            await this.service.destroyBook(authenticatedUser.sub, id);
+            await this.service.destroyBook(sub, id);
 
             res.status(204).json();
         } catch(err) {
