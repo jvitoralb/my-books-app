@@ -27,6 +27,20 @@ class CheckRequest {
             throw new BadRequestError('Missing params');
         }
     }
+    protected checkForInfo(): void {
+        const { title, author, about } = this.req.body;
+
+        if (!title && !author && !about ) {
+            throw new BadRequestError('Missing required field');
+        }
+    }
+    protected checkForSection(): void {
+        const { section } = this.req.body;
+
+        if (!section) {
+            throw new BadRequestError('Missing required field');
+        }
+    }
     protected checkForFields(): void {
         let validFields = 0;
 
@@ -44,7 +58,8 @@ class CheckRequest {
 
 interface Middleware {
     validateCreate(req: Request, res: Response, next: NextFunction): void;
-    validateUpdate(req: Request, res: Response, next: NextFunction): void;
+    validateUpdateInfo(req: Request, res: Response, next: NextFunction): void;
+    validateUpdateSection(req: Request, res: Response, next: NextFunction): void;
     validateDelete(req: Request, res: Response, next: NextFunction): void;
 }
 
@@ -57,17 +72,31 @@ class BookMiddleware extends CheckRequest implements Middleware {
         this.setRequest = req;
 
         this.checkForTitle();
+
+        next();
     }
     validateDelete = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForId();
+
+        next();
     }
-    validateUpdate = (req: Request, res: Response, next: NextFunction): void => {
+    validateUpdateInfo = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForId();
-        this.checkForFields();
+        this.checkForInfo();
+
+        next();
+    }
+    validateUpdateSection = (req: Request, res: Response, next: NextFunction): void => {
+        this.setRequest = req;
+
+        this.checkForId();
+        this.checkForSection();
+
+        next();
     }
 }
 
