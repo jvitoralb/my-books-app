@@ -26,6 +26,22 @@ describe('Book Component', () => {
         );
     });
 
+    test('answers with 400 when trying to create a book with no data', async () => {
+        const res = await request(app)
+        .post(`/api/v1/books`)
+        .send({})
+        .set('Accept', 'application/json');
+
+        serverResponse({ body: res.body, statusCode: res.statusCode });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: { error: 'Missing required field' },
+                statusCode: 400
+            })
+        );
+    });
+
     test('should answer with 204 when successfully updates info', async () => {
         const res = await request(app)
         .put(`/api/v1/books/${serverResponse.mock.results[0].value.body.id as string}/info`)
@@ -45,6 +61,15 @@ describe('Book Component', () => {
         }).set('Accept', 'application/json');
 
         expect(res.statusCode).toBe(204);
+    });
+
+    test('should answer with 400 when trying to update a book info with no data', async () => {
+        const res = await request(app)
+        .put(`/api/v1/books/${serverResponse.mock.results[0].value.body.id as string}/info`)
+        .send({})
+        .set('Accept', 'application/json');
+
+        expect(res.statusCode).toBe(400);
     });
 
     test('should answer with all created books', async () => {
