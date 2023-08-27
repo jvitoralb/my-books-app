@@ -17,11 +17,15 @@ class BookController implements Controller {
     }
 
     create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const bookInputs: Book = req.body;
+        try {
+            const bookInputs: Book = req.body;
 
-        const newBook = await this.service.saveBook(bookInputs);
-
-        res.status(201).json(newBook);
+            const newBook = await this.service.saveBook(bookInputs);
+    
+            res.status(201).json(newBook);
+        } catch(err) {
+            next(err);
+        }
     }
     read = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
