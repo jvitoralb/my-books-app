@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import BookService from '../service/services';
+import BookService, { Book } from '../service/services';
 
 interface BookInputs {
     title: string;
@@ -20,9 +20,9 @@ class BookController implements Controller {
     }
 
     create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const { title }: BookInputs = req.body;
+        const bookInputs: Book = req.body;
 
-        const newBook = await this.service.saveBook(title);
+        const newBook = await this.service.saveBook(bookInputs);
 
         res.status(201).json(newBook);
     }
