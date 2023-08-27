@@ -1,13 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import BookService, { Book } from '../service/services';
 
-interface BookInputs {
-    title: string;
-    author?: string;
-    about?: string;
-    section?: string;
-}
-
 interface Controller {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;
     read(req: Request, res: Response, next: NextFunction): Promise<void>;
