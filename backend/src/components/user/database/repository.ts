@@ -1,5 +1,5 @@
-import { PrismaClient, Prisma } from '@prisma/client'
-import { User, FoundUser } from '../service/services'
+import { PrismaClient, Prisma, User } from '@prisma/client'
+import { FoundUser } from '../service/services'
 import { BadRequestError } from '../../../lib/errors/custom';
 
 class Repository {
@@ -9,7 +9,7 @@ class Repository {
         this.prisma = new PrismaClient();
     }
 
-    insert = async ({ email, name, pswd_hash, pswd_salt }: User): Promise<User | undefined> => {
+    insert = async ({ email, name, pswd_hash, pswd_salt }: User): Promise<User> => {
         try {
             return await this.prisma.user.create({
                 data: {
@@ -40,7 +40,7 @@ class Repository {
         }
         return doc;
     }
-    find = async ({ id, email }: User): Promise<FoundUser | null> => {
+    find = async ({ id, email }: User): Promise<FoundUser> => {
         const userFound = await this.prisma.user.findUnique({
             where: {
                 id,
