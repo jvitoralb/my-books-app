@@ -22,7 +22,11 @@ class Repository {
         return createdBook;
     }
     findAll = async (): Promise<Book[]> => {
-        return await this.prisma.book.findMany();
+        const foundBooks = await this.prisma.book.findMany();
+
+        this.prisma.$disconnect();
+
+        return foundBooks;
     }
     updateInfo = async ({ id, title, author, about }: Book): Promise<void> => {
         await this.prisma.book.update({
