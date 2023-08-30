@@ -5,7 +5,7 @@ import UserMiddleware from './middlewares';
 
 const userRouter = Router();
 
-userRouter.post('/login', new UserMiddleware().validateReadCredentials, new UserController().readCredentials);
+userRouter.post('/login', new UserMiddleware().validateReadCredentials, new UserController().readByCredentials);
 userRouter.post('/register', new UserMiddleware().validateCreate, new UserController().create);
 
 userRouter.get('/', new UserController().read);
