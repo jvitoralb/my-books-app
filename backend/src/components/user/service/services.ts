@@ -3,26 +3,33 @@ import PasswordsHandler from '../../../lib/auth/password';
 import AuthToken from '../../../lib/auth/jwt';
 import { BadRequestError } from '../../../lib/errors/custom';
 
-interface ReturnData {
+export type RegisterUserData = {
+    name: string;
+    email: string;
+    password: string;
+}
+export type LoginCredentials = {
+    email: string;
+    password: string;
+}
+export type UserIdentification = {
+    id: string;
+    email: string;
+}
+type UserAccessData = {
     token: string;
     expires: string;
 }
 
 interface Service {
-    registerUser(password: string): Promise<ReturnData>;
-    logUser(password: string): Promise<ReturnData>;
-    searchUser(id: string): Promise<FoundUser>;
-    changeEmail(id: string): Promise<ReturnData>;
-    changePassword(data: { id: string, password: string }): Promise<void>;
-    destroyUser(id: string): Promise<void>;
+    registerUser(registerData: RegisterUserData): Promise<UserAccessData>;
+    logUser(userCredentials: LoginCredentials): Promise<UserAccessData>;
+    searchUser(userIds: UserIdentification): Promise<{ name: string; email: string; }>;
+    changeEmail(userIds: UserIdentification): Promise<UserAccessData>;
+    changePassword(id: string, password: string): Promise<void>;
+    destroyUser(userIds: UserIdentification): Promise<void>;
 }
-
-export interface FoundUser {
-    name: string;
-    email: string;
-}
-
-export interface User {
+interface User {
     id: string;
     email: string;
     name: string;
@@ -32,8 +39,6 @@ export interface User {
     updated_at: Date;
     last_access: Date | null;
 }
-
-
 interface UserAccessor {
     getUser: User;
 }
@@ -73,11 +78,6 @@ class UserData implements UserAccessor {
         this.email = email;
     }
 
-    public set setUserNameAndEmail(data: { name: string; email: string; }) {
-        this.setName = data.name;
-        this.setEmail = data.email;
-    }
-
     public get getUser(): User {
         return {
             id: this.id,
@@ -100,62 +100,76 @@ class UserService extends UserData implements Service {
         this.repository = new Repository();
     }
 
-    registerUser = async (password: string): Promise<ReturnData> => {
+    registerUser = async ({ name, email, password }: RegisterUserData): Promise<UserAccessData> => {
         const pswdHashSalt = new PasswordsHandler(password).generate();
 
         this.setPswd = pswdHashSalt;
+        this.setEmail = email;
+        this.setName = name;
 
         const insertedDoc = await this.repository.insert(this.getUser);
-        const tokenInfo = new AuthToken().issue({ id: String(insertedDoc!.id), email: this.getUser.email });
+        const tokenInfo = new AuthToken().issue({
+            id: String(insertedDoc.id),
+            email: this.getUser.email
+        })!;
 
         return {
-            token: tokenInfo!.token,
-            expires: tokenInfo!.expires
+            token: tokenInfo.token,
+            expires: tokenInfo.expires
         };
     }
-    logUser = async (password: string): Promise<ReturnData> => {
+    logUser = async ({ email, password }: LoginCredentials): Promise<UserAccessData> => {
+        this.setEmail = email;
+
         const userDoc = await this.repository.findDocument(this.getUser);
-        const validPswd = new PasswordsHandler(password, userDoc!.pswd_hash, userDoc!.pswd_salt).validate();
+        const validPswd = new PasswordsHandler(password, userDoc.pswd_hash, userDoc.pswd_salt).validate();
 
         if (!validPswd) {
             throw new BadRequestError('Invalid password');
         }
 
-        const tokenInfo = new AuthToken().issue({ id: userDoc!.id, email: userDoc!.email });
+        const tokenInfo = new AuthToken().issue({
+            id: userDoc.id,
+            email: userDoc.email
+        })!;
 
         return {
-            token: tokenInfo!.token,
-            expires: tokenInfo!.expires
+            token: tokenInfo.token,
+            expires: tokenInfo.expires
         };
     }
-    searchUser = async (id: string): Promise<FoundUser> => {
+    searchUser = async ({ id, email }: UserIdentification): Promise<{ name: string; email: string; }> => {
         this.setId = id;
+        this.setEmail = email;
 
-        const userFound = await this.repository.find(this.getUser);
-
-        return userFound!;
+        return await this.repository.find(this.getUser);
     }
-    changeEmail = async (id: string): Promise<ReturnData> => {
+    changeEmail = async ({ id, email }: UserIdentification): Promise<UserAccessData> => {
         this.setId = id;
+        this.setEmail = email;
 
         const updatedDoc = await this.repository.updateEmail(this.getUser);
-        const tokenInfo = new AuthToken().issue({ id: updatedDoc.id, email: updatedDoc.email });
+        const tokenInfo = new AuthToken().issue({
+            id: updatedDoc.id,
+            email: updatedDoc.email
+        })!;
 
         return {
-            token: tokenInfo!.token,
-            expires: tokenInfo!.expires
+            token: tokenInfo.token,
+            expires: tokenInfo.expires
         };
     }
-    changePassword = async (data: { id: string; password: string; }): Promise<void> => {
-        const pswdHashSalt = new PasswordsHandler(data.password).generate();
+    changePassword = async (id: string, password: string): Promise<void> => {
+        const newPswdHashSalt = new PasswordsHandler(password).generate();
 
-        this.setId = data.id;
-        this.setPswd = pswdHashSalt;
+        this.setId = id;
+        this.setPswd = newPswdHashSalt;
 
         await this.repository.updatePswd(this.getUser);
     }
-    destroyUser = async (id: string): Promise<void> => {
+    destroyUser = async ({ id, email }: UserIdentification): Promise<void> => {
         this.setId = id;
+        this.setEmail = email;
 
         await this.repository.delete(this.getUser);
     }

@@ -1,5 +1,4 @@
-import { PrismaClient, Prisma, User } from '@prisma/client'
-import { FoundUser } from '../service/services'
+import { PrismaClient, Prisma, User } from '@prisma/client';
 import { BadRequestError } from '../../../lib/errors/custom';
 
 class Repository {
@@ -30,7 +29,7 @@ class Repository {
             this.prisma.$disconnect();
         }
     }
-    findDocument = async ({ email }: User): Promise<User | undefined> => {
+    findDocument = async ({ email }: User): Promise<User> => {
         const doc = await this.prisma.user.findUnique({ where: { email } });
 
         this.prisma.$disconnect();
@@ -40,7 +39,7 @@ class Repository {
         }
         return doc;
     }
-    find = async ({ id, email }: User): Promise<FoundUser> => {
+    find = async ({ id, email }: User): Promise<{ email: string; name: string; }> => {
         const userFound = await this.prisma.user.findUnique({
             where: {
                 id,
