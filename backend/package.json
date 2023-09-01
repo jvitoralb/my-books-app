@@ -14,7 +14,7 @@
   "author": "jvitoralb",
   "license": "ISC",
   "prisma": {
-    "schema": "src/lib/prisma/schema.prisma"
+    "schema": "prisma/schema.prisma"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
