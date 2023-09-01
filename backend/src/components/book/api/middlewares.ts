@@ -13,13 +13,6 @@ class CheckRequest {
         this.req = req;
     }
 
-    protected checkForTitle(): void {
-        const { title } = this.req.body;
-
-        if (!title) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
     protected checkForId(): void {
         const { id } = this.req.params;
 
@@ -27,17 +20,31 @@ class CheckRequest {
             throw new BadRequestError('Missing params');
         }
     }
-    protected checkForInfo(): void {
-        const { title, author, about } = this.req.body;
+    protected checkForTitle(): void {
+        const { title } = this.req.body;
 
-        if (!title && !author && !about ) {
+        if (!title) {
+            throw new BadRequestError('Missing required field');
+        }
+    }
+    protected checkForAuthor(): void {
+        const { author } = this.req.body;
+
+        if (author === '' || author === undefined) {
+            throw new BadRequestError('Missing required field');
+        }
+    }
+    protected checkForAbout(): void {
+        const { about } = this.req.body;
+
+        if (about === '' || about === undefined) {
             throw new BadRequestError('Missing required field');
         }
     }
     protected checkForSection(): void {
         const { section } = this.req.body;
 
-        if (!section) {
+        if (section === '' || section === undefined) {
             throw new BadRequestError('Missing required field');
         }
     }
@@ -73,7 +80,9 @@ class BookMiddleware extends CheckRequest implements Middleware {
         this.setRequest = req;
 
         this.checkForId();
-        this.checkForInfo();
+        this.checkForTitle();
+        this.checkForAuthor();
+        this.checkForAbout();
 
         next();
     }
