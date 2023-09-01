@@ -1,6 +1,19 @@
 import Repository from '../database/repository';
 
-export interface Book {
+export type BookInfo = {
+    title: string;
+    author: string | null;
+    about: string | null;
+}
+export type BookSection = {
+    section: string | null;
+}
+type NewBook = {
+    id: string;
+    title: string;
+}
+
+interface Book {
     id: string;
     user_id: string;
     title: string;
@@ -9,19 +22,12 @@ export interface Book {
     section: string | null;
     created_at: Date;
 }
-
-type BookInfo = {
-    title: string;
-    author: string | null;
-    about: string | null;
-}
-
 interface Service {
-    saveBook(receivedData: Book): Promise<{ id: string; title: string }>;
+    saveBook(userId: string, receivedInfo: BookInfo): Promise<NewBook>;
     searchBooks(userId: string): Promise<Book[]>;
-    changeBookInfo(receivedInfo: Book): Promise<void>;
-    changeBookSection(receivedData: Book): Promise<void>;
-    destroyBook(userId: string, id: string): Promise<void>;
+    changeBookInfo(bookId: string, userId: string, newInfo: BookInfo): Promise<void>;
+    changeBookSection(bookId: string, userId: string, newSec: BookSection): Promise<void>;
+    destroyBook(bookId: string, userId: string): Promise<void>;
 }
 
 abstract class BookData {
@@ -49,14 +55,15 @@ abstract class BookData {
     protected set setUserId(userId: string) {
         this.user_id = userId;
     }
-    protected set setBookSection(section: string | null) {
-        this.section = section || '';
+    protected set setBookSection(sec: BookSection) {
+        this.section = sec.section || '';
     }
     protected set setBookInfo(info: BookInfo) {
         this.title = info.title || '';
         this.author = info.author || '';
         this.about = info.about || '';
     }
+    
     protected get getBook(): Book {
         return {
             id: this.id,
@@ -78,13 +85,9 @@ class BookService extends BookData implements Service {
         this.repository = new Repository();
     }
 
-    saveBook = async ({ user_id, ...rest }: Book): Promise<{ id: string; title: string }> => {
-        this.setUserId = user_id;
-        this.setBookInfo = {
-            title: rest.title,
-            author: rest.author,
-            about: rest.about
-        };
+    saveBook = async (userId: string, receivedInfo: BookInfo): Promise<NewBook> => {
+        this.setUserId = userId;
+        this.setBookInfo = receivedInfo;
 
         const newBook = await this.repository.insert(this.getBook);
 
@@ -97,26 +100,22 @@ class BookService extends BookData implements Service {
         this.setUserId = userId;
         return await this.repository.findAll(this.getBook);
     }
-    changeBookInfo = async ({ id, user_id, ...rest }: Book): Promise<void> => {
-        this.setId = id;
-        this.setUserId = user_id;
-        this.setBookInfo = {
-            title: rest.title,
-            author: rest.author,
-            about: rest.about
-        };
+    changeBookInfo = async (bookId: string, userId: string, newInfo: BookInfo): Promise<void> => {
+        this.setId = bookId;
+        this.setUserId = userId;
+        this.setBookInfo = newInfo;
 
         await this.repository.updateInfo(this.getBook);
     }
-    changeBookSection = async ({ user_id, id, section }: Book): Promise<void> => {
-        this.setId = id;
-        this.setUserId = user_id;
-        this.setBookSection = section;
+    changeBookSection = async (bookId: string, userId: string, newSec: BookSection): Promise<void> => {
+        this.setId = bookId;
+        this.setUserId = userId;
+        this.setBookSection = newSec;
 
         await this.repository.updateSection(this.getBook);
     }
-    destroyBook = async (userId: string, id: string): Promise<void> => {
-        this.setId = id;
+    destroyBook = async (bookId: string, userId: string): Promise<void> => {
+        this.setId = bookId;
         this.setUserId = userId;
 
         await this.repository.delete(this.getBook);

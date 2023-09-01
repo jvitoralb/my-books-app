@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import BookService, { Book } from '../service/services';
+import BookService, { BookInfo, BookSection } from '../service/services';
 import AuthToken from '../../../lib/auth/jwt';
 
 interface Controller {
@@ -21,12 +21,9 @@ class BookController implements Controller {
         try {
             const bearerToken = req.get('Authorization')!;
             const userPayload = new AuthToken().decode(bearerToken);
-            const bookInputs: Book = req.body;
+            const bookInputs: BookInfo = req.body;
 
-            const newBook = await this.service.saveBook({
-                ...bookInputs,
-                user_id: userPayload.sub
-            });
+            const newBook = await this.service.saveBook(userPayload.sub, bookInputs);
 
             res.status(201).json(newBook);
         } catch(err) {
@@ -50,13 +47,9 @@ class BookController implements Controller {
             const bearerToken = req.get('Authorization')!;
             const { sub } = new AuthToken().decode(bearerToken);
             const { id } = req.params;
-            const receivedData: Book = {
-                ...req.body,
-                id: id,
-                user_id: sub
-            }
+            const newInfo: BookInfo = req.body;
 
-            await this.service.changeBookInfo(receivedData);
+            await this.service.changeBookInfo(id, sub, newInfo);
 
             res.status(204).json();
         } catch(err) {
@@ -68,13 +61,9 @@ class BookController implements Controller {
             const bearerToken = req.get('Authorization')!;
             const { sub } = new AuthToken().decode(bearerToken);
             const { id } = req.params;
-            const receivedData: Book = {
-                ...req.body,
-                id: id,
-                user_id: sub
-            };
+            const newSection: BookSection = req.body;
             
-            await this.service.changeBookSection(receivedData);
+            await this.service.changeBookSection(id, sub, newSection);
 
             res.status(204).json();
         } catch(err) {
@@ -87,7 +76,7 @@ class BookController implements Controller {
             const { sub } = new AuthToken().decode(bearerToken);
             const { id } = req.params;
 
-            await this.service.destroyBook(sub, id);
+            await this.service.destroyBook(id, sub);
 
             res.status(204).json();
         } catch(err) {
