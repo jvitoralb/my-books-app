@@ -34,9 +34,9 @@ abstract class BookData {
     private id: string;
     private user_id: string;
     private title: string;
-    private author: string;
-    private about: string;
-    private section: string;
+    private author: string | null;
+    private about: string | null;
+    private section: string | null;
     private created_at: Date;
 
     constructor() {
@@ -56,12 +56,12 @@ abstract class BookData {
         this.user_id = userId;
     }
     protected set setBookSection(sec: BookSection) {
-        this.section = sec.section || '';
+        this.section = sec.section || null;
     }
     protected set setBookInfo(info: BookInfo) {
         this.title = info.title || '';
-        this.author = info.author || '';
-        this.about = info.about || '';
+        this.author = info.author || null;
+        this.about = info.about || null;
     }
     
     protected get getBook(): Book {
@@ -98,6 +98,7 @@ class BookService extends BookData implements Service {
     }
     searchBooks = async (userId: string): Promise<Book[]> => {
         this.setUserId = userId;
+
         return await this.repository.findAll(this.getBook);
     }
     changeBookInfo = async (bookId: string, userId: string, newInfo: BookInfo): Promise<void> => {
