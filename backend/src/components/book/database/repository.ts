@@ -1,4 +1,5 @@
-import { PrismaClient, Book } from '@prisma/client';
+import { PrismaClient, Prisma, Book } from '@prisma/client';
+import { BadRequestError } from '../../../lib/errors/custom';
 
 
 class Repository {
@@ -58,14 +59,24 @@ class Repository {
         this.prisma.$disconnect();
     }
     delete = async ({ id, user_id }: Book): Promise<void> => {
-        await this.prisma.book.delete({
-            where: {
-                id,
-                user_id
+        try {
+            await this.prisma.book.delete({
+                where: {
+                    id,
+                    user_id
+                }
+            });
+        } catch(err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError) {
+                if (err.code === 'P2025') {
+                    throw new BadRequestError('Book does not exists');
+                }
             }
-        });
+            throw err;
+        } finally {
+            this.prisma.$disconnect();
+        }
 
-        this.prisma.$disconnect();
     }
 }
 
