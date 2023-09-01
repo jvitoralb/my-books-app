@@ -5,26 +5,22 @@ import BookMiddleware from '../api/middlewares';
 
 
 describe('Books Components Validations', () => {
-    test('throws BadRequestError when trying to create wihtout title in request body', () => {
+    test('throws BadRequestError when trying to create book with undefined title', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'POST',
             path: '/api/v1/books',
-            body: {
-                title: ''
-            }
+            body: {}
         }, {});
         let next = () => {};
 
         expect(() => new BookMiddleware().validateCreate(req, res, next)).toThrow(new BadRequestError('Missing required field'));
     });
 
-    test('throws BadRequestError when trying to update info with no data', () => {
+    test('throws BadRequestError when trying to update info with empty strings', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'PUT',
             path: '/api/v1/books',
-            params: {
-                id: 'book-id'
-            },
+            params: { id: 'book-id' },
             body: {
                 title: '',
                 about: '',
@@ -36,16 +32,40 @@ describe('Books Components Validations', () => {
         expect(() => new BookMiddleware().validateUpdateInfo(req, res, next)).toThrow(new BadRequestError('Missing required field'));
     });
 
-    test('throws BadRequestError when trying to update section with no data', () => {
+    test('throws BadRequestError when trying to update info with undefined fields', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'PUT',
             path: '/api/v1/books',
-            params: {
-                id: 'book-id'
-            },
+            params: { id: 'book-id' },
+            body: { title: 'valid title' }
+        }, {});
+        let next = () => {};
+
+        expect(() => new BookMiddleware().validateUpdateInfo(req, res, next)).toThrow(new BadRequestError('Missing required field'));
+    });
+
+    test('returns undefined when updating info with null fields and valid title', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'PUT',
+            path: '/api/v1/books',
+            params: { id: 'book-id' },
             body: {
-                section: ''
+                title: 'valid title',
+                about: null,
+                author: null
             }
+        }, {});
+        let next = () => {};
+
+        expect(new BookMiddleware().validateUpdateInfo(req, res, next)).toBe(undefined);
+    });
+
+    test('throws BadRequestError when trying to update section with empty string', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'PUT',
+            path: '/api/v1/books',
+            params: { id: 'book-id' },
+            body: { section: '' }
         }, {});
         let next = () => {};
 
@@ -56,9 +76,7 @@ describe('Books Components Validations', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'DELETE',
             path: '/api/v1/books',
-            params: {
-                id: ''
-            }
+            params: { id: '' }
         }, {});
         let next = () => {};
 
