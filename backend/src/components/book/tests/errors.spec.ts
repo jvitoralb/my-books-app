@@ -18,7 +18,9 @@ describe('Book Component Error Handling Tests', () => {
         userToken(res.body.token)
     });
 
-    test('answers with 400 when trying to create a book with no title', async () => {
+    afterEach(() => serverResponse.mockClear());
+
+    test('answers with 400 when trying to create a book with undefined title', async () => {
         const res = await request(app)
         .post(`/api/v1/books`)
         .send({})
@@ -38,10 +40,10 @@ describe('Book Component Error Handling Tests', () => {
         );
     });
 
-    test('should answer with 400 when trying to update a book info with no data', async () => {
+    test('should answer with 400 when updating a book info with undefined fields and a valid title', async () => {
         const res = await request(app)
         .put(`/api/v1/books/book-uuid/info`)
-        .send({})
+        .send({ title: 'valid title' })
         .set('Authorization', userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
@@ -58,10 +60,33 @@ describe('Book Component Error Handling Tests', () => {
         );
     });
 
-    test('should answer with 400 when trying to update a book info with no data', async () => {
+    test('should answer with 400 when updating a book info with an undefined field and a valid title', async () => {
+        const res = await request(app)
+        .put(`/api/v1/books/book-uuid/info`)
+        .send({
+            title: 'valid title',
+            about: null
+        })
+        .set('Authorization', userToken.mock.results[0].value)
+        .set('Accept', 'application/json');
+
+        serverResponse({
+            body: res.body,
+            statusCode: res.statusCode
+        });
+
+        expect(serverResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                body: { error: 'Missing required field' },
+                statusCode: 400
+            })
+        );
+    });
+
+    test('should answer with 400 when trying to update a section with empty string', async () => {
         const res = await request(app)
         .put(`/api/v1/books/book-uuid/section`)
-        .send({})
+        .send({ section: '' })
         .set('Authorization', userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
