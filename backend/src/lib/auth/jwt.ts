@@ -11,7 +11,6 @@ interface Data {
 interface Payload {
     sub: string;
     email: string;
-    iat: number;
 }
 interface Token {
     token: string;
@@ -37,8 +36,7 @@ class AuthToken implements Authentication {
     public issue(data: Data): Token | undefined {
         const payload: Payload = {
             sub: data.id,
-            email: data.email,
-            iat: Date.now()
+            email: data.email
         }
     
         try {
