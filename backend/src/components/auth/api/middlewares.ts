@@ -23,8 +23,8 @@ class Authenticate {
 
         const authorized = new AuthToken().validate(authToken);
 
-        if (!authorized) {
-            throw new AuthenticationError('Not Authorized', 'FORBIDDEN', 403);
+        if (!authorized.valid) {
+            throw new AuthenticationError('Not Authorized', 'FORBIDDEN', 403, authorized.description);
         }
     }
 }
