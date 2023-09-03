@@ -16,9 +16,13 @@ interface Token {
     token: string;
     expires: string;
 }
+interface Validation {
+    valid: boolean;
+    description?: string;
+}
 interface Authentication {
     issue(data: Data): Token | undefined;
-    validate(authorizationHeader: string): boolean;
+    validate(authorizationHeader: string): Validation;
     decode(bearerToken: string): jwt.JwtPayload | string;
 }
 
@@ -30,7 +34,8 @@ class AuthToken implements Authentication {
     constructor() {
         this.PRIV_KEY = String(process.env.PRIVATE_KEY);
         this.PUB_KEY = fs.readFileSync(join(process.cwd(), '/pub-key.pem'), 'utf8');
-        this.EXPIRES = '7d';
+        this.EXPIRES = '60s';
+        // this.EXPIRES = '7d';
     }
 
     public issue(data: Data): Token | undefined {
@@ -78,19 +83,23 @@ class AuthToken implements Authentication {
 
         return decoded as Payload;
     }
-    public validate(authorizationHeader: string): boolean {
+    public validate(authorizationHeader: string): Validation {
         const [ bearer, token ] = authorizationHeader.split(' ');
 
         if (bearer === 'Bearer' && token.match(/\S+\.\S+\.\S+/)) {
             try {
                 jwt.verify(token, this.PUB_KEY, { algorithms: ['RS256'] });
-                return true;
+                return { valid: true };
             } catch(err) {
-                return false;
+                let validation: Validation = { valid: false }
+
+                if (err instanceof jwt.TokenExpiredError) {
+                    validation.description = 'Token expired';
+                }
+                return validation;
             }
         }
-    
-        return false;
+        return { valid: false };
     }
 }
 
