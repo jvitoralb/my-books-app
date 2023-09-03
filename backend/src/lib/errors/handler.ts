@@ -10,7 +10,10 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     }
 
     res.status(err.statusCode).json({
-        error: err.message
+        error: err.description ? {
+            message: err.message,
+            description: err.description
+        } : err.message
     });
 };
 
