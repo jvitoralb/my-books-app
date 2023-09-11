@@ -34,8 +34,8 @@ class AuthToken implements Authentication {
     constructor() {
         this.PRIV_KEY = String(process.env.PRIVATE_KEY);
         this.PUB_KEY = fs.readFileSync(join(process.cwd(), '/pub-key.pem'), 'utf8');
-        this.EXPIRES = '60s';
-        // this.EXPIRES = '7d';
+        // this.EXPIRES = '60s';
+        this.EXPIRES = '7d';
     }
 
     public issue(data: Data): Token | undefined {
