@@ -6,8 +6,12 @@ import {
   Route,
   RouterProvider
 } from 'react-router-dom';
+import {
+  QueryClientProvider,
+  QueryClient
+} from '@tanstack/react-query';
 import App from './App.tsx';
-import Home from './pages/Home.tsx';
+import Home, { homeLoader } from './pages/Home.tsx';
 import Welcome from './pages/Welcome.tsx';
 import LogIn from './pages/Login.tsx';
 import SignUp from './pages/Signup.tsx';
@@ -17,7 +21,7 @@ import './styles/index.css';
 const browserAppRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route index element={<Home />} />
+      <Route index element={<Home />} loader={homeLoader} />
       <Route path='/welcome' element={<Welcome />} />
       <Route path='/login' element={<LogIn />} />
       <Route path='/singup' element={<SignUp />} />
@@ -25,10 +29,14 @@ const browserAppRouter = createBrowserRouter(
   )
 );
 
+const queryClient = new QueryClient();
+
 ReactDOM
 .createRoot(document.getElementById('root')!)
 .render(
   <React.StrictMode>
-    <RouterProvider router={browserAppRouter}/>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={browserAppRouter}/>
+    </QueryClientProvider>
   </React.StrictMode>
 );
