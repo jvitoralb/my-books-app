@@ -7,7 +7,7 @@ type LoginQueryKey = {
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:3000/api/v1/',
-    timeout: 1000,
+    timeout: 5000,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -21,5 +21,17 @@ export const logUser = async ({ queryKey }: LoginQueryKey): Promise<UserAuth> =>
 
 export const getUser = async (authorization: string): Promise<User> => {
     const { data } = await axiosInstance.get('/users', { headers: { 'Authorization': authorization } });
+    return data;
+}
+
+type SignupUserData = {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export const createUser = async (userData: SignupUserData) => {
+    console.log('inside createUser -> ', userData);
+    const { data } = await axiosInstance.post('/users/register', userData);
     return data;
 }
