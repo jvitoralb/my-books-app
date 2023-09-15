@@ -24,7 +24,7 @@ const browserAppRouter = createBrowserRouter(
       <Route index element={<Home />} loader={homeLoader} />
       <Route path='/welcome' element={<Welcome />} />
       <Route path='/login' element={<LogIn />} />
-      <Route path='/singup' element={<SignUp />} />
+      <Route path='/signup' element={<SignUp />} />
     </Route>
   )
 );
