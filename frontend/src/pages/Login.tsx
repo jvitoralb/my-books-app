@@ -1,15 +1,12 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
+import useLoginCredentials from '../hooks/useLoginCredentials';
 import useLoginQuery from '../hooks/useLoginQuery';
-import { LoginCredentials } from '../types';
 import useAuth from '../hooks/useAuth';
 
 
 function LogIn() {
-  const [ credentials, setCredentials ] = useState<LoginCredentials>({
-    email: '',
-    password: ''
-  });
+  const { credentials, setCredentials } = useLoginCredentials();
 
   const {
     data,
@@ -24,10 +21,7 @@ function LogIn() {
   });
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCredentials((prevCred) => ({
-      ...prevCred,
-      [e.target.name]: e.target.value
-    }));
+    setCredentials(e.target.name, e.target.value);
   }
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
