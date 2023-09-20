@@ -1,9 +1,20 @@
 import { ChangeEvent, FormEvent } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, redirect } from 'react-router-dom';
 import useLoginCredentials from '../hooks/useLoginCredentials';
 import useLoginQuery from '../hooks/useLoginQuery';
 import useAuth from '../hooks/useAuth';
+import { getAuthToken } from '../utils/auth';
 
+
+export const loginLoader = () => { // tenho que tirar isso daqui
+  const authData = getAuthToken();
+
+  if (authData.token) {
+    return redirect('/');
+  }
+
+  return null;
+}
 
 function LogIn() {
   const { credentials, setCredentials } = useLoginCredentials();
