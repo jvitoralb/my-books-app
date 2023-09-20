@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { UserAuth } from '../types';
-import { getAuthToken, setAuthToken } from '../utils/auth';
+import { getAuthData, setAuthData } from '../utils/auth';
 
 type AuthHookOptions = {
     data?: UserAuth;
@@ -20,7 +20,7 @@ const useAuth = ({ data, operation }: AuthHookOptions): AuthState => {
 
     if (operation === 'SET') {
         if (!auth.isAuth && data) {
-            setAuthToken(data);
+            setAuthData(data);
         
             setAuth((prev) => ({
                 ...prev,
@@ -28,7 +28,7 @@ const useAuth = ({ data, operation }: AuthHookOptions): AuthState => {
             }));
         }
     } else if (operation === 'GET') {
-        let authData = getAuthToken();
+        let authData = getAuthData();
         
         if (auth.token === '' && authData.token !== '') {
             setAuth((prevAuth) => ({
