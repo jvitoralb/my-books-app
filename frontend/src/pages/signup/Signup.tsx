@@ -1,7 +1,7 @@
 import { FormEvent, ChangeEvent } from 'react';
-import useSignupData from '../hooks/useSignupData';
-import useSignupMutation from '../hooks/useSignupMutation';
-import useAuth from '../hooks/useAuth';
+import useSignupData from '../../hooks/useSignupData';
+import useSignupMutation from '../../hooks/useSignupMutation';
+import useAuth from '../../hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
 
