@@ -1,11 +1,23 @@
-const AUTH_KEY = 'user-token';
+import { UserAuth } from '../types';
 
-export const setAuthToken = (token: string): void => {
-    localStorage.setItem(AUTH_KEY, token);
+
+const AUTH_KEY = 'u-auth';
+
+export const setAuthToken = (authData: UserAuth): void => {
+    localStorage.setItem(AUTH_KEY, JSON.stringify(authData));
 }
 
-export const getAuthToken = (): string | null => {
-    return localStorage.getItem(AUTH_KEY);
+export const getAuthToken = (): UserAuth => {
+    let storageItem = localStorage.getItem(AUTH_KEY);
+
+    if (typeof storageItem === 'string') {
+        let authData: UserAuth = JSON.parse(storageItem);
+        return authData;
+    }
+    return {
+        token: '',
+        expires: ''
+    };
 }
 
 export const delAuthToken = (): void => {
