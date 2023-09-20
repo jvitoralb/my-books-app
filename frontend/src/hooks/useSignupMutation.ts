@@ -3,14 +3,13 @@ import { createUser } from '../api/api';
 
 
 const useSignupMutation = () => {
-    const { data, mutate, mutateAsync } = useMutation({
+    const { data, mutate } = useMutation({
         mutationFn: createUser
     });
-// tem que ver a diferença entre mutate e mutateasync
+
     return {
         data,
-        mutate,
-        mutateAsync
+        mutate
     }
 }
 
