@@ -26,9 +26,21 @@ function LogIn() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // preciso criar o logIn request ErrorHandler
-    // validar se os dados podem ser enviados para o server
     refetch();
+  }
+
+  const handleError = () => {
+    let errorRes = error?.response;
+
+    if (errorRes?.status === 400) {
+      let dataError = errorRes?.data.error;
+
+      if (dataError === 'User does not exists') {
+        dataError = dataError.replace('User', 'Email');
+      }
+      return <p>{dataError}!</p>;
+    }
+    return <p>Something went wrong. Please, try again later!</p>;
   }
 
   return (
@@ -40,16 +52,19 @@ function LogIn() {
       <form onSubmit={handleFormSubmit}>
         <label>
           Email
-          <input id="email" name="email" type="email" onChange={handleInputsChange} />
+          <input id="email" name="email" type="email" onChange={handleInputsChange} required />
         </label>
 
         <label>
           Password
-          <input id="password" name="password" type="password" onChange={handleInputsChange} />
+          <input id="password" name="password" type="password" onChange={handleInputsChange} required />
         </label>
 
-        <button id="login-submit">Submit</button>
+        <button id="login-submit">Login</button>
       </form>
+      {
+        isError && handleError()
+      }
     </>
   );
 }
