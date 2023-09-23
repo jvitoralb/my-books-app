@@ -30,8 +30,7 @@ type SignupUserData = {
     password: string;
 }
 
-export const createUser = async (userData: SignupUserData) => {
-    console.log('inside createUser -> ', userData);
+export const createUser = async (userData: SignupUserData): Promise<UserAuth> => {
     const { data } = await axiosInstance.post('/users/register', userData);
     return data;
 }
