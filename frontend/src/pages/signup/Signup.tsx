@@ -13,7 +13,9 @@ function SignUp() {
 
   const {
     data,
-    mutate
+    mutate,
+    isError,
+    error
   } = useSignupMutation();
 
   const { isAuth } = useAuth({
@@ -28,6 +30,16 @@ function SignUp() {
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSignupData(e.target.name, e.target.value);
+  }
+
+  const handleError = (): JSX.Element => {
+    let errorRes = error?.response;
+
+    if (errorRes?.status === 400) {
+      let dataError = errorRes.data.error.replace('exists', 'in use');
+      return <p>{dataError}</p>;
+    }
+    return <p>Something went wrong. Please, try again later!</p>;
   }
 
   return (
@@ -56,6 +68,9 @@ function SignUp() {
 
         <button id="login-submit">Submit</button>
       </form>
+      {
+        isError && handleError()
+      }
     </>
   );
 }
