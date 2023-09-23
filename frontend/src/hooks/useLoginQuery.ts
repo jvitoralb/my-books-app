@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { logUser } from '../api/api';
-import { LoginCredentials } from '../types';
+import { LoginCredentials, ServerErrorMessage } from '../types';
 
-type ServerErrorMessage = {
-    error: string
-}
 
 function useLoginQuery(credentials: LoginCredentials) {
     const { data, isError, error, refetch } = useQuery({
