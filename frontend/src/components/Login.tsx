@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react';
 import { LoginProps } from '../types';
+import { Button, FormControl, FormHelperText, FormLabel, Heading, Input } from '@chakra-ui/react';
 
 
 function LogIn({ refetch, error, isError, validCredentials, setCredentials }: LoginProps) {
@@ -31,26 +32,30 @@ function LogIn({ refetch, error, isError, validCredentials, setCredentials }: Lo
   }
   
   return (
-    <>
-      <h1>LogIn</h1>
+    <main>
+      <section id="login-section" className="flex-center-col login-section">
+        <Heading as="h4" size="md" mb="3">Login</Heading>
 
-      <form onSubmit={handleFormSubmit}>
-        <label>
-          Email
-          <input id="email" name="email" type="email" onChange={handleInputsChange} required />
-        </label>
+        <form id="login-form" onSubmit={handleFormSubmit} className="flex-center-col">
+          <FormControl m="1">
+            <FormLabel>Email address</FormLabel>
+            <Input id="email" name="email" type="email" placeholder="my-mail@books.app" onChange={handleInputsChange} required />
+            <FormHelperText mt="0.5">We'll never share your email.</FormHelperText>
+          </FormControl>
 
-        <label>
-          Password
-          <input id="password" name="password" type="password" onChange={handleInputsChange} required />
-        </label>
+          <FormControl m="1">
+            <FormLabel>Password</FormLabel>
+            <Input  id="password" name="password" type="password" onChange={handleInputsChange} required />
+            <FormHelperText mt="0.5">show this if password is wrong or invalid</FormHelperText>
+          </FormControl>
 
-        <button id="login-submit">Login</button>
-      </form>
-      {
-        isError && handleQueryError()
-      }
-    </>
+          <Button id="login-submit" type="submit" m="2">Login</Button>
+        </form>
+        {
+          isError && handleQueryError()
+        }
+      </section>
+    </main>
   );
 }
 
