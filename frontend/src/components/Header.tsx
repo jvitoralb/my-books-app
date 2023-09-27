@@ -6,7 +6,9 @@ function Header() {
   return (
     <header id="my-books-app-header" className="flex-center-col">
       <NavLink to="/">
-        <Heading as="h4" size="md">my-books-app</Heading>
+        <Heading as="h1" size="md">
+          my-books-app
+        </Heading>
       </NavLink>
     </header>
   );
