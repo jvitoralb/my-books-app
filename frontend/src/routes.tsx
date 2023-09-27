@@ -7,7 +7,7 @@ import App from './App.tsx';
 import Home from './pages/home/Home.tsx';
 import homeLoader from './pages/home/home.loader.ts';
 import Welcome from './pages/welcome/Welcome.tsx';
-import LogIn from './pages/login/Login.tsx';
+import LogInPage from './pages/login/Login.tsx';
 import loginLoader from './pages/login/login.loader.ts';
 import SignUp from './pages/signup/Signup.tsx';
 
@@ -17,7 +17,7 @@ const browserAppRouter = createBrowserRouter(
     <Route path='/' element={<App />}>
       <Route index element={<Home />} loader={homeLoader} />
       <Route path='/welcome' element={<Welcome />} />
-      <Route path='/login' element={<LogIn />} loader={loginLoader} />
+      <Route path='/login' element={<LogInPage />} loader={loginLoader} />
       <Route path='/signup' element={<SignUp />} />
     </Route>
   )

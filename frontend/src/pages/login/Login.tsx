@@ -5,7 +5,7 @@ import useLoginQuery from '../../hooks/useLoginQuery';
 import useAuth from '../../hooks/useAuth';
 
 
-function LogIn() {
+function LogInPage() {
   const {
     credentials,
     setCredentials,
@@ -77,4 +77,4 @@ function LogIn() {
   );
 }
 
-export default LogIn;
+export default LogInPage;
