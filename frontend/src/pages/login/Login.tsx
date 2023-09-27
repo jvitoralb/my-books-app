@@ -6,7 +6,11 @@ import useAuth from '../../hooks/useAuth';
 
 
 function LogIn() {
-  const { credentials, setCredentials } = useLoginCredentials();
+  const {
+    credentials,
+    setCredentials,
+    validCredentials
+  } = useLoginCredentials();
 
   const {
     data,
@@ -26,10 +30,14 @@ function LogIn() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    refetch();
+    if (validCredentials) {
+      refetch();
+    } else {
+      // show invalid credentials
+    }
   }
 
-  const handleError = () => {
+  const handleError = () => { // change to handleQueryError
     let errorRes = error?.response;
 
     if (errorRes?.status === 400) {
