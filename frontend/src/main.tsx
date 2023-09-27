@@ -6,6 +6,7 @@ import {
   QueryClient
 } from '@tanstack/react-query';
 import browserAppRouter from './routes';
+import { ChakraProvider } from '@chakra-ui/react';
 import './styles/index.css';
 
 
@@ -15,8 +16,10 @@ ReactDOM
 .createRoot(document.getElementById('root')!)
 .render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={browserAppRouter}/>
-    </QueryClientProvider>
+    <ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={browserAppRouter}/>
+      </QueryClientProvider>
+    </ChakraProvider>
   </React.StrictMode>
 );
