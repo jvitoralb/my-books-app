@@ -16,7 +16,7 @@ function LogIn({ refetch, error, isError, validCredentials, setCredentials }: Lo
     }
   }
   
-  const handleError = () => { // change to handleQueryError
+  const handleQueryError = () => {
     let errorRes = error?.response;
 
     if (errorRes?.status === 400) {
@@ -48,7 +48,7 @@ function LogIn({ refetch, error, isError, validCredentials, setCredentials }: Lo
         <button id="login-submit">Login</button>
       </form>
       {
-        isError && handleError()
+        isError && handleQueryError()
       }
     </>
   );
