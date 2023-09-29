@@ -20,3 +20,7 @@ header {
   flex-direction: column;
   justify-content: center;
 }
+
+.error-message {
+  color: red;
+}
