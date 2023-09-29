@@ -26,11 +26,11 @@ function LogIn({ refetch, error, isError, validCredentials, setCredentials }: Lo
       if (dataError === 'User does not exists') {
         dataError = dataError.replace('User', 'Email');
       }
-      return <p>{dataError}!</p>;
+      return `${dataError}!`;
     }
-    return <p>Something went wrong. Please, try again later!</p>;
+    return 'Something went wrong. Please, try again later!';
   }
-  
+
   return (
     <main>
       <section id="login-section" className="flex-center-col login-section">
@@ -38,21 +38,21 @@ function LogIn({ refetch, error, isError, validCredentials, setCredentials }: Lo
 
         <form id="login-form" onSubmit={handleFormSubmit} className="flex-center-col">
           <FormControl m="1">
-            <FormLabel>Email address</FormLabel>
+            <FormLabel htmlFor="email">Email address</FormLabel>
             <Input id="email" name="email" type="email" placeholder="my-mail@books.app" onChange={handleInputsChange} required />
             <FormHelperText mt="0.5">We'll never share your email.</FormHelperText>
           </FormControl>
 
           <FormControl m="1">
-            <FormLabel>Password</FormLabel>
-            <Input  id="password" name="password" type="password" onChange={handleInputsChange} required />
-            <FormHelperText mt="0.5">show this if password is wrong or invalid</FormHelperText>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <Input id="password" name="password" type="password" onChange={handleInputsChange} required />
+            <FormHelperText mt="0.5">We'll never ask for your password.</FormHelperText>
           </FormControl>
 
           <Button id="login-submit" type="submit" m="2">Login</Button>
         </form>
         {
-          isError && handleQueryError()
+          isError && <p className="error-message">{handleQueryError()}</p>
         }
       </section>
     </main>
