@@ -14,7 +14,8 @@ function useLoginQuery(credentials: LoginCredentials) {
                 return false;
             }
             return true;
-        }
+        },
+        cacheTime: 0
     });
 
     return {
