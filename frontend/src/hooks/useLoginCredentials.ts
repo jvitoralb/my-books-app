@@ -3,13 +3,13 @@ import { LoginCredentials } from '../types';
 
 
 const useLoginCredentials = () => {
-  const [ loginCredentials, setloginCredentials ] = useState<LoginCredentials>({
+  const [ loginCredentials, setLoginCredentials ] = useState<LoginCredentials>({
     email: '',//yo.admin.jv@library.app
     password: ''//yo.admin.jv-strongpswd123
   });
 
   const setCredentials = (inputName: string, inputValue: string) => {
-    setloginCredentials((prevCred) => ({
+    setLoginCredentials((prevCred) => ({
       ...prevCred,
       [inputName]: inputValue
     }));
