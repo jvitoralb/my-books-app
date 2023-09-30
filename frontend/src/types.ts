@@ -27,10 +27,13 @@ export type ServerErrorMessage = {
     error: string
 }
 
+export type FieldsArray = ['email' | null, 'password' | null];
+
 export type LoginProps = {
     refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
     isError: boolean;
     error: AxiosError<ServerErrorMessage, any> | null;
     setCredentials: (inputName: string, inputValue: string) => void;
-    validCredentials: boolean;
+    isValid: boolean;
+    fields: FieldsArray;
 }
