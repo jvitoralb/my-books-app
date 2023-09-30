@@ -10,7 +10,8 @@ function LogInPage() {
   const {
     credentials,
     setCredentials,
-    validCredentials
+    isValid,
+    fields
   } = useLoginCredentials();
 
   const {
@@ -30,7 +31,8 @@ function LogInPage() {
     isError,
     error,
     setCredentials,
-    validCredentials
+    isValid,
+    fields
   }
 
   return (isAuth ? <Navigate to="/" /> : <LogIn {...LoginProps} />);
