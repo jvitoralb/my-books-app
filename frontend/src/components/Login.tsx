@@ -1,46 +1,19 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { FieldsArray, LoginProps } from '../types';
 import { Button, FormControl, FormHelperText, FormLabel, Heading, Input } from '@chakra-ui/react';
+import useWarnings from '../hooks/useWarning';
 
 
 function LogIn({ refetch, error, isError, setCredentials, isValid, fields }: LoginProps) {
-  const [ warnings, setWarnings ] = useState({
-    display: false,
-    email: '',
-    password: ''
-  });
-
-  const handleWarnings = (warnFields: FieldsArray | null) => {
-    let emailMsg = '';
-    let passwordMsg = '';
-
-    if (warnFields === null) {
-      setWarnings({
-        display: false,
-        email: emailMsg,
-        password: passwordMsg
-      });
-      return;
-    }
-
-    if (warnFields[0] !== null) {
-      if (isValid === false) emailMsg = 'Invalid email!';
-      if (isError === true) emailMsg = 'Email does not exists';
-    }
-    if (warnFields[1] !== null) {
-      if (isValid === false) passwordMsg = 'Invalid password';
-      if (isError === true) passwordMsg = 'Wrong password';
-    }
-
-    setWarnings({
-      display: true,
-      email: emailMsg,
-      password: passwordMsg
-    });
-  }
+  const {
+    handleWarnings,
+    displayWarning,
+    emailWarning,
+    passwordWarning
+  } = useWarnings(isValid, isError);
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (warnings.display) handleWarnings(null);
+    if (displayWarning) handleWarnings(null);
     setCredentials(e.target.name, e.target.value);
   }
 
@@ -64,7 +37,7 @@ function LogIn({ refetch, error, isError, setCredentials, isValid, fields }: Log
       if (dataError === 'User does not exists') queryWarnFields[0] = 'email';
       if (dataError === 'Invalid password') queryWarnFields[1] = 'password';
 
-      if (warnings.display === false) {
+      if (displayWarning === false) {
         handleWarnings(queryWarnFields);
       }
       return undefined;
@@ -78,22 +51,22 @@ function LogIn({ refetch, error, isError, setCredentials, isValid, fields }: Log
         <Heading as="h4" size="md" mb="3">Login</Heading>
 
         <form id="login-form" onSubmit={handleFormSubmit} className="flex-center-col">
-          <FormControl m="1" isInvalid={warnings.display && warnings.email !== ''}>
+          <FormControl m="1" isInvalid={displayWarning && emailWarning !== ''}>
             <FormLabel htmlFor="email">Email address</FormLabel>
             <Input id="email" name="email" type="email" placeholder="my-mail@books.app" onChange={handleInputsChange} required />
             {
-              warnings.display && warnings.email ? 
-              <FormHelperText mt="0.5">{warnings.email}</FormHelperText> : 
+              displayWarning && emailWarning ? 
+              <FormHelperText mt="0.5">{emailWarning}</FormHelperText> : 
               <FormHelperText mt="0.5">We'll never share your email.</FormHelperText>
             }
           </FormControl>
 
-          <FormControl m="1" isInvalid={warnings.display && warnings.password !== ''}>
+          <FormControl m="1" isInvalid={displayWarning && passwordWarning !== ''}>
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input id="password" name="password" type="password" onChange={handleInputsChange} required />
             {
-              warnings.display && warnings.password ? 
-              <FormHelperText mt="0.5">{warnings.password}</FormHelperText> :
+              displayWarning && passwordWarning ? 
+              <FormHelperText mt="0.5">{passwordWarning}</FormHelperText> :
               <FormHelperText mt="0.5">We'll never ask for your password.</FormHelperText>
             }
           </FormControl>
