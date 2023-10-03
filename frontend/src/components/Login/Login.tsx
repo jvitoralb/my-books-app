@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent } from 'react';
-import { FieldsArray, LoginProps } from '../types';
+import { FieldsArray, LoginProps } from '../../types';
 import { Button, FormControl, FormHelperText, FormLabel, Heading, Input } from '@chakra-ui/react';
-import useWarnings from '../hooks/useWarning';
+import useWarnings from '../../hooks/useWarning';
 
 
 function LogIn({ refetch, error, isError, setCredentials, isValid, fields }: LoginProps) {
