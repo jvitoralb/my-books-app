@@ -1,10 +1,18 @@
 import { Button } from '@chakra-ui/react';
 import { FormEvent } from 'react';
-import { InputControlProps, LoginFormProps } from '../../types';
+import { LoginFormProps } from '../../types';
 import InputControl from './InputControl';
+import useWarnings from '../../hooks/useWarning';
 
 
-function LoginForm({ refetch, setCredentials, isValid, displayWarning, emailWarning, passwordWarning, handleWarnings, fields }: LoginFormProps) {
+function LoginForm({ refetch, isError, setCredentials, isValid, fields }: LoginFormProps) {
+  const {
+    handleWarnings,
+    displayWarning,
+    emailWarning,
+    passwordWarning
+  } = useWarnings(isValid, isError);
+
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
@@ -15,24 +23,22 @@ function LoginForm({ refetch, setCredentials, isValid, displayWarning, emailWarn
     }
   }
 
-  const inputControlProps: InputControlProps = {
-    subject: 'email' || 'password',
-    setCredentials,
-    displayWarning,
-    handleWarnings,
-    emailWarning,
-    passwordWarning,
-  }
-
   return (
     <form id="login-form" onSubmit={handleFormSubmit} className="flex-center-col">
       <InputControl
-        {...inputControlProps}
         subject="email"
+        setCredentials={setCredentials}
+        displayWarning={displayWarning}
+        handleWarnings={handleWarnings}
+        subjectWarning={emailWarning}
       />
+
       <InputControl
-        { ...inputControlProps }
         subject="password"
+        setCredentials={setCredentials}
+        displayWarning={displayWarning}
+        handleWarnings={handleWarnings}
+        subjectWarning={passwordWarning}
       />
 
       <Button id="login-submit" type="submit" m="2">Login</Button>
