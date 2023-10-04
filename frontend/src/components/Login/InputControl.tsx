@@ -4,15 +4,16 @@ import { InputControlProps } from '../../types';
 import useInputSubject from '../../hooks/useInputSubject';
 
 
-function InputControl({ subject, setCredentials, displayWarning, handleWarnings, emailWarning, passwordWarning }: InputControlProps) {
+function InputControl({ subject, setCredentials, displayWarning, handleWarnings, subjectWarning }: InputControlProps) {
   const {
-    warningMsg,
-    isInputInvalid
+    isInvalid,
+    warningMessage,
+    defaultLabel,
+    defaultPlaceHolder
   } = useInputSubject({
     subject,
     displayWarning,
-    emailWarning,
-    passwordWarning
+    subjectWarning
   });
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,21 +22,21 @@ function InputControl({ subject, setCredentials, displayWarning, handleWarnings,
   }
 
   return (
-    <FormControl m="1" isInvalid={isInputInvalid}>
-      <FormLabel htmlFor={subject}>{subject}</FormLabel>
+    <FormControl m="1" isInvalid={isInvalid}>
+      <FormLabel htmlFor={subject}>{defaultLabel}</FormLabel>
 
       <Input
         required
         id={subject}
         name={subject}
         type={subject}
-        placeholder={subject === 'email' ? "my-mail@books.app" : ""}
+        placeholder={defaultPlaceHolder}
         onChange={handleInputsChange}
       />
 
       {
-        isInputInvalid ?
-        <FormHelperText mt="0.5">{warningMsg}</FormHelperText> :
+        isInvalid ?
+        <FormHelperText mt="0.5">{warningMessage}</FormHelperText> :
         <FormHelperText mt="0.5">We'll never share your {subject}.</FormHelperText>
       }
     </FormControl>
