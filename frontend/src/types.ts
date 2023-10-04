@@ -29,6 +29,8 @@ export type ServerErrorMessage = {
 
 export type FieldsArray = ['email' | null, 'password' | null];
 
+export type UseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
+
 export type LoginProps = {
     refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
     isError: boolean;
@@ -36,4 +38,26 @@ export type LoginProps = {
     setCredentials: (inputName: string, inputValue: string) => void;
     isValid: boolean;
     fields: FieldsArray;
+}
+
+export type LoginFormProps = {
+    refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
+    isValid: boolean;
+    setCredentials: (inputName: string, inputValue: string) => void;
+    displayWarning: boolean;
+    emailWarning: string;
+    passwordWarning: string;
+    handleWarnings: (warnFields: FieldsArray | null) => void;
+    fields: FieldsArray;
+}
+
+export type LoginInputSubject = 'email' | 'password';
+
+export type InputControlProps = {
+    subject: LoginInputSubject;
+    setCredentials: (inputName: string, inputValue: string) => void;
+    displayWarning: boolean;
+    handleWarnings: (warnFields: FieldsArray | null) => void;
+    emailWarning: string;
+    passwordWarning: string;
 }
