@@ -1,26 +1,14 @@
 import { Heading } from '@chakra-ui/react';
 import { LoginProps } from '../../types';
 import LoginForm from './LoginForm';
+import useErrorHandler from '../../hooks/useErrorHandler';
 
 
-function LogIn({ refetch, error, isError, setCredentials, isValid, fields }: LoginProps) {
-  // const handleQueryError = (): JSX.Element | FieldsArray => {
-  //   let errorRes = error?.response;
-
-  //   if (errorRes?.status === 400) {
-  //     let dataError = errorRes?.data.error;
-  //     let queryWarnFields: FieldsArray = [ null, null ];
-
-  //     if (dataError === 'User does not exists') queryWarnFields[0] = 'email';
-  //     if (dataError === 'Invalid password') queryWarnFields[1] = 'password';
-
-  //     if (displayWarning === false) {
-  //       handleWarnings(queryWarnFields);
-  //     }
-  //     return undefined;
-  //   }
-  //   return <p className="error-message">Something went wrong. Please, try again later!</p>;
-  // }
+function LogIn({ refetch, isError, error, setCredentials, isValid, fields }: LoginProps) {
+  const {
+    errorFields,
+    warnElement
+  } = useErrorHandler(isError, error);
 
   return (
     <main>
@@ -35,7 +23,7 @@ function LogIn({ refetch, error, isError, setCredentials, isValid, fields }: Log
           fields={fields}
         />
 
-        {/* { isError && handleQueryError() } */}
+        {warnElement}
       </section>
     </main>
   );
