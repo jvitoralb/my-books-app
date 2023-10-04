@@ -1,43 +1,42 @@
 import { useState, useEffect } from 'react';
 import { LoginInputSubject } from '../types';
 
-type SubjectOptions = {
-    warningMsg: string;
-    isInputInvalid: boolean;
+type SubjectConfig = {
+    isInvalid: boolean;
+    warningMessage: string;
+    defaultLabel: string;
+    defaultPlaceHolder: string;
 }
 
 type InputSubjectOptions = {
     subject: LoginInputSubject;
     displayWarning: boolean;
-    emailWarning: string;
-    passwordWarning: string;
+    subjectWarning: string;
 }
 
-const useInputSubject = ({ subject, displayWarning, emailWarning, passwordWarning }: InputSubjectOptions): SubjectOptions => {
-    const [ subjectOptions, setSubjectOptions ] = useState<SubjectOptions>({
-        warningMsg: '',
-        isInputInvalid: false
+const useInputSubject = ({ subject, displayWarning, subjectWarning }: InputSubjectOptions): SubjectConfig => {
+    const [ subjectConfig, setSubjectConfig ] = useState<SubjectConfig>({
+        isInvalid: false,
+        warningMessage: '',
+        defaultLabel: subject.charAt(0).toLocaleUpperCase() + subject.slice(1),
+        defaultPlaceHolder: subject === 'email' ? 'my@email.com' : ''
     });
 
     const set = (msg: string, valid: boolean) => {
-        setSubjectOptions({
-            warningMsg: msg,
-            isInputInvalid: valid
-        });
+        setSubjectConfig((prev) => ({
+            ...prev, 
+            isInvalid: valid,
+            warningMessage: msg
+        }));
     }
 
-    const isEmailInvalid = displayWarning && emailWarning !== '';
-    const isPasswordInvalid = displayWarning && passwordWarning !== '';
+    const isSubjectInvalid = displayWarning && subjectWarning !== '';
 
     useEffect(() => {
-        if (subject === 'email') {
-            set(emailWarning, isEmailInvalid);
-        } else if (subject === 'password') {
-            set(passwordWarning, isPasswordInvalid);
-        }
-    }, [isEmailInvalid, isPasswordInvalid]);
+        set(subjectWarning, isSubjectInvalid);
+    }, [isSubjectInvalid]);
 
-    return subjectOptions;
+    return subjectConfig;
 };
 
 export default useInputSubject;
