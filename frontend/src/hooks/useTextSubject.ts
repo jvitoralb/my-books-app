@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import { LoginInputSubject } from '../types';
+import { InputSubject } from '../types';
 
 type SubjectTexts = {
     email: string;
     password: string;
+    name: '',
+    confirm_password: string
 }
 
-const useTextSubject = (subject: LoginInputSubject, isInvalid: boolean, warningMessage: string) => {
+const useTextSubject = (subject: InputSubject, isInvalid: boolean, warningMessage: string) => {
     const [ currentText, setCurrentText ] = useState('');
 
     const textOnSujects: SubjectTexts = {
         email: 'We\'ll never share your email.',
-        password: 'We\'ll never ask for your password.'
+        password: 'We\'ll never ask for your password.',
+        name: '',
+        confirm_password: 'Passwords should match.'
     }
 
     const getText = () => {
