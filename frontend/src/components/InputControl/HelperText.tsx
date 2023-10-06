@@ -1,11 +1,11 @@
 import { FormHelperText } from '@chakra-ui/react';
-import { LoginInputSubject } from '../../types';
+import { InputSubject } from '../../types';
 import useTextSubject from '../../hooks/useTextSubject';
 
 type HelperTextProps = {
   isInvalid: boolean;
   warningMessage: string;
-  subject: LoginInputSubject;
+  subject: InputSubject;
 }
 
 function HelperText({ subject, isInvalid, warningMessage }: HelperTextProps) {

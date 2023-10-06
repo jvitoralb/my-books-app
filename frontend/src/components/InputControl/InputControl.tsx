@@ -5,7 +5,7 @@ import useInputSubject from '../../hooks/useInputSubject';
 import HelperText from './HelperText';
 
 
-function InputControl({ subject, setCredentials, displayWarning, handleWarnings, subjectWarning }: InputControlProps) {
+function InputControl({ subject, inputType, setFormState, displayWarning, handleWarnings, subjectWarning }: InputControlProps) {
   const {
     isInvalid,
     warningMessage,
@@ -19,7 +19,7 @@ function InputControl({ subject, setCredentials, displayWarning, handleWarnings,
 
   const handleInputsChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (displayWarning) handleWarnings(null);
-    setCredentials(e.target.name, e.target.value);
+    setFormState(e.target.name, e.target.value);
   }
 
   return (
@@ -30,14 +30,15 @@ function InputControl({ subject, setCredentials, displayWarning, handleWarnings,
         required
         id={subject}
         name={subject}
-        type={subject}
-        placeholder={defaultPlaceHolder}
+        type={inputType ? inputType : subject}
         onChange={handleInputsChange}
+        placeholder={defaultPlaceHolder}
+        autoComplete="on"
       />
 
       <HelperText
-        subject={subject}
         isInvalid={isInvalid}
+        subject={subject}
         warningMessage={warningMessage}
       />
     </FormControl>
