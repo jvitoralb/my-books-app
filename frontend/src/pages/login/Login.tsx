@@ -26,7 +26,7 @@ function LogInPage() {
     operation: 'SET'
   });
 
-  const LoginProps: LoginProps = {
+  const loginProps: LoginProps = {
     refetch,
     isError,
     error,
@@ -35,7 +35,7 @@ function LogInPage() {
     fields
   }
 
-  return (isAuth ? <Navigate to="/" /> : <LogIn {...LoginProps} />);
+  return (isAuth ? <Navigate to="/" /> : <LogIn {...loginProps} />);
 }
 
 export default LogInPage;
