@@ -16,14 +16,30 @@ const useErrorHandler = (isError: boolean, error: CustomAxiosError) => {
     let response = error?.response;
     let badRequest = response?.status === 400;
 
+    const warnEmail = (msg: string | undefined): 'email' | null => {
+        const triggers = [
+            'User does not exists',
+            'Email already exists'
+        ];
+        for(let i = 0; i < triggers.length; i++) {
+            if (triggers[i] === msg) return 'email';
+        }
+        return null;
+    }
+    const warnPassword = (msg: string | undefined): 'password' | null => {
+        const triggers = [ 'Invalid password' ];
+        if (triggers[0] === msg) return 'password'
+        return null;
+    }
+
     useEffect(() => {
         if (isError) {
             if (badRequest) {
                 let resData = response?.data.error;
-                let queryWarnFields: FieldsArray = [ null, null ];
-    
-                if (resData === 'User does not exists') queryWarnFields[0] = 'email';
-                if (resData === 'Invalid password') queryWarnFields[1] = 'password';
+                let queryWarnFields: FieldsArray = [
+                    warnEmail(resData),
+                    warnPassword(resData)
+                ];
                 
                 setOptions({
                     errorFields: queryWarnFields,
@@ -47,7 +63,6 @@ const useErrorHandler = (isError: boolean, error: CustomAxiosError) => {
                 warnElement: null
             });
         }
-
     }, [isError]);
 
     return options;

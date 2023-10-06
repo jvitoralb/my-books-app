@@ -22,17 +22,23 @@ const useWarnings = (isValid: boolean, isError: boolean) => {
         });
     }
 
-    const handleWarnings = (warnFields: FieldsArray | null) => {
+    const handleWarnings = (warnFields: FieldsArray | null, source?: 'login' | 'signup') => {
         if (warnFields !== null) {
             let emailMsg = '';
             let passwordMsg = '';
 
             if (warnFields[0] !== null) {
                 if (isValid === false) emailMsg = 'Invalid email!';
-                if (isError === true) emailMsg = 'Email does not exists!';
+                if (isError === true) {
+                    if (source === 'login') emailMsg = 'Email does not exists!';
+                    if (source === 'signup') emailMsg = 'Email already in use!';
+                }
             }
             if (warnFields[1] !== null) {
-                if (isValid === false) passwordMsg = 'Invalid password!';
+                if (isValid === false) {
+                    if (warnFields[1] === 'password') passwordMsg = 'Invalid password!';
+                    if (warnFields[1] === 'confirm_password') passwordMsg = 'Passwords do not match!';
+                }
                 if (isError === true) passwordMsg = 'Wrong password!';
             }
 
