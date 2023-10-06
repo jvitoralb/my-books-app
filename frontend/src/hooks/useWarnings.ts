@@ -29,11 +29,11 @@ const useWarnings = (isValid: boolean, isError: boolean) => {
 
             if (warnFields[0] !== null) {
                 if (isValid === false) emailMsg = 'Invalid email!';
-                if (isError === true) emailMsg = 'Email does not exists';
+                if (isError === true) emailMsg = 'Email does not exists!';
             }
             if (warnFields[1] !== null) {
-                if (isValid === false) passwordMsg = 'Invalid password';
-                if (isError === true) passwordMsg = 'Wrong password';
+                if (isValid === false) passwordMsg = 'Invalid password!';
+                if (isError === true) passwordMsg = 'Wrong password!';
             }
 
             set(true, emailMsg, passwordMsg);
