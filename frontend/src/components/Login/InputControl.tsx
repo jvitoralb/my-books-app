@@ -1,7 +1,8 @@
 import { ChangeEvent } from 'react';
-import { FormControl, FormHelperText, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { InputControlProps } from '../../types';
 import useInputSubject from '../../hooks/useInputSubject';
+import HelperText from './HelperText';
 
 
 function InputControl({ subject, setCredentials, displayWarning, handleWarnings, subjectWarning }: InputControlProps) {
@@ -34,11 +35,11 @@ function InputControl({ subject, setCredentials, displayWarning, handleWarnings,
         onChange={handleInputsChange}
       />
 
-      {
-        isInvalid ?
-        <FormHelperText mt="0.5">{warningMessage}</FormHelperText> :
-        <FormHelperText mt="0.5">We'll never share your {subject}.</FormHelperText>
-      }
+      <HelperText
+        subject={subject}
+        isInvalid={isInvalid}
+        warningMessage={warningMessage}
+      />
     </FormControl>
   );
 }
