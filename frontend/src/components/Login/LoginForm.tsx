@@ -1,17 +1,21 @@
 import { Button } from '@chakra-ui/react';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { LoginFormProps } from '../../types';
 import InputControl from './InputControl';
 import useWarnings from '../../hooks/useWarning';
 
 
-function LoginForm({ refetch, isError, setCredentials, isValid, fields }: LoginFormProps) {
+function LoginForm({ refetch, isError, errorFields, setCredentials, isValid, fields }: LoginFormProps) {
   const {
     handleWarnings,
     displayWarning,
     emailWarning,
     passwordWarning
   } = useWarnings(isValid, isError);
+
+  useEffect(() => {
+    if (isError) handleWarnings(errorFields);
+  }, [errorFields]);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

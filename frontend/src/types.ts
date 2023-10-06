@@ -45,6 +45,7 @@ export type LoginProps = {
 export type LoginFormProps = {
     refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
     isError: boolean;
+    errorFields: FieldsArray;
     setCredentials: (inputName: string, inputValue: string) => void;
     isValid: boolean;
     fields: FieldsArray;

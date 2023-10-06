@@ -18,6 +18,7 @@ function LogIn({ refetch, isError, error, setCredentials, isValid, fields }: Log
         <LoginForm
           refetch={refetch}
           isError={isError}
+          errorFields={errorFields}
           setCredentials={setCredentials}
           isValid={isValid}
           fields={fields}
