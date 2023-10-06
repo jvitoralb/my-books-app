@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { FormEvent, useEffect } from 'react';
 import { LoginFormProps } from '../../types';
-import InputControl from './InputControl';
+import InputControl from '../InputControl';
 import useWarnings from '../../hooks/useWarnings';
 
 
@@ -31,7 +31,7 @@ function LoginForm({ refetch, isError, errorFields, setCredentials, isValid, fie
     <form id="login-form" onSubmit={handleFormSubmit} className="flex-center-col">
       <InputControl
         subject="email"
-        setCredentials={setCredentials}
+        setFormState={setCredentials}
         displayWarning={displayWarning}
         handleWarnings={handleWarnings}
         subjectWarning={emailWarning}
@@ -39,7 +39,7 @@ function LoginForm({ refetch, isError, errorFields, setCredentials, isValid, fie
 
       <InputControl
         subject="password"
-        setCredentials={setCredentials}
+        setFormState={setCredentials}
         displayWarning={displayWarning}
         handleWarnings={handleWarnings}
         subjectWarning={passwordWarning}
