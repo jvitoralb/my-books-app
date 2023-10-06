@@ -1,7 +1,7 @@
 import { FormEvent, useEffect } from 'react';
 import { Button } from '@chakra-ui/react';
 import { SignupFormProps } from '../../types';
-import InputControl from './InputControl';
+import InputControl from '../InputControl';
 import useWarnings from '../../hooks/useWarnings';
 
 
