@@ -1,15 +1,9 @@
-import { useState } from 'react';
-
-type SignupData = {
-    name: string;
-    email: string;
-    password: string;
-    confirm_password: string;
-}
+import { useEffect, useState } from 'react';
+import { FieldsArray, SignupData } from '../types';
 
 type SignupDataValidation = {
     isValid: boolean;
-    error: string;
+    fields: FieldsArray;
 }
 
 const useSignupData = () => {
@@ -19,6 +13,36 @@ const useSignupData = () => {
         password: '',
         confirm_password: ''
     });
+
+    const [ validation, setValidation ] = useState<SignupDataValidation>({
+        isValid: false,
+        fields: [ null, null ]
+    });
+
+    useEffect(() => validate(), [data]);
+
+    const validate = () => {
+        let fieldsMock: FieldsArray = [null, null];
+
+        if (data.email.match(/^\S+[@]\S+[.]\S+$/) === null) {
+            fieldsMock[0] = 'email';
+        } else {
+            fieldsMock[0] = null;
+        }
+    
+        if (data.password.length < 8) {
+            fieldsMock[1] = 'password';
+        } else if (data.password !== data.confirm_password) {
+            fieldsMock[1] = 'confirm_password';
+        } else {
+            fieldsMock[1] = null;
+        }
+
+        setValidation({
+            isValid: (fieldsMock[0] === null && fieldsMock[1] === null) ? true : false,
+            fields: fieldsMock
+        });
+    }
 
     const dataSetter = (name: string, value: string) => {
         setData((prevData) => ({
@@ -30,9 +54,8 @@ const useSignupData = () => {
     return {
         signupData: data,
         setSignupData: dataSetter,
-        // isValid: validation.isValid,
-        // validationError: validation.error,
-        // validate
+        isValid: validation.isValid,
+        fields: validation.fields,
     };
 }
 
