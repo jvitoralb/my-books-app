@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { LoginInputSubject } from '../types';
+import { InputSubject } from '../types';
+import { treatLabels } from '../utils/strings';
 
 type SubjectConfig = {
     isInvalid: boolean;
@@ -9,17 +10,24 @@ type SubjectConfig = {
 }
 
 type InputSubjectOptions = {
-    subject: LoginInputSubject;
+    subject: InputSubject;
     displayWarning: boolean;
     subjectWarning: string;
+}
+
+const defaultPlaceholders = {
+    email: 'my@email.com',
+    name: 'Jane Doe',
+    password: '',
+    confirm_password: ''
 }
 
 const useInputSubject = ({ subject, displayWarning, subjectWarning }: InputSubjectOptions): SubjectConfig => {
     const [ subjectConfig, setSubjectConfig ] = useState<SubjectConfig>({
         isInvalid: false,
         warningMessage: '',
-        defaultLabel: subject.charAt(0).toLocaleUpperCase() + subject.slice(1),
-        defaultPlaceHolder: subject === 'email' ? 'my@email.com' : ''
+        defaultLabel: treatLabels(subject),
+        defaultPlaceHolder: defaultPlaceholders[subject]
     });
 
     const set = (msg: string, valid: boolean) => {
