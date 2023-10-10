@@ -1,11 +1,11 @@
-import { Button } from '@chakra-ui/react';
 import { FormEvent, useEffect } from 'react';
 import { LoginFormProps } from '../../types';
 import InputControl from '../InputControl';
 import useWarnings from '../../hooks/useWarnings';
+import SubmitButton from '../SubmitButton';
 
 
-function LoginForm({ refetch, isError, errorFields, setCredentials, isValid, fields }: LoginFormProps) {
+function LoginForm({ refetch, isLoadingRefetch, isError, errorFields, setCredentials, isValid, fields }: LoginFormProps) {
   const {
     handleWarnings,
     displayWarning,
@@ -45,7 +45,10 @@ function LoginForm({ refetch, isError, errorFields, setCredentials, isValid, fie
         subjectWarning={passwordWarning}
       />
 
-      <Button id="login-submit" type="submit" m="2">Login</Button>
+      <SubmitButton
+        isLoading={isLoadingRefetch}
+        sourceForm="login"
+      />
     </form>
   );
 }

@@ -34,6 +34,7 @@ export type LoginCredentials = {
 }
 export type LoginProps = {
     refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
+    isLoadingRefetch: boolean;
     isError: boolean;
     error: CustomAxiosError;
     setCredentials: (inputName: string, inputValue: string) => void;
@@ -43,6 +44,7 @@ export type LoginProps = {
 export type LoginFormProps = {
     refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
     isError: boolean;
+    isLoadingRefetch: boolean;
     errorFields: FieldsArray;
     setCredentials: (inputName: string, inputValue: string) => void;
     isValid: boolean;

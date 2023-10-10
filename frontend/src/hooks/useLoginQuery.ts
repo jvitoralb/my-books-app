@@ -5,7 +5,7 @@ import { LoginCredentials, ServerErrorMessage } from '../types';
 
 
 function useLoginQuery(credentials: LoginCredentials) {
-    const { data, isError, error, refetch } = useQuery({
+    const { data, isError, error, refetch, fetchStatus } = useQuery({
         queryKey: ['token', credentials],
         queryFn: logUser,
         enabled: false,
@@ -18,11 +18,14 @@ function useLoginQuery(credentials: LoginCredentials) {
         cacheTime: 0
     });
 
+    const isLoadingRefetch = fetchStatus === 'fetching' ? true : false;
+
     return {
         data,
         isError,
         error,
-        refetch
+        refetch,
+        isLoadingRefetch
     }
 }
 

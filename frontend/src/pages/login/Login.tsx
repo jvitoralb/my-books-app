@@ -18,7 +18,8 @@ function LogInPage() {
     data,
     isError,
     error,
-    refetch
+    refetch,
+    isLoadingRefetch
   } = useLoginQuery(credentials);
 
   const { isAuth } = useAuth({
@@ -32,7 +33,8 @@ function LogInPage() {
     error,
     setCredentials,
     isValid,
-    fields
+    fields,
+    isLoadingRefetch
   }
 
   return (isAuth ? <Navigate to="/" /> : <LogIn {...loginProps} />);

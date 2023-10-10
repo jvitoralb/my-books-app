@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import useErrorHandler from '../../hooks/useErrorHandler';
 
 
-function LogIn({ refetch, isError, error, setCredentials, isValid, fields }: LoginProps) {
+function LogIn({ refetch, isLoadingRefetch, isError, error, setCredentials, isValid, fields }: LoginProps) {
   const {
     errorFields,
     warnElement
@@ -17,6 +17,7 @@ function LogIn({ refetch, isError, error, setCredentials, isValid, fields }: Log
 
         <LoginForm
           refetch={refetch}
+          isLoadingRefetch={isLoadingRefetch}
           isError={isError}
           errorFields={errorFields}
           setCredentials={setCredentials}
