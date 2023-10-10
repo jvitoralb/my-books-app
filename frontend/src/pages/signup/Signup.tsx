@@ -17,6 +17,7 @@ function SignUpPage() {
   const {
     data,
     mutate,
+    isLoading,
     isError,
     error
   } = useSignupMutation();
@@ -28,6 +29,7 @@ function SignUpPage() {
 
   const signupProps: SignupProps = {
     mutate,
+    isLoading,
     isError,
     error,
     setSignupData,

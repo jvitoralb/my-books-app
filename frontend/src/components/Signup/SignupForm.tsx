@@ -1,11 +1,11 @@
 import { FormEvent, useEffect } from 'react';
-import { Button } from '@chakra-ui/react';
 import { SignupFormProps } from '../../types';
 import InputControl from '../InputControl';
 import useWarnings from '../../hooks/useWarnings';
+import SubmitButton from '../SubmitButton';
 
 
-function SignupForm({ mutate, isError, errorFields, signupData, setSignupData, isValid, fields  }: SignupFormProps) {
+function SignupForm({ mutate, isLoading, isError, errorFields, signupData, setSignupData, isValid, fields  }: SignupFormProps) {
   const {
     handleWarnings,
     displayWarning,
@@ -63,7 +63,10 @@ function SignupForm({ mutate, isError, errorFields, signupData, setSignupData, i
         subjectWarning={passwordWarning}
       />
 
-      <Button id="signup-submit" type="submit"  m="2">Register</Button>
+      <SubmitButton
+        isLoading={isLoading}
+        sourceForm='submit'
+      />
     </form>
   );
 }

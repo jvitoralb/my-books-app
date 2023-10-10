@@ -67,6 +67,7 @@ export type SignupData = {
 }
 export type SignupProps = {
     mutate: UseMutateFunction<UserAuth, AxiosError<ServerErrorMessage, any>, SignupUserData, unknown>;
+    isLoading: boolean;
     isError: boolean;
     error: CustomAxiosError;
     setSignupData: (name: string, value: string) => void;
@@ -76,6 +77,7 @@ export type SignupProps = {
 }
 export type SignupFormProps = {
     mutate: UseMutateFunction<UserAuth, AxiosError<ServerErrorMessage, any>, SignupUserData, unknown>;
+    isLoading: boolean;
     isError: boolean;
     errorFields: FieldsArray;
     signupData: SignupData;

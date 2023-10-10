@@ -4,7 +4,7 @@ import SignupForm from './SignupForm';
 import useErrorHandler from '../../hooks/useErrorHandler';
 
 
-function SignUp({ mutate, isError, error, setSignupData, signupData, isValid, fields }: SignupProps) {
+function SignUp({ mutate, isLoading, isError, error, setSignupData, signupData, isValid, fields }: SignupProps) {
   const {
     errorFields,
     warnElement
@@ -17,6 +17,7 @@ function SignUp({ mutate, isError, error, setSignupData, signupData, isValid, fi
 
         <SignupForm
           mutate={mutate}
+          isLoading={isLoading}
           isError={isError}
           errorFields={errorFields}
           setSignupData={setSignupData}
