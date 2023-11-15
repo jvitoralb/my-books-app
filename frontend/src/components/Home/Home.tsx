@@ -1,21 +1,29 @@
-import { Heading } from '@chakra-ui/react';
-
+import { Grid } from '@chakra-ui/react';
+import Sidebar from './sidebar/Sidebar';
+import Workspace from './workspace/Workspace';
+import { User } from '../../types';
 
 type HomeProps = {
-  name: string;
-  token: string
+  user: User;
 }
 
-function Home({ name, token }: HomeProps) {
+function Home({ user }: HomeProps) {
   return (
-    <>
-      <Heading as="h1" size="md">
-        Hello, {name}
-      </Heading>
-      {/* user-area */}
-      {/* sidebar */}
-      {/* book-note-area */}
-    </>
+    <Grid
+      templateAreas={`"nav main"`}
+      gridTemplateRows={"auto"}
+      gridTemplateColumns={"1fr 4fr"}
+      h="90vh"
+      gap="1"
+    >
+      <Sidebar
+        user={user}
+      />
+
+      <Workspace
+        name={user.name}
+      />
+    </Grid>
   );
 }
 
