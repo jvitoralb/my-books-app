@@ -5,13 +5,12 @@ import Home from '../../components/Home';
 
 
 function HomePage() {
-  const { name } = useLoaderData() as User;
+  const user = useLoaderData() as User;
   const { token } = useAuth({ operation: 'GET' });
-
+  
   return (
     <Home
-      name={name}
-      token={token}
+      user={user}
     />
   );
 }
