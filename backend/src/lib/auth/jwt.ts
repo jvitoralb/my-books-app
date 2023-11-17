@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import fs from 'node:fs';
 import { join } from 'node:path';
 import jwt from 'jsonwebtoken';
@@ -34,7 +34,6 @@ class AuthToken implements Authentication {
     constructor() {
         this.PRIV_KEY = String(process.env.PRIVATE_KEY);
         this.PUB_KEY = fs.readFileSync(join(process.cwd(), '/pub-key.pem'), 'utf8');
-        // this.EXPIRES = '60s';
         this.EXPIRES = '7d';
     }
 
@@ -52,7 +51,7 @@ class AuthToken implements Authentication {
                 expires: this.EXPIRES
             }
         } catch(err) {
-            console.log(err);
+            // console.log(err);
             throw new ServerError('Internal Server Error', 'SERVER ERROR', 500, 'Token signature error');
         }
     }
