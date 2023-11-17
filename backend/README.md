@@ -81,9 +81,66 @@ Server should answer successfully a status code `204`.
 
 ### user
 #### Create
+Send a `POST` request to `/api/v1/users/register`
+
+**Requires**:
+1. User name, email, and password
+
+Server should answer successfully a status code `201` and a response body equals to:
+```
+{
+    token: "Bearer token",
+    expires: "7d"
+}
+```
+
 #### Read
+Send a `GET` request to `/api/v1/users`
+
+**Requires**:
+1. Authorization header
+
+Server should answer successfully a status code `200` and a response body equals to:
+```
+{
+    name: "user name",
+	email: "user email"
+}
+```
+
 #### Update
+
+##### Update email
+Send a `PUT` request to `/api/v1/users/email`
+
+**Requires**:
+1. Authorization header
+2. New email
+
+Server should answer successfully a status code `200` and a response body equals to:
+```
+{
+    token: "New Bearer token",
+    expires: "7d"
+}
+```
+
+##### Update password
+Send a `PUT` request to `/api/v1/users/password`
+
+**Requires**:
+1. Authorization header
+2. New password
+
+Server should answer successfully a status code `204`.
+
 #### Delete
+Send a `DELETE` request to `/api/v1/users`
+
+**Requires**:
+1. Authorization header
+
+Server should answer successfully a status code `204`.
 
 ### auth
 #### Create
