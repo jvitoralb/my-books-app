@@ -3,13 +3,19 @@ export const firstCharToUpper = (word: string) => {
 }
 
 export const treatLabels = (label: string) => {
-    let newLabel = label;
-
-    if (newLabel.match('_')) {
-        newLabel = newLabel.replace('_', ' ');
+    let newLabel = '';
+    
+    if (label.includes('_')) {
+        for(let i = 0; i < label.length; i++) {
+            if (label[i] === '_') {
+                newLabel += ' ';
+            } else {
+                newLabel += label[i];
+            }
+        }
+    } else {
+        newLabel = label;
     }
 
-    newLabel = firstCharToUpper(newLabel);
-
-    return newLabel;
+    return firstCharToUpper(newLabel);
 }
