@@ -1,12 +1,13 @@
 import { Flex, GridItem } from '@chakra-ui/react';
-import { User } from '../../types';
+import { EmailSettings, User } from '../../types';
 import AccountOverviewArea from './areas/AccountOverviewArea';
-import EmailSettingsArea from './areas/EmailSettingsArea';
+import ChangeEmailArea from './areas/ChangeEmailArea';
 import PasswordSettingsArea from './areas/PasswordSettingsArea';
 
 type SettingsAreaProps = {
   user: User;
   currentSettingArea: string;
+  emailSettings: EmailSettings;
 }
 
 type AreasMap = {
@@ -17,14 +18,17 @@ type AreasMap = {
 
 type Areas = keyof AreasMap;
 
-function SettingsArea({ user, currentSettingArea }: SettingsAreaProps) {
+function SettingsArea({ user, currentSettingArea, emailSettings }: SettingsAreaProps) {
   const areasMap: AreasMap = {
     'account-overview':
       <AccountOverviewArea
         name={user.name}
         email={user.email}
       />,
-    'email-settings': <EmailSettingsArea />,
+    'email-settings':
+      <ChangeEmailArea
+        {...emailSettings}
+      />,
     'password-settings': <PasswordSettingsArea />
   }
 
