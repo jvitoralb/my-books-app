@@ -2,20 +2,30 @@ import { useState } from 'react';
 import { InputSubject } from '../types';
 
 type SubjectTexts = {
+    name: '';
     email: string;
+    new_email: string;
+    confirm_new_email: string;
     password: string;
-    name: '',
-    confirm_password: string
+    confirm_password: string;
 }
 
-const useTextSubject = (subject: InputSubject, isInvalid: boolean, warningMessage: string) => {
+const useTextSubject = (subject: InputSubject, isInvalid: boolean, warningMessage: string, customText?: string) => {
     const [ currentText, setCurrentText ] = useState('');
 
-    const textOnSujects: SubjectTexts = {
-        email: 'We\'ll never share your email.',
-        password: 'We\'ll never ask for your password.',
-        name: '',
-        confirm_password: 'Passwords should match.'
+    const textOnSuject = () => {
+        if (customText === '') return '';
+
+        const textsOnSujects: SubjectTexts = {
+            name: '',
+            email: 'We\'ll never share your email.',
+            new_email: 'Should not match your email.',
+            confirm_new_email: 'Should match your new email.',
+            password: 'We\'ll never ask for your password.',
+            confirm_password: 'Passwords should match.'
+        }
+
+        return textsOnSujects[subject];
     }
 
     const getText = () => {
@@ -24,7 +34,7 @@ const useTextSubject = (subject: InputSubject, isInvalid: boolean, warningMessag
         if (isInvalid) {
             text = warningMessage;
         } else {
-            text = textOnSujects[subject];
+            text = textOnSuject();
         }
         return text;
     }

@@ -5,7 +5,7 @@ import useInputSubject from '../../hooks/useInputSubject';
 import HelperText from './HelperText';
 
 
-function InputControl({ subject, inputType, setFormState, displayWarning, handleWarnings, subjectWarning }: InputControlProps) {
+function InputControl({ subject, inputType, setFormState, displayWarning, handleWarnings, subjectWarning, customText }: InputControlProps) {
   const {
     isInvalid,
     warningMessage,
@@ -40,6 +40,7 @@ function InputControl({ subject, inputType, setFormState, displayWarning, handle
         isInvalid={isInvalid}
         subject={subject}
         warningMessage={warningMessage}
+        customText={customText}
       />
     </FormControl>
   );

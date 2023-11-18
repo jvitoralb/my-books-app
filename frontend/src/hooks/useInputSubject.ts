@@ -17,6 +17,8 @@ type InputSubjectOptions = {
 
 const defaultPlaceholders = {
     email: 'my@email.com',
+    new_email: 'new@email.com',
+    confirm_new_email: '',
     name: 'Jane Doe',
     password: '',
     confirm_password: ''
