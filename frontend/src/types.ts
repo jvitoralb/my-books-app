@@ -15,14 +15,15 @@ export type UseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQue
 /**
  * Input Control Component related Types
 **/
-export type InputSubject = 'name' | 'email' | 'password' | 'confirm_password';
+export type InputSubject = 'name' | 'email' | 'new_email' | 'confirm_new_email' | 'password' | 'confirm_password';
 export type InputControlProps = {
     subject: InputSubject;
     inputType?: HTMLInputTypeAttribute;
     setFormState: (inputName: string, inputValue: string) => void;
     displayWarning: boolean;
-    handleWarnings: (warnFields: FieldsArray | null) => void;
+    handleWarnings: ((warnFields: FieldsArray | null) => void) | ((warnFields: FieldsArrayEmails | null) => void);
     subjectWarning: string;
+    customText?: string;
 }
 
 /**
@@ -97,4 +98,23 @@ export type UserAuth = {
 export type User = {
     name: string;
     email: string;
+}
+
+/**
+ * Settings Component related Types
+**/
+
+export type FieldsArrayEmails = ['email' | null, 'confirm_email' | null];
+export type EmailUpdates = {
+    email: string;
+    new_email: string;
+}
+export type EmailSettings = {
+    updates: EmailUpdates;
+    setEmailUpdates: (name: string, value: string) => void;
+    isValid: boolean;
+    fields: FieldsArrayEmails;
+    mutate: UseMutateFunction<UserAuth, CustomAxiosError, { updates: EmailUpdates; authorization: string; }, unknown>;
+    isLoading: boolean;
+    isError: boolean;
 }
