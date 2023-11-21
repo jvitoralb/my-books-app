@@ -1,6 +1,7 @@
 import { PrismaClient, Prisma, User } from '@prisma/client';
 import { BadRequestError } from '../../../lib/errors/custom';
 
+
 class Repository {
     private prisma: PrismaClient;
 
@@ -59,11 +60,14 @@ class Repository {
 
         return userFound;
     }
-    updateEmail = async ({ id, email }: User): Promise<User> => {
+    updateEmail = async ({ id, email }: User, newEmail: string): Promise<User> => {
         try {
             return await this.prisma.user.update({
-                where: { id },
-                data:{ email }
+                where: {
+                    id,
+                    email
+                },
+                data: { email: newEmail }
             });
         } catch(err) {
             if (err instanceof Prisma.PrismaClientKnownRequestError) {

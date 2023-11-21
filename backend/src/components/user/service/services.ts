@@ -25,7 +25,7 @@ interface Service {
     registerUser(registerData: RegisterUserData): Promise<UserAccessData>;
     logUser(userCredentials: LoginCredentials): Promise<UserAccessData>;
     searchUser(userIds: UserIdentification): Promise<{ name: string; email: string; }>;
-    changeEmail(userIds: UserIdentification): Promise<UserAccessData>;
+    changeEmail(userIds: UserIdentification, newEmail: string): Promise<UserAccessData>;
     changePassword(id: string, password: string): Promise<void>;
     destroyUser(userIds: UserIdentification): Promise<void>;
 }
@@ -144,11 +144,11 @@ class UserService extends UserData implements Service {
 
         return await this.repository.find(this.getUser);
     }
-    changeEmail = async ({ id, email }: UserIdentification): Promise<UserAccessData> => {
+    changeEmail = async ({ id, email }: UserIdentification, newEmail: string): Promise<UserAccessData> => {
         this.setId = id;
         this.setEmail = email;
 
-        const updatedDoc = await this.repository.updateEmail(this.getUser);
+        const updatedDoc = await this.repository.updateEmail(this.getUser, newEmail);
         const tokenInfo = new AuthToken().issue({
             id: updatedDoc.id,
             email: updatedDoc.email

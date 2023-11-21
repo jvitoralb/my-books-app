@@ -61,10 +61,10 @@ class UserController implements Controller {
             const payload = new AuthToken().decode(bearerToken!);
             const userIds: UserIdentification = {
                 id: payload.sub,
-                email: req.body.new_email
+                email: payload.email
             }
 
-            const updatedUser = await this.service.changeEmail(userIds);
+            const updatedUser = await this.service.changeEmail(userIds, req.body.new_email);
 
             res.status(200).json(updatedUser);
         } catch(err) {
