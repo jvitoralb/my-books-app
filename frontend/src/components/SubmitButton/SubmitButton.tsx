@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import { firstCharToUpper } from '../../utils/strings';
+import { treatLabelsHyphen } from '../../utils/strings';
 
 type SubmitButtonProps = {
   sourceForm: string;
@@ -14,7 +14,7 @@ function SubmitButton({ sourceForm, isLoading }: SubmitButtonProps) {
       type="submit"
       m="2"
     >
-      {firstCharToUpper(sourceForm)}
+      {treatLabelsHyphen(sourceForm)}
     </Button>
   );
 }
