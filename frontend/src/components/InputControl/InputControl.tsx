@@ -5,7 +5,7 @@ import useInputSubject from '../../hooks/useInputSubject';
 import HelperText from './HelperText';
 
 
-function InputControl({ subject, inputType, setFormState, displayWarning, handleWarnings, subjectWarning, customText }: InputControlProps) {
+function InputControl({ subject, value, inputType, setFormState, displayWarning, handleWarnings, subjectWarning, customText }: InputControlProps) {
   const {
     isInvalid,
     warningMessage,
@@ -34,6 +34,7 @@ function InputControl({ subject, inputType, setFormState, displayWarning, handle
         onChange={handleInputsChange}
         placeholder={defaultPlaceHolder}
         autoComplete="on"
+        value={value}
       />
 
       <HelperText
