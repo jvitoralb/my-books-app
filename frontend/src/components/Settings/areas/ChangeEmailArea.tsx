@@ -4,9 +4,10 @@ import InputControl from '../../InputControl';
 import SubmitButton from '../../SubmitButton';
 import { EmailSettings, EmailUpdates } from '../../../types';
 import useWarningsEmailSettings from '../../../hooks/useWarningsEmailSettings';
+import useSettingsStatusHandler from '../../../hooks/useSettingsStatusHandler';
 
 
-function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoading, sendUpdates, isError, isSuccess }: EmailSettings) {
+function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoading, sendUpdates, isError, error, isSuccess }: EmailSettings) {
   const {
     handleWarnings,
     displayWarning,
@@ -14,6 +15,8 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoadi
     newEmailWarning,
     confirmNewEmailWarning
   } = useWarningsEmailSettings(isValid, isError);
+
+  const { statusElem } = useSettingsStatusHandler(isError, error, isSuccess);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,7 +74,7 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoadi
         />
       </form>
 
-      { isSuccess && <p>Email updated successfully!</p> }
+      { statusElem }
     </>
   );
 }

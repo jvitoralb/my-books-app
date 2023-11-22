@@ -15,7 +15,8 @@ function SettingsPage() {
     emailSendUpdates,
     emailIsLoading,
     emailIsError,
-    emailIsSuccess
+    emailIsSuccess,
+    emailError
   } = useEmailMutation(token);
 
   const {
@@ -38,6 +39,7 @@ function SettingsPage() {
         sendUpdates: emailSendUpdates,
         isLoading: emailIsLoading,
         isError: emailIsError,
+        error: emailError,
         isSuccess: emailIsSuccess
       }}
     />
