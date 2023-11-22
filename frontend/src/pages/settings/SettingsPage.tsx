@@ -7,18 +7,18 @@ import useEmailMutation from '../../hooks/useEmailMutation';
 
 function SettingsPage() {
   const {
-    emailUpdates,
-    setEmailUpdates,
-    emailIsValid,
-    emailFields
-  } = useEmailSettings();
-
-  const {
-    emailMutationRes,
     emailMutate,
     emailIsLoading,
     emailIsError,
-} = useEmailMutation();
+    emailIsSuccess
+  } = useEmailMutation();
+
+  const {
+    emailState,
+    setEmailValues,
+    emailIsValid,
+    emailFields
+  } = useEmailSettings(emailIsSuccess);
 
   const user = useLoaderData() as User;
 
@@ -26,13 +26,14 @@ function SettingsPage() {
     <Settings
       user={user}
       emailSettings={{
-        setEmailUpdates,
-        updates: emailUpdates,
+        setEmailValues,
+        stateValues: emailState,
         isValid: emailIsValid,
         fields: emailFields,
         mutate: emailMutate,
         isLoading: emailIsLoading,
-        isError: emailIsError
+        isError: emailIsError,
+        isSuccess: emailIsSuccess
       }}
     />
   );

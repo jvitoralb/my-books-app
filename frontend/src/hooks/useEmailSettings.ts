@@ -9,7 +9,7 @@ type EmailSettingsConfig = {
     fields: FieldsArrayEmails
 }
 
-const useEmailSettings = () => {
+const useEmailSettings = (updateSuccess: boolean) => {
     const [config, setConfig] = useState<EmailSettingsConfig>({
         email: '',
         new_email: '',
@@ -19,6 +19,7 @@ const useEmailSettings = () => {
     });
 
     useEffect(() => validate(), [config.email, config.new_email, config.confirm_new_email]);
+    useEffect(() => { if (updateSuccess) stateReset(); }, [updateSuccess]);
 
     const validate = () => {
         let fieldsMock: FieldsArrayEmails = [null, null];
@@ -49,12 +50,22 @@ const useEmailSettings = () => {
         }));
     }
 
+    const stateReset = () => {
+        setConfig((prevData) => ({
+            ...prevData,
+            email: '',
+            new_email: '',
+            confirm_new_email: ''
+        }));
+    }
+
     return {
-        emailUpdates: {
+        emailState: {
             email: config.email,
-            new_email: config.new_email
+            new_email: config.new_email,
+            confirm_new_email: config.confirm_new_email,
         },
-        setEmailUpdates: dataSetter,
+        setEmailValues: dataSetter,
         emailIsValid: config.isValid,
         emailFields: config.fields,
     }

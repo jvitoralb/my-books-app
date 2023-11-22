@@ -12,6 +12,7 @@ const useEmailMutation = () => {
         isError,
         error,
         isLoading,
+        isSuccess
     } = useMutation<UserAuth, CustomAxiosError, { updates: EmailUpdates, authorization: string }>({
         mutationFn: updateUserEmail
     });
@@ -27,6 +28,7 @@ const useEmailMutation = () => {
         emailMutationRes: data,
         emailMutate: mutate,
         emailIsLoading: isLoading,
+        emailIsSuccess: isSuccess,
         emailIsError: isError,
         emailError: error
     }

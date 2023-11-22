@@ -2,12 +2,12 @@ import { FormEvent } from 'react';
 import { Heading } from '@chakra-ui/react';
 import InputControl from '../../InputControl';
 import SubmitButton from '../../SubmitButton';
-import { EmailSettings } from '../../../types';
+import { EmailSettings, EmailUpdates } from '../../../types';
 import useWarningsEmailSettings from '../../../hooks/useWarningsEmailSettings';
 import { getAuthData } from '../../../utils/auth';
 
 
-function ChangeEmailArea({ setEmailUpdates, updates, isValid, fields, isLoading, mutate, isError }: EmailSettings) {
+function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoading, mutate, isError, isSuccess }: EmailSettings) {
   const {
     handleWarnings,
     displayWarning,
@@ -18,6 +18,11 @@ function ChangeEmailArea({ setEmailUpdates, updates, isValid, fields, isLoading,
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const updates: EmailUpdates = {
+      email: stateValues.email,
+      new_email: stateValues.new_email
+    }
 
     if (isValid) {
       // usar useAuth hook
@@ -36,27 +41,30 @@ function ChangeEmailArea({ setEmailUpdates, updates, isValid, fields, isLoading,
       <form id="update-email-form" onSubmit={handleFormSubmit} className="flex-center-col">
         <InputControl
           subject="email"
-          setFormState={setEmailUpdates}
+          setFormState={setEmailValues}
           displayWarning={displayWarning}
           handleWarnings={handleWarnings}
           subjectWarning={emailWarning}
           customText={''}
+          value={stateValues.email}
         />
 
         <InputControl
           subject="new_email"
-          setFormState={setEmailUpdates}
+          setFormState={setEmailValues}
           displayWarning={displayWarning}
           handleWarnings={handleWarnings}
           subjectWarning={newEmailWarning}
+          value={stateValues.new_email}
         />
 
         <InputControl
           subject="confirm_new_email"
-          setFormState={setEmailUpdates}
+          setFormState={setEmailValues}
           displayWarning={displayWarning}
           handleWarnings={handleWarnings}
           subjectWarning={confirmNewEmailWarning}
+          value={stateValues.confirm_new_email}
         />
 
         <SubmitButton
@@ -64,6 +72,8 @@ function ChangeEmailArea({ setEmailUpdates, updates, isValid, fields, isLoading,
           sourceForm="update-email"
         />
       </form>
+
+      { isSuccess && <p>Email updated successfully!</p> }
     </>
   );
 }
