@@ -1,7 +1,7 @@
-import { AxiosError } from "axios";
-import { redirect } from "react-router-dom";
-import { getUser } from "../../api/api";
-import { getAuthData, delAuthData } from "../../utils/auth";
+import { AxiosError } from 'axios';
+import { redirect } from 'react-router-dom';
+import { getUser } from '../../api/api';
+import { getAuthData, delAuthData } from '../../utils/auth';
 
 
 const settingsLoader = async () => {
@@ -15,7 +15,8 @@ const settingsLoader = async () => {
         return await getUser(authData.token);
     } catch (err) {
         if (err instanceof AxiosError) {
-            if (err.response?.status === 401 || err.response?.status === 403) {
+            let statusCode = err.response?.status;
+            if (statusCode === 400 || statusCode === 401 || statusCode === 403) {
                 delAuthData();
                 return redirect('/login');
             }

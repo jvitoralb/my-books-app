@@ -15,7 +15,8 @@ const homeLoader = async () => {
         return await getUser(authData.token);
     } catch (err) {
         if (err instanceof AxiosError) {
-            if (err.response?.status === 401 || err.response?.status === 403) {
+            let statusCode = err.response?.status;
+            if (statusCode === 400 || statusCode === 401 || statusCode === 403) {
                 delAuthData();
                 return redirect('/login');
             }
