@@ -18,6 +18,7 @@ export type UseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQue
 export type InputSubject = 'name' | 'email' | 'new_email' | 'confirm_new_email' | 'password' | 'confirm_password';
 export type InputControlProps = {
     subject: InputSubject;
+    value?: string;
     inputType?: HTMLInputTypeAttribute;
     setFormState: (inputName: string, inputValue: string) => void;
     displayWarning: boolean;
@@ -109,12 +110,19 @@ export type EmailUpdates = {
     email: string;
     new_email: string;
 }
+type EmailStateValues = {
+    email: string;
+    new_email: string;
+    confirm_new_email: string;
+}
 export type EmailSettings = {
-    updates: EmailUpdates;
-    setEmailUpdates: (name: string, value: string) => void;
+    stateValues: EmailStateValues;
+    setEmailValues: (name: string, value: string) => void;
     isValid: boolean;
     fields: FieldsArrayEmails;
-    mutate: UseMutateFunction<UserAuth, CustomAxiosError, { updates: EmailUpdates; authorization: string; }, unknown>;
+    sendUpdates: (updates: EmailUpdates) => void;
+    error: CustomAxiosError;
     isLoading: boolean;
+    isSuccess: boolean;
     isError: boolean;
 }
