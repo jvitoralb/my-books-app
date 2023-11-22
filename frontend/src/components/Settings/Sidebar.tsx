@@ -1,5 +1,5 @@
 import { VStack, GridItem, StackDivider, Heading } from '@chakra-ui/react';
-import { firstCharToUpper } from '../../utils/strings';
+import { treatLabelsHyphen } from '../../utils/strings';
 
 type SidebarProps = {
   handleCurrentSetting: (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => void;
@@ -26,7 +26,7 @@ function Sidebar({ handleCurrentSetting }: SidebarProps) {
             as="h2"
             size="sm"
           >
-            {firstCharToUpper(opt.replace('-', ' '))}
+            {treatLabelsHyphen(opt)}
           </Heading>
         ))
       }
