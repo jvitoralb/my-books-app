@@ -4,10 +4,9 @@ import InputControl from '../../InputControl';
 import SubmitButton from '../../SubmitButton';
 import { EmailSettings, EmailUpdates } from '../../../types';
 import useWarningsEmailSettings from '../../../hooks/useWarningsEmailSettings';
-import { getAuthData } from '../../../utils/auth';
 
 
-function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoading, mutate, isError, isSuccess }: EmailSettings) {
+function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoading, sendUpdates, isError, isSuccess }: EmailSettings) {
   const {
     handleWarnings,
     displayWarning,
@@ -25,8 +24,7 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoadi
     }
 
     if (isValid) {
-      // usar useAuth hook
-      mutate({ updates, authorization: getAuthData().token });
+      sendUpdates(updates);
     } else {
       handleWarnings(fields);
     }

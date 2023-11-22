@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { updateUserEmail } from '../api/api';
 import { CustomAxiosError, UserAuth, EmailUpdates } from '../types';
-import { useEffect } from 'react';
 import { delAuthData, setAuthData } from '../utils/auth';
 
 
-const useEmailMutation = () => {
+const useEmailMutation = (authToken: string) => {
     const {
         data,
         mutate,
@@ -24,9 +24,16 @@ const useEmailMutation = () => {
         }
     }, [data]);
 
+    const sendUpdates = (updates: EmailUpdates) => {
+        mutate({
+            updates,
+            authorization: authToken
+        });
+    }
+
     return {
         emailMutationRes: data,
-        emailMutate: mutate,
+        emailSendUpdates: sendUpdates,
         emailIsLoading: isLoading,
         emailIsSuccess: isSuccess,
         emailIsError: isError,

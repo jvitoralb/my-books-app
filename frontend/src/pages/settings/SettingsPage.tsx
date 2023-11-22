@@ -3,15 +3,20 @@ import Settings from '../../components/Settings';
 import useEmailSettings from '../../hooks/useEmailSettings';
 import { User } from '../../types';
 import useEmailMutation from '../../hooks/useEmailMutation';
+import useAuth from '../../hooks/useAuth';
 
 
 function SettingsPage() {
+  const { token } = useAuth({
+    operation: 'GET'
+  });
+
   const {
-    emailMutate,
+    emailSendUpdates,
     emailIsLoading,
     emailIsError,
     emailIsSuccess
-  } = useEmailMutation();
+  } = useEmailMutation(token);
 
   const {
     emailState,
@@ -30,7 +35,7 @@ function SettingsPage() {
         stateValues: emailState,
         isValid: emailIsValid,
         fields: emailFields,
-        mutate: emailMutate,
+        sendUpdates: emailSendUpdates,
         isLoading: emailIsLoading,
         isError: emailIsError,
         isSuccess: emailIsSuccess
