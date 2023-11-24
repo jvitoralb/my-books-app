@@ -2,7 +2,7 @@ import { Flex, GridItem } from '@chakra-ui/react';
 import { EmailSettings, PasswordSettings, User } from '../../types';
 import AccountOverviewArea from './areas/AccountOverviewArea';
 import ChangeEmailArea from './areas/ChangeEmailArea';
-import PasswordSettingsArea from './areas/PasswordSettingsArea';
+import PasswordSettingsArea from './areas/ChangePasswordArea';
 
 type SettingsAreaProps = {
   user: User;
