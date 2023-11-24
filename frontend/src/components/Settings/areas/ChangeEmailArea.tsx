@@ -16,7 +16,12 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoadi
     confirmNewEmailWarning
   } = useWarningsEmailSettings(isValid, isError);
 
-  const { statusElem } = useSettingsStatusHandler(isError, error, isSuccess);
+  const { statusElem } = useSettingsStatusHandler({
+    area: 'email',
+    isError,
+    error,
+    isSuccess
+  });
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
