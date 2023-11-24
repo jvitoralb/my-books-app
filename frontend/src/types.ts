@@ -1,4 +1,4 @@
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, UseMutateFunction } from '@tanstack/react-query';
+import { MutationStatus, QueryObserverResult, RefetchOptions, RefetchQueryFilters, UseMutateFunction } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { HTMLInputTypeAttribute } from 'react';
 
@@ -15,14 +15,14 @@ export type UseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQue
 /**
  * Input Control Component related Types
 **/
-export type InputSubject = 'name' | 'email' | 'new_email' | 'confirm_new_email' | 'password' | 'confirm_password';
+export type InputSubject = 'name' | 'email' | 'new_email' | 'confirm_new_email' | 'password' | 'confirm_password' | 'new_password' | 'confirm_new_password';
 export type InputControlProps = {
     subject: InputSubject;
     value?: string;
     inputType?: HTMLInputTypeAttribute;
     setFormState: (inputName: string, inputValue: string) => void;
     displayWarning: boolean;
-    handleWarnings: ((warnFields: FieldsArray | null) => void) | ((warnFields: FieldsArrayEmails | null) => void);
+    handleWarnings: ((warnFields: FieldsArray | null) => void) | ((warnFields: FieldsArrayEmails | null) => void) | ((warnFields: FieldsArrayPswd | null) => void);
     subjectWarning: string;
     customText?: string;
 }
@@ -107,11 +107,11 @@ export type User = {
 
 export type FieldsArrayEmails = ['email' | null, 'confirm_email' | null];
 export type EmailUpdates = {
-    email: string;
+    // email: string;
     new_email: string;
 }
 type EmailStateValues = {
-    email: string;
+    // email: string;
     new_email: string;
     confirm_new_email: string;
 }
@@ -121,8 +121,24 @@ export type EmailSettings = {
     isValid: boolean;
     fields: FieldsArrayEmails;
     sendUpdates: (updates: EmailUpdates) => void;
+    status: MutationStatus;
     error: CustomAxiosError;
-    isLoading: boolean;
-    isSuccess: boolean;
-    isError: boolean;
+}
+
+export type PasswordUpdates = {
+    new_password: string;
+}
+type PasswordStateValues = {
+    new_password: string;
+    confirm_new_password: string;
+}
+export type FieldsArrayPswd = ['password' | null, 'confirm_password' | null];
+export type PasswordSettings = {
+    stateValues: PasswordStateValues;
+    setPswdValues: (name: string, value: string) => void;
+    isValid: boolean;
+    fields: FieldsArrayPswd;
+    sendUpdates: (updates: PasswordUpdates) => void;
+    status: MutationStatus;
+    error: CustomAxiosError;
 }
