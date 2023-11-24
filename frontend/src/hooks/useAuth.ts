@@ -1,47 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { delAuthData, getAuthData, setAuthData } from '../utils/auth';
 import { UserAuth } from '../types';
-import { getAuthData, setAuthData } from '../utils/auth';
-
-type AuthHookOptions = {
-    data?: UserAuth;
-    operation: 'SET' | 'GET';
-}
 
 type AuthState = {
     isAuth: boolean;
     token: string;
 }
 
-const useAuth = ({ data, operation }: AuthHookOptions): AuthState => {
-    const [ auth, setAuth ] = useState<AuthState>({
+const useAuth = (userAuth?: UserAuth) => {
+    const [ options, setOptions ] = useState<AuthState>({
         isAuth: false,
         token: ''
     });
 
-    if (operation === 'SET') {
-        if (!auth.isAuth && data) {
-            setAuthData(data);
-        
-            setAuth((prev) => ({
-                ...prev,
-                isAuth: true
-            }));
+    useEffect(() => {
+        let savedAuth = getAuthData();
+
+        if (savedAuth.token) setAuthState(savedAuth.token);
+    }, []);
+    useEffect(() => {
+        if (userAuth) {
+            saveUserAuth(userAuth);
+            setAuthState(userAuth.token);
         }
-    } else if (operation === 'GET') {
-        let authData = getAuthData();
-        
-        if (auth.token === '' && authData.token !== '') {
-            setAuth((prevAuth) => ({
-                ...prevAuth,
-                token: authData.token
-            }));
-        }
+    }, [userAuth]);
+
+    const saveUserAuth = (userAuth: UserAuth) => {
+        setAuthData(userAuth);
+    }
+    const updateUserAuth = (userAuth: UserAuth) => {
+        delAuthData();
+        setAuthData(userAuth);
+    }
+    const setAuthState = (newToken: string) => {
+        setOptions({
+            isAuth: true,
+            token: newToken
+        });
     }
 
     return {
-        isAuth: auth.isAuth,
-        token: auth.token
-    };
+        updateAuth: (update?: UserAuth) => {
+            if (update) {
+                updateUserAuth(update);
+            }
+        },
+        isAuth: options.isAuth,
+        token: options.token
+    }
 }
 
 export default useAuth;
