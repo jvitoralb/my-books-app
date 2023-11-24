@@ -5,11 +5,11 @@ import { NavLink } from 'react-router-dom';
 function Header() {
   return (
     <header id="my-books-app-header" className="flex-center-col">
-      <NavLink to="/">
-        <Heading as="h1" size="md">
+      <Heading as="h1" size="md">
+        <NavLink to="/">
           my-books-app
-        </Heading>
-      </NavLink>
+        </NavLink>
+      </Heading>
     </header>
   );
 }
