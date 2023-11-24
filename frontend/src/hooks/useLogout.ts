@@ -1,11 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { delAuthData } from "../utils/auth";
+import { useNavigate } from 'react-router-dom';
+import useAuth from './useAuth';
+
 
 const useLogout = () => {
     const navigate = useNavigate();
+    const { finishSession } = useAuth();
 
     const handleLogout = () => {
-        delAuthData();
+        finishSession();
         navigate('/login');
     }
 

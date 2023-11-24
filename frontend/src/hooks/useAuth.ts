@@ -32,9 +32,13 @@ const useAuth = (userAuth?: UserAuth) => {
         delAuthData();
         setAuthData(userAuth);
     }
+    const deleteAuth = () => {
+        delAuthData();
+        setAuthState('');
+    }
     const setAuthState = (newToken: string) => {
         setOptions({
-            isAuth: true,
+            isAuth: newToken !== '' ? true : false,
             token: newToken
         });
     }
@@ -45,6 +49,7 @@ const useAuth = (userAuth?: UserAuth) => {
                 updateUserAuth(update);
             }
         },
+        finishSession: deleteAuth,
         isAuth: options.isAuth,
         token: options.token
     }
