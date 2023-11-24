@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { EmailUpdates, LoginCredentials, SignupUserData, User, UserAuth } from '../types';
+import axios, { AxiosResponse } from 'axios';
+import { EmailUpdates, LoginCredentials, PasswordUpdates, SignupUserData, User, UserAuth } from '../types';
 
 type LoginQueryKey = {
     queryKey: (string | LoginCredentials)[];
@@ -38,4 +38,12 @@ export const updateUserEmail = async ({ authorization, updates }: { updates: Ema
         }
     });
     return data;
+}
+
+export const updateUserPassword = async ({ authorization, updates }: { updates: PasswordUpdates; authorization: string }): Promise<AxiosResponse> => {
+    return await axiosInstance.put('/users/password', updates, {
+        headers: {
+            'Authorization': authorization
+        }
+    });
 }

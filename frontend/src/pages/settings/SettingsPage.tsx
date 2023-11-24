@@ -4,6 +4,8 @@ import useEmailSettings from '../../hooks/useEmailSettings';
 import { User } from '../../types';
 import useEmailMutation from '../../hooks/useEmailMutation';
 import useAuth from '../../hooks/useAuth';
+import usePasswordSettings from '../../hooks/usePasswordSettings';
+import usePasswordMutation from '../../hooks/usePasswordMutation';
 
 
 function SettingsPage() {
@@ -26,6 +28,19 @@ function SettingsPage() {
     emailFields
   } = useEmailSettings(emailIsSuccess);
 
+  const {
+    pswdSendUpdates,
+    pswdStatus,
+    pswdError
+  } = usePasswordMutation(token);
+
+  const {
+    pswdIsValid,
+    pswdFields,
+    pswdState,
+    setPswdValues
+  } = usePasswordSettings(pswdStatus);
+
   const user = useLoaderData() as User;
 
   return (
@@ -41,6 +56,15 @@ function SettingsPage() {
         isError: emailIsError,
         error: emailError,
         isSuccess: emailIsSuccess
+      }}
+      pswdSettings={{
+        setPswdValues,
+        stateValues: pswdState,
+        isValid: pswdIsValid,
+        fields: pswdFields,
+        sendUpdates: pswdSendUpdates,
+        status: pswdStatus,
+        error: pswdError
       }}
     />
   );

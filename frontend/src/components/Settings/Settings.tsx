@@ -1,5 +1,5 @@
 import { Grid } from '@chakra-ui/react';
-import { EmailSettings, User } from '../../types';
+import { EmailSettings, PasswordSettings, User } from '../../types';
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import SettingsArea from './SettingsArea';
@@ -7,9 +7,10 @@ import SettingsArea from './SettingsArea';
 type SettingsProps = {
   user: User;
   emailSettings: EmailSettings;
+  pswdSettings: PasswordSettings;
 }
 
-function Settings({ user, emailSettings }: SettingsProps) {
+function Settings({ user, emailSettings, pswdSettings }: SettingsProps) {
   const [ currentSetting, setCurrentSetting ] = useState('account-overview');
   
   const handleCurrentSetting = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
@@ -36,6 +37,7 @@ function Settings({ user, emailSettings }: SettingsProps) {
           user={user}
           currentSettingArea={currentSetting}
           emailSettings={emailSettings}
+          pswdSettings={pswdSettings}
         />
       </Grid>
     </main>

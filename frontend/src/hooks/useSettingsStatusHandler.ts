@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { CustomAxiosError } from '../types';
+import { firstCharToUpper } from '../utils/strings';
 
+type SettingsStatus = {
+    area: 'email' | 'password';
+    isError: boolean;
+    error: CustomAxiosError;
+    isSuccess: boolean
+}
 
-const useSettingsStatusHandler = (isError: boolean, error: CustomAxiosError, isSuccess: boolean) => {
+const useSettingsStatusHandler = ({ area, isError, error, isSuccess }: SettingsStatus) => {
     const [ statusElem, setStatusElem ] = useState<JSX.Element | null>(null);
 
     const setElemChildren = (children: string) => {
@@ -22,7 +29,7 @@ const useSettingsStatusHandler = (isError: boolean, error: CustomAxiosError, isS
                 setElemChildren('Something went wrong. Please try again later!');
             }
         } else if (isSuccess) {
-            setElemChildren('Email updated successfully!');
+            setElemChildren(`${firstCharToUpper(area)} updated successfully!`);
         } else {
             setStatusElem(null);
         }

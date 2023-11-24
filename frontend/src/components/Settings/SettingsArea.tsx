@@ -1,5 +1,5 @@
 import { Flex, GridItem } from '@chakra-ui/react';
-import { EmailSettings, User } from '../../types';
+import { EmailSettings, PasswordSettings, User } from '../../types';
 import AccountOverviewArea from './areas/AccountOverviewArea';
 import ChangeEmailArea from './areas/ChangeEmailArea';
 import PasswordSettingsArea from './areas/PasswordSettingsArea';
@@ -8,6 +8,7 @@ type SettingsAreaProps = {
   user: User;
   currentSettingArea: string;
   emailSettings: EmailSettings;
+  pswdSettings: PasswordSettings;
 }
 
 type AreasMap = {
@@ -18,7 +19,7 @@ type AreasMap = {
 
 type Areas = keyof AreasMap;
 
-function SettingsArea({ user, currentSettingArea, emailSettings }: SettingsAreaProps) {
+function SettingsArea({ user, currentSettingArea, emailSettings, pswdSettings }: SettingsAreaProps) {
   const areasMap: AreasMap = {
     'account-overview':
       <AccountOverviewArea
@@ -29,7 +30,10 @@ function SettingsArea({ user, currentSettingArea, emailSettings }: SettingsAreaP
       <ChangeEmailArea
         {...emailSettings}
       />,
-    'password-settings': <PasswordSettingsArea />
+    'password-settings':
+      <PasswordSettingsArea
+        {...pswdSettings}
+      />
   }
 
   const isValidArea = (value: string): value is Areas => {
