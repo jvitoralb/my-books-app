@@ -10,16 +10,16 @@ type EmailSettingsConfig = {
     fields: FieldsArrayEmails
 }
 
-const useEmailSettings = (mutationStatus: MutationStatus) => {
+const useEmailSettings = (userEmail: string, mutationStatus: MutationStatus) => {
     const [config, setConfig] = useState<EmailSettingsConfig>({
-        email: '',
+        email: userEmail,
         new_email: '',
         confirm_new_email: '',
         isValid: true,
         fields: [null, null]
     });
 
-    useEffect(() => validate(), [config.email, config.new_email, config.confirm_new_email]);
+    useEffect(() => validate(), [config.new_email, config.confirm_new_email]);
     useEffect(() => { if (mutationStatus === 'success') stateReset(); }, [mutationStatus]);
 
     const validate = () => {
@@ -54,7 +54,6 @@ const useEmailSettings = (mutationStatus: MutationStatus) => {
     const stateReset = () => {
         setConfig((prevData) => ({
             ...prevData,
-            email: '',
             new_email: '',
             confirm_new_email: ''
         }));
@@ -62,7 +61,6 @@ const useEmailSettings = (mutationStatus: MutationStatus) => {
 
     return {
         emailState: {
-            email: config.email,
             new_email: config.new_email,
             confirm_new_email: config.confirm_new_email,
         },

@@ -1,27 +1,22 @@
 import { useState } from 'react';
 import { InputSubject } from '../types';
 
-type SubjectTexts = {
-    name: '';
-    email: string;
-    new_email: string;
-    confirm_new_email: string;
-    password: string;
-    confirm_password: string;
-}
 
 const useTextSubject = (subject: InputSubject, isInvalid: boolean, warningMessage: string, customText?: string) => {
     const [ currentText, setCurrentText ] = useState('');
 
     const textOnSuject = () => {
         if (customText === '') return '';
+        if (customText) return customText;
 
-        const textsOnSujects: SubjectTexts = {
+        const textsOnSujects = {
             name: '',
             email: 'We\'ll never share your email.',
             new_email: 'Should not match your email.',
             confirm_new_email: 'Should match your new email.',
             password: 'We\'ll never ask for your password.',
+            new_password: 'We\'ll never ask for your password.',
+            confirm_new_password: 'Should match your new password.',
             confirm_password: 'Passwords should match.'
         }
 

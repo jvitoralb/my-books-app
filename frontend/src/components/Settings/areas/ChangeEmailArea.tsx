@@ -2,7 +2,7 @@ import { FormEvent } from 'react';
 import { Heading } from '@chakra-ui/react';
 import InputControl from '../../InputControl';
 import SubmitButton from '../../SubmitButton';
-import { EmailSettings, EmailUpdates } from '../../../types';
+import { EmailSettings } from '../../../types';
 import useWarningsEmailSettings from '../../../hooks/useWarningsEmailSettings';
 import useSettingsStatusHandler from '../../../hooks/useSettingsStatusHandler';
 
@@ -11,7 +11,6 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, sendUpd
   const {
     handleWarnings,
     displayWarning,
-    emailWarning,
     newEmailWarning,
     confirmNewEmailWarning
   } = useWarningsEmailSettings(isValid, status === 'error');
@@ -26,13 +25,8 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, sendUpd
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const updates: EmailUpdates = {
-      email: stateValues.email,
-      new_email: stateValues.new_email
-    }
-
     if (isValid) {
-      sendUpdates(updates);
+      sendUpdates({ new_email: stateValues.new_email });
     } else {
       handleWarnings(fields);
     }
@@ -45,16 +39,6 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, sendUpd
       </Heading>
 
       <form id="update-email-form" onSubmit={handleFormSubmit} className="flex-center-col">
-        <InputControl
-          subject="email"
-          setFormState={setEmailValues}
-          displayWarning={displayWarning}
-          handleWarnings={handleWarnings}
-          subjectWarning={emailWarning}
-          customText={''}
-          value={stateValues.email}
-        />
-
         <InputControl
           subject="new_email"
           setFormState={setEmailValues}

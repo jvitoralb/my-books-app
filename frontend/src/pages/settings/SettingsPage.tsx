@@ -9,6 +9,8 @@ import usePasswordMutation from '../../hooks/usePasswordMutation';
 
 
 function SettingsPage() {
+  const user = useLoaderData() as User;
+
   const { token } = useAuth({
     operation: 'GET'
   });
@@ -24,7 +26,7 @@ function SettingsPage() {
     setEmailValues,
     emailIsValid,
     emailFields
-  } = useEmailSettings(emailStatus);
+  } = useEmailSettings(user.email, emailStatus);
 
   const {
     pswdSendUpdates,
@@ -38,8 +40,6 @@ function SettingsPage() {
     pswdState,
     setPswdValues
   } = usePasswordSettings(pswdStatus);
-
-  const user = useLoaderData() as User;
 
   return (
     <Settings

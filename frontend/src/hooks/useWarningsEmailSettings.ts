@@ -3,7 +3,6 @@ import { FieldsArrayEmails } from '../types';
 
 type SettingsWarnings = {
     display: boolean;
-    email: string;
     newEmail: string;
     confirmNewEmail: string;
 }
@@ -11,15 +10,13 @@ type SettingsWarnings = {
 const useWarningsEmailSettings = (isValid: boolean, isError: boolean) => {
     const [warnings, setWarnings] = useState<SettingsWarnings>({
         display: false,
-        email: '',
         newEmail: '',
         confirmNewEmail: ''
     });
 
-    const set = (display: boolean, email: string, newEmail: string, confirmNewEmail: string) => {
+    const set = (display: boolean, newEmail: string, confirmNewEmail: string) => {
         setWarnings({
             display,
-            email,
             newEmail,
             confirmNewEmail
         });
@@ -27,39 +24,30 @@ const useWarningsEmailSettings = (isValid: boolean, isError: boolean) => {
 
     const handleWarnings = (warnFields: FieldsArrayEmails | null) => {
         if (warnFields !== null) {
-            let email = '';
             let newEmail = '';
             let confirmNewEmail = '';
 
             if (warnFields[0] !== null) {
-                if (isValid === false) {
-                    email = 'Email should not match New email!';
-                    newEmail = 'New email should not match email!';
-                }
-                if (isError === true) {
-                    email = 'Email does not exists!';
-                }
-            }
-            if (warnFields[1] !== null) {
-                if (isValid === false) {
-                    confirmNewEmail = 'Emails does not match!';
-                    newEmail = 'Emails does not match!';
-                }
-                if (isError === true) {
-                    newEmail = 'Email already in use!';
-                }
+                if (isValid === false) newEmail = 'Should not match your current email!';
             }
 
-            set(true, email, newEmail, confirmNewEmail);
+            if (warnFields[1] !== null) {
+                if (isValid === false) {
+                    newEmail = 'Emails does not match!';
+                    confirmNewEmail = 'Emails does not match!';
+                }
+                if (isError === true) newEmail = 'Email already in use!';
+            }
+
+            set(true, newEmail, confirmNewEmail);
         } else {
-            set(false, '', '', '');
+            set(false, '', '');
         }
     }
 
     return {
         handleWarnings: handleWarnings,
         displayWarning: warnings.display,
-        emailWarning: warnings.email,
         newEmailWarning: warnings.newEmail,
         confirmNewEmailWarning: warnings.confirmNewEmail
     }
