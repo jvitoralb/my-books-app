@@ -6,7 +6,7 @@ import Home from '../../components/Home';
 
 function HomePage() {
   const user = useLoaderData() as User;
-  const { token } = useAuth({ operation: 'GET' });
+  const { token } = useAuth();
   
   return (
     <Home

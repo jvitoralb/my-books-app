@@ -22,10 +22,7 @@ function SignUpPage() {
     error
   } = useSignupMutation();
 
-  const { isAuth } = useAuth({
-    data: data,
-    operation: 'SET'
-  });
+  const { isAuth } = useAuth(data);
 
   const signupProps: SignupProps = {
     mutate,

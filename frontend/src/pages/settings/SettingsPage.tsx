@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { User } from '../../types';
 import Settings from '../../components/Settings';
@@ -11,14 +12,16 @@ import usePasswordMutation from '../../hooks/usePasswordMutation';
 function SettingsPage() {
   const user = useLoaderData() as User;
 
-  const { token } = useAuth({
-    operation: 'GET'
-  });
+  const {
+    token,
+    updateAuth
+  } = useAuth();
 
   const {
     emailSendUpdates,
     emailStatus,
-    emailError
+    emailError,
+    emailMutationRes
   } = useEmailMutation(token);
 
   const {
@@ -40,6 +43,10 @@ function SettingsPage() {
     pswdState,
     setPswdValues
   } = usePasswordSettings(pswdStatus);
+
+  useEffect(() => {
+    if (emailStatus === 'success') updateAuth(emailMutationRes);
+  }, [emailStatus]);
 
   return (
     <Settings

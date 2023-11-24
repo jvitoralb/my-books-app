@@ -22,10 +22,7 @@ function LogInPage() {
     isLoadingRefetch
   } = useLoginQuery(credentials);
 
-  const { isAuth } = useAuth({
-    data: data,
-    operation: 'SET'
-  });
+  const { isAuth } = useAuth(data);
 
   const loginProps: LoginProps = {
     refetch,

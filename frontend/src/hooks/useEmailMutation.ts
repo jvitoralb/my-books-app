@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { updateUserEmail } from '../api/api';
 import { CustomAxiosError, UserAuth, EmailUpdates } from '../types';
-import { delAuthData, setAuthData } from '../utils/auth';
 
 
 const useEmailMutation = (authToken: string) => {
@@ -14,13 +12,6 @@ const useEmailMutation = (authToken: string) => {
     } = useMutation<UserAuth, CustomAxiosError, { updates: EmailUpdates, authorization: string }>({
         mutationFn: updateUserEmail
     });
-
-    useEffect(() => {
-        if (status === 'success' && data !== undefined) {
-            delAuthData();
-            setAuthData(data);
-        }
-    }, [data]);
 
     const sendUpdates = (updates: EmailUpdates) => {
         mutate({
