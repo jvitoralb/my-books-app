@@ -9,16 +9,14 @@ const useEmailMutation = (authToken: string) => {
     const {
         data,
         mutate,
-        isError,
-        error,
-        isLoading,
-        isSuccess
+        status,
+        error
     } = useMutation<UserAuth, CustomAxiosError, { updates: EmailUpdates, authorization: string }>({
         mutationFn: updateUserEmail
     });
 
     useEffect(() => {
-        if (!isError && data !== undefined) {
+        if (status === 'success' && data !== undefined) {
             delAuthData();
             setAuthData(data);
         }
@@ -34,9 +32,7 @@ const useEmailMutation = (authToken: string) => {
     return {
         emailMutationRes: data,
         emailSendUpdates: sendUpdates,
-        emailIsLoading: isLoading,
-        emailIsSuccess: isSuccess,
-        emailIsError: isError,
+        emailStatus: status,
         emailError: error
     }
 }

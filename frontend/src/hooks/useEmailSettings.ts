@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FieldsArrayEmails } from '../types';
+import { MutationStatus } from '@tanstack/react-query';
 
 type EmailSettingsConfig = {
     email: string;
@@ -9,7 +10,7 @@ type EmailSettingsConfig = {
     fields: FieldsArrayEmails
 }
 
-const useEmailSettings = (updateSuccess: boolean) => {
+const useEmailSettings = (mutationStatus: MutationStatus) => {
     const [config, setConfig] = useState<EmailSettingsConfig>({
         email: '',
         new_email: '',
@@ -19,7 +20,7 @@ const useEmailSettings = (updateSuccess: boolean) => {
     });
 
     useEffect(() => validate(), [config.email, config.new_email, config.confirm_new_email]);
-    useEffect(() => { if (updateSuccess) stateReset(); }, [updateSuccess]);
+    useEffect(() => { if (mutationStatus === 'success') stateReset(); }, [mutationStatus]);
 
     const validate = () => {
         let fieldsMock: FieldsArrayEmails = [null, null];

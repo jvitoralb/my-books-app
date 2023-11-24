@@ -1,9 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
-import Settings from '../../components/Settings';
-import useEmailSettings from '../../hooks/useEmailSettings';
 import { User } from '../../types';
-import useEmailMutation from '../../hooks/useEmailMutation';
+import Settings from '../../components/Settings';
 import useAuth from '../../hooks/useAuth';
+import useEmailSettings from '../../hooks/useEmailSettings';
+import useEmailMutation from '../../hooks/useEmailMutation';
 import usePasswordSettings from '../../hooks/usePasswordSettings';
 import usePasswordMutation from '../../hooks/usePasswordMutation';
 
@@ -15,9 +15,7 @@ function SettingsPage() {
 
   const {
     emailSendUpdates,
-    emailIsLoading,
-    emailIsError,
-    emailIsSuccess,
+    emailStatus,
     emailError
   } = useEmailMutation(token);
 
@@ -26,7 +24,7 @@ function SettingsPage() {
     setEmailValues,
     emailIsValid,
     emailFields
-  } = useEmailSettings(emailIsSuccess);
+  } = useEmailSettings(emailStatus);
 
   const {
     pswdSendUpdates,
@@ -52,10 +50,8 @@ function SettingsPage() {
         isValid: emailIsValid,
         fields: emailFields,
         sendUpdates: emailSendUpdates,
-        isLoading: emailIsLoading,
-        isError: emailIsError,
-        error: emailError,
-        isSuccess: emailIsSuccess
+        status: emailStatus,
+        error: emailError
       }}
       pswdSettings={{
         setPswdValues,

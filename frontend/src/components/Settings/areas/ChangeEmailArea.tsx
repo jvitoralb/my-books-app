@@ -7,20 +7,20 @@ import useWarningsEmailSettings from '../../../hooks/useWarningsEmailSettings';
 import useSettingsStatusHandler from '../../../hooks/useSettingsStatusHandler';
 
 
-function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoading, sendUpdates, isError, error, isSuccess }: EmailSettings) {
+function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, sendUpdates, status, error }: EmailSettings) {
   const {
     handleWarnings,
     displayWarning,
     emailWarning,
     newEmailWarning,
     confirmNewEmailWarning
-  } = useWarningsEmailSettings(isValid, isError);
+  } = useWarningsEmailSettings(isValid, status === 'error');
 
   const { statusElem } = useSettingsStatusHandler({
     area: 'email',
-    isError,
+    isError: status === 'error',
     error,
-    isSuccess
+    isSuccess: status === 'success'
   });
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -74,7 +74,7 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, isLoadi
         />
 
         <SubmitButton
-          isLoading={isLoading}
+          isLoading={status === 'loading'}
           sourceForm="update-email"
         />
       </form>
