@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import useSignupData from '../../hooks/useSignupData';
-import useSignupMutation from '../../hooks/useSignupMutation';
 import useAuth from '../../hooks/useAuth';
-import { SignupProps } from '../../types';
+import useSignupData from './hooks/useSignupData';
+import useSignupMutation from './hooks/useSignupMutation';
 import SignUp from '../../components/Signup';
+import { SignupProps } from '../../types';
 
 
 function SignUpPage() {

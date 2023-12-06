@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import { LoginProps } from '../../types';
-import useLoginCredentials from '../../hooks/useLoginCredentials';
-import useLoginQuery from '../../hooks/useLoginQuery';
 import useAuth from '../../hooks/useAuth';
+import useLoginCredentials from './hooks/useLoginCredentials';
+import useLoginQuery from './hooks/useLoginQuery';
 import LogIn from '../../components/Login';
+import { LoginProps } from '../../types';
 
 
 function LogInPage() {

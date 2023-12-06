@@ -3,10 +3,10 @@ import { useLoaderData } from 'react-router-dom';
 import { User } from '../../types';
 import Settings from '../../components/Settings';
 import useAuth from '../../hooks/useAuth';
-import useEmailSettings from '../../hooks/useEmailSettings';
-import useEmailMutation from '../../hooks/useEmailMutation';
-import usePasswordSettings from '../../hooks/usePasswordSettings';
-import usePasswordMutation from '../../hooks/usePasswordMutation';
+import useEmailSettings from './hooks/useEmailSettings';
+import useEmailMutation from './hooks/useEmailMutation';
+import usePasswordSettings from './hooks/usePasswordSettings';
+import usePasswordMutation from './hooks/usePasswordMutation';
 
 
 function SettingsPage() {
