@@ -1,18 +1,18 @@
 import { AxiosError } from 'axios';
-import { getUser } from '../../api/api';
 import { redirect } from 'react-router-dom';
+import { getUserInfo } from '../../api/api';
 import handleAuth from '../../utils/auth';
 
 
 const homeLoader = async () => {
-    const { getToken, isAuth, finishSession } = handleAuth();
+    const { isAuth, finishSession } = handleAuth();
 
     if (!isAuth) {
         return redirect('/welcome');
     }
 
     try {
-        return await getUser(getToken());
+        return await getUserInfo();
     } catch (err) {
         if (err instanceof AxiosError) {
             let statusCode = err.response?.status;
