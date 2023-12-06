@@ -5,12 +5,12 @@ import {
 } from 'react-router-dom';
 import App from './App.tsx';
 import HomePage from './pages/home/HomePage.tsx';
-import homeLoader from './pages/home/home.loader.ts';
 import WelcomePage from './pages/welcome/WelcomePage.tsx';
 import LogInPage from './pages/login/LoginPage.tsx';
 import SignUpPage from './pages/signup/SignupPage.tsx';
-import authLoader from './pages/loader/auth.ts';
 import SettingsPage from './pages/settings/SettingsPage.tsx';
+import authLoader from './pages/loader/authLoader.ts';
+import homeLoader from './pages/home/homeLoader.ts';
 import settingsLoader from './pages/settings/settingsLoader.ts';
 
 
