@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { updateUserEmail } from '../api/users';
-import { CustomAxiosError, UserAuth, EmailUpdates } from '../types';
+import { updateUserEmail } from '../../../api/users';
+import { CustomAxiosError, UserAuth, EmailUpdates } from '../../../types';
 
 
 const useEmailMutation = (authToken: string) => {

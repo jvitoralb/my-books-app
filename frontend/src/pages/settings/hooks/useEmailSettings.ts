@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FieldsArrayEmails } from '../types';
+import { FieldsArrayEmails } from '../../../types';
 import { MutationStatus } from '@tanstack/react-query';
 
 type EmailSettingsConfig = {

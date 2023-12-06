@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FieldsArrayPswd } from '../types';
+import { FieldsArrayPswd } from '../../../types';
 import { MutationStatus } from '@tanstack/react-query';
 
 type PasswordSettingsConfig = {

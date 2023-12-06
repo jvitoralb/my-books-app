@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { register } from '../api/users';
-import { ServerErrorMessage, SignupUserData, UserAuth } from '../types';
+import { register } from '../../../api/users';
+import { ServerErrorMessage, SignupUserData, UserAuth } from '../../../types';
 import { AxiosError } from 'axios';
 
 

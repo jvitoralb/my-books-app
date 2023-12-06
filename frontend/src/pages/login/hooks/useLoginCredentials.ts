@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LoginCredentials, FieldsArray } from '../types';
+import { LoginCredentials, FieldsArray } from '../../../types';
 
 type LoginValidation = {
     isValid: boolean;
