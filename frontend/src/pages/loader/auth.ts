@@ -1,11 +1,11 @@
 import { redirect } from 'react-router-dom';
-import { getAuthData } from '../../utils/auth';
+import handleAuth from '../../utils/auth';
 
 
 const authLoader = () => {
-    const authData = getAuthData();
+    const { isAuth } = handleAuth();
 
-    if (authData.token) {
+    if (isAuth) {
         return redirect('/');
     }
 

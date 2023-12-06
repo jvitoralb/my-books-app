@@ -1,23 +1,23 @@
 import { AxiosError } from 'axios';
 import { getUser } from '../../api/api';
 import { redirect } from 'react-router-dom';
-import { delAuthData, getAuthData } from '../../utils/auth';
+import handleAuth from '../../utils/auth';
 
 
 const homeLoader = async () => {
-    const authData = getAuthData();
+    const { getToken, isAuth, finishSession } = handleAuth();
 
-    if (!authData.token) {
+    if (!isAuth) {
         return redirect('/welcome');
     }
 
     try {
-        return await getUser(authData.token);
+        return await getUser(getToken());
     } catch (err) {
         if (err instanceof AxiosError) {
             let statusCode = err.response?.status;
             if (statusCode === 400 || statusCode === 401 || statusCode === 403) {
-                delAuthData();
+                finishSession();
                 return redirect('/login');
             }
         }
