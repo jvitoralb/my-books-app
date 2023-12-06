@@ -23,3 +23,28 @@ export const getAuthData = (): UserAuth => {
 export const delAuthData = (): void => {
     localStorage.removeItem(AUTH_KEY);
 }
+
+const handleAuth = () => {
+    const finishSession = () => {
+        delAuthData();
+    }
+
+    let authData = getAuthData();
+
+    const isAuth = (() => {
+        if (authData.token) {
+            return true;
+        }
+        return false;
+    })();
+
+    const getToken = () => authData.token;
+
+    return {
+        finishSession: finishSession,
+        isAuth: isAuth,
+        getToken: getToken
+    }
+}
+
+export default handleAuth;
