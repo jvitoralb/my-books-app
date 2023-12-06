@@ -1,49 +1,28 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from './config';
 import { EmailUpdates, LoginCredentials, PasswordUpdates, SignupUserData, User, UserAuth } from '../types';
 
-type LoginQueryKey = {
-    queryKey: (string | LoginCredentials)[];
-}
 
-const serverBaseUrl = import.meta.env.PROD ? import.meta.env.VITE_PROD_URL : import.meta.env.VITE_DEV_URL;
-
-const axiosInstance = axios.create({
-    baseURL: serverBaseUrl,
-    timeout: 5000,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
-
-export const logUser = async ({ queryKey }: LoginQueryKey): Promise<UserAuth> => {
-    const userCredentials = queryKey[queryKey.length - 1];
+export const login = async (userCredentials: LoginCredentials): Promise<UserAuth> => {
     const { data } = await axiosInstance.post('/users/login', userCredentials);
     return data;
 }
 
-export const getUser = async (authorization: string): Promise<User> => {
-    const { data } = await axiosInstance.get('/users', { headers: { 'Authorization': authorization } });
-    return data;
-}
-
-export const createUser = async (userData: SignupUserData): Promise<UserAuth> => {
+export const register = async (userData: SignupUserData): Promise<UserAuth> => {
     const { data } = await axiosInstance.post('/users/register', userData);
     return data;
 }
 
-export const updateUserEmail = async ({ authorization, updates }: { updates: EmailUpdates; authorization: string }): Promise<UserAuth> => {
-    const { data } = await axiosInstance.put('/users/email', updates, {
-        headers: {
-            'Authorization': authorization
-        }
-    });
+export const getUserInfo = async (): Promise<User> => {
+    const { data } = await axiosInstance.get('/users');
     return data;
 }
 
-export const updateUserPassword = async ({ authorization, updates }: { updates: PasswordUpdates; authorization: string }): Promise<AxiosResponse> => {
-    return await axiosInstance.put('/users/password', updates, {
-        headers: {
-            'Authorization': authorization
-        }
-    });
+export const updateUserEmail = async (updates: EmailUpdates): Promise<UserAuth> => {
+    const { data } = await axiosInstance.put('/users/email', updates);
+    return data;
+}
+
+export const updateUserPassword = async (updates: PasswordUpdates): Promise<AxiosResponse> => {
+    return await axiosInstance.put('/users/password', updates);
 }
