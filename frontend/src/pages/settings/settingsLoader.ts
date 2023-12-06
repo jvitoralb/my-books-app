@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { redirect } from 'react-router-dom';
-import { getUserInfo } from '../../api/api';
+import { getUserInfo } from '../../api/users';
 import handleAuth from '../../utils/auth';
 
 

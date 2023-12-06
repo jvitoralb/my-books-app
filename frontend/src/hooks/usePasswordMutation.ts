@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { updateUserPassword } from '../api/api';
+import { updateUserPassword } from '../api/users';
 import { CustomAxiosError, PasswordUpdates } from '../types';
 import { AxiosResponse } from 'axios';
 
@@ -9,15 +9,12 @@ const usePasswordMutation = (authToken: string) => {
         status,
         mutate,
         error
-    } = useMutation<AxiosResponse, CustomAxiosError, { updates: PasswordUpdates; authorization: string; }>({
+    } = useMutation<AxiosResponse, CustomAxiosError, PasswordUpdates>({
         mutationFn: updateUserPassword
     });
 
     const sendUpdates = (updates: PasswordUpdates) => {
-        mutate({
-            updates,
-            authorization: authToken
-        });
+        mutate(updates);
     }
 
     return {
