@@ -4,7 +4,7 @@ import useSortedNotes from '../../../hooks/useSortedNotes';
 import { BookNoteProps } from '../../../types';
 
 
-function BooksNotesArea({ notes, createBookNote, createNoteStatus, selectNote }: BookNoteProps) {
+function BooksNotesArea({ notes, createBookNote, createStatus, selectNote }: BookNoteProps) {
   useSortedNotes(notes);
 
   const handleNoteClick = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
@@ -25,11 +25,11 @@ function BooksNotesArea({ notes, createBookNote, createNoteStatus, selectNote }:
           icon={<AddIcon />}
           title="Add new book note"
           onClick={createBookNote}
-          isLoading={createNoteStatus === 'loading'}
+          isLoading={createStatus === 'loading'}
         />
       </Flex>
 
-      <VStack align="start">
+      <VStack align="start" spacing="3px">
         {
           !notes.length ?
           <p title="Create a new note...">Create a new note...</p> :

@@ -12,9 +12,10 @@ function Sidebar({ user, books }: SidebarProps) {
   return (
     <GridItem
       area="nav"
+      p="5px"
       shadow="md"
       borderWidth="1px"
-      p="5px"
+      overflowY="scroll"
     >
       <UserArea
         {...user}
