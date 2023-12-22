@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import handleNoteText from '../utils/noteText';
+import handleNoteStorage from '../utils/noteStorage';
 
 type EditalbeTextNote = {
     noteId: string;
@@ -9,7 +9,7 @@ type EditalbeTextNote = {
 
 const useEditableText = ({ noteId, noteFieldText, noteFieldName }: EditalbeTextNote) => {
     const [editConfig, setEditConfig] = useState({
-        valueHandler: handleNoteText(),
+        valueHandler: handleNoteStorage(),
         value: '',
         isEditing: false,
     });
