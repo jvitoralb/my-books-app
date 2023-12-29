@@ -14,11 +14,11 @@ const axiosInstance = axios.create({
 const USER_LOGIN_URL = '/users/login';
 const USER_REGISTER_URL = '/users/register';
 const publicUrls: [string, string] = [USER_LOGIN_URL, USER_REGISTER_URL];
-const authToken = (handleAuth()).getToken();
+const auth = handleAuth();
 
 axiosInstance.interceptors.request.use(function(config) {
     if (config.url && !publicUrls.includes(config.url)) {
-        config.headers['Authorization'] = authToken;
+        config.headers['Authorization'] = auth.getToken();
     }
     return config;
 });
