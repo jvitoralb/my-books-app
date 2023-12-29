@@ -96,6 +96,7 @@ function EditableInput({ inputId, inputName, value, updateOnBlur, updateOnChange
       py="4px"
       fontSize="16px"
       variant="unstyled"
+      autoComplete="off"
       maxLength={100}
       autoFocus={true}
       onBlur={updateOnBlur}
