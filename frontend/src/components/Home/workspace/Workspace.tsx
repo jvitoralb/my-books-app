@@ -1,17 +1,18 @@
-import { Box, Flex, GridItem, Heading, Text } from '@chakra-ui/react';
-import EditableText from './EditableText';
-import { BookNote } from '../../../types';
+import { Box, Flex, GridItem, Text } from '@chakra-ui/react';
 import { MutationStatus } from '@tanstack/react-query';
+import EditableText from './EditableText';
 import NoteSettings from './NoteSettings';
+import { BookNote } from '../../../types';
 
 type WorkspaceProps = {
   username: string;
   workNote: BookNote | null;
+  updateNote: (noteId: string) => void;
   deleteNote: (noteId: string) => void;
   deleteStatus: MutationStatus;
 }
 
-function Workspace({ username, workNote, deleteNote, deleteStatus }: WorkspaceProps) {
+function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus }: WorkspaceProps) {
   return (
     <GridItem
       id="workspace"
@@ -25,8 +26,13 @@ function Workspace({ username, workNote, deleteNote, deleteStatus }: WorkspacePr
         <Text>Hello, {username}</Text> :
         <>
           <Flex justifyContent="space-between" alignItems="baseline">
-            <Heading as="h3" size="md">{workNote.title}</Heading>
+            <EditableText
+              workNoteId={workNote.id}
+              textValue={workNote.title}
+              inputName="title"
+            />
             <NoteSettings
+              updateNote={updateNote}
               deleteNote={deleteNote}
               deleteStatus={deleteStatus}
               workNoteId={workNote.id}
@@ -45,7 +51,6 @@ function Workspace({ username, workNote, deleteNote, deleteStatus }: WorkspacePr
           <Flex>
             <Text minW="10vw" color="GrayText" py="4px">About</Text>
             <EditableText
-              textarea={true}
               workNoteId={workNote.id}
               textValue={workNote.about}
               inputName="about"
