@@ -5,11 +5,12 @@ import useDeleteDialogConfig from '../../../hooks/useDeleteDialogConfig';
 
 type NoteSettingsProps = {
   workNoteId: string;
+  updateNote: (noteId: string) => void;
   deleteNote: (noteId: string) => void;
   deleteStatus: MutationStatus;
 }
 
-function NoteSettings({ workNoteId, deleteNote, deleteStatus }: NoteSettingsProps) {
+function NoteSettings({ workNoteId, updateNote, deleteNote, deleteStatus }: NoteSettingsProps) {
   const {
     isOpen,
     onOpen,
@@ -24,6 +25,10 @@ function NoteSettings({ workNoteId, deleteNote, deleteStatus }: NoteSettingsProp
     setOverlayClick(false);
   }
 
+  const handleUpdateNote = () => {
+    updateNote(workNoteId);
+  }
+
   return (
     <Menu id="note-settings-menu">
       <MenuButton
@@ -33,7 +38,7 @@ function NoteSettings({ workNoteId, deleteNote, deleteStatus }: NoteSettingsProp
       />
 
       <MenuList>
-        <MenuItem id="save-changes-menu-item" fontSize="14px">
+        <MenuItem id="save-changes-menu-item" fontSize="14px" onClick={handleUpdateNote}>
           Save changes
         </MenuItem>
 
