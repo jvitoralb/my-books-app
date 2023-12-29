@@ -1,14 +1,13 @@
-import { Input, Text, Textarea } from '@chakra-ui/react';
+import { Heading, Input, Text, Textarea } from '@chakra-ui/react';
 import useEditableText from '../../../hooks/useEditableText';
 
 type EditableTextProps = {
-  textarea?: boolean;
   textValue: string | null;
   inputName: string;
   workNoteId: string;
 }
 
-function EditableText({ textarea, workNoteId, textValue, inputName }: EditableTextProps) {
+function EditableText({ workNoteId, textValue, inputName }: EditableTextProps) {
   const {
     switchOn,
     switchOff,
@@ -24,7 +23,7 @@ function EditableText({ textarea, workNoteId, textValue, inputName }: EditableTe
   return (
     isEditing ? 
     (
-      textarea ? 
+      inputName === 'about' ? 
       <EditableTextArea
         value={value}
         inputName={inputName}
@@ -40,7 +39,16 @@ function EditableText({ textarea, workNoteId, textValue, inputName }: EditableTe
         updateOnChange={onChange}
       />
     ) : 
-    <Text
+    (
+      inputName === 'title' ? 
+      <Heading
+        as="h3"
+        size="md"
+        onDoubleClick={switchOn}
+      >
+        {value}
+      </Heading> : 
+      <Text
       onDoubleClick={switchOn}
       py="4px"
       minW="60vw"
@@ -49,6 +57,7 @@ function EditableText({ textarea, workNoteId, textValue, inputName }: EditableTe
     >
       {value}
     </Text>
+    )
   );
 }
 
