@@ -1,32 +1,58 @@
 import { useEffect, useState } from 'react';
 import { MutationStatus } from '@tanstack/react-query';
-import { BookNote } from '../types';
 import handleNoteStorage from '../utils/noteStorage';
+import { BookNote } from '../types';
 
 type WorkspaceManager = {
     notes: BookNote[];
     createNoteStatus: MutationStatus;
     newNote: BookNote | undefined;
+    updateNoteStatus: MutationStatus;
     deleteNoteStatus: MutationStatus;
 }
 
-const useWorkspaceManager = ({ notes, createNoteStatus, newNote, deleteNoteStatus }: WorkspaceManager) => {
-    const [note, setNote] = useState<BookNote | null>(null);
+type ManagerConfig = {
+    note: BookNote | null;
+    savingNote: BookNote | null;
+}
+
+const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatus, deleteNoteStatus }: WorkspaceManager) => {
+    const [config, setConfig] = useState<ManagerConfig>({
+        note: null,
+        savingNote: null,
+    });
     const storageHandler = handleNoteStorage();
 
     useEffect(() => {
         if (createNoteStatus === 'success' && newNote) {
             selectNote(newNote.id);
         } else if (deleteNoteStatus === 'success') {
-            storageHandler.deleteAllInfo(note?.id || '');
+            storageHandler.deleteAllInfo(config.note?.id || '');
             resetNote();
         }
     }, [notes, createNoteStatus, deleteNoteStatus]);
 
+    useEffect(() => {
+        if (updateNoteStatus === 'loading') {
+            setConfig((prevConfig) => ({
+                ...prevConfig,
+                savingNote: prevConfig.note
+            }));
+        } else {
+            setConfig((prevConfig) => ({
+                ...prevConfig,
+                savingNote: null
+            }));
+        }
+    }, [updateNoteStatus]);
+
     const selectNote = (id: string) => {
         for (let i = 0; i < notes.length; i++) {
             if (notes[i].id === id) {
-                setNote(notes[i]);
+                setConfig((prevConfig) => ({
+                    ...prevConfig,
+                    note: notes[i]
+                }));
                 storageHandler.setAllInfo(notes[i].id, {
                     title: notes[i].title,
                     author: notes[i].author || '',
@@ -37,12 +63,16 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, deleteNoteStatu
         }
     }
     const resetNote = () => {
-        setNote(null);
+        setConfig((prevConfig) => ({
+            ...prevConfig,
+            note: null
+        }));
     }
 
     return {
         selectNote,
-        selectedNote: note,
+        selectedNote: config.note,
+        selectedUpdateNote: config.savingNote,
     }
 }
 

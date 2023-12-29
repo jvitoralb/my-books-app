@@ -4,7 +4,7 @@ import useSortedNotes from '../../../hooks/useSortedNotes';
 import { BookNoteProps } from '../../../types';
 
 
-function BooksNotesArea({ notes, createBookNote, createStatus, selectNote }: BookNoteProps) {
+function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, selectedUpdateNote }: BookNoteProps) {
   useSortedNotes(notes);
 
   const handleNoteClick = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
@@ -39,8 +39,9 @@ function BooksNotesArea({ notes, createBookNote, createStatus, selectNote }: Boo
               id={note.id}
               title={note.title}
               onClick={handleNoteClick}
+              as={(selectedUpdateNote?.id === note.id) ? 'i' : undefined}
             >
-              {note.title}
+              {(selectedUpdateNote?.id === note.id) ? 'Saving...' : note.title}
             </Text>
           ))
         }
