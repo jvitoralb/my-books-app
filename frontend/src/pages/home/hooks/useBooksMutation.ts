@@ -1,26 +1,42 @@
 import { useMutation } from '@tanstack/react-query';
-import { createBook } from '../../../api/books';
-import { BookNote } from '../../../types';
+import { createBook, deleteBook, updateBookInfo } from '../../../api/books';
+import handleNoteStorage from '../../../utils/noteStorage';
+
 
 const useBooksMutation = () => {
-    const {
-        data,
-        mutate,
-        status,
-        error
-    } = useMutation({
-        mutationFn: createBook
+    const createMutation = useMutation({
+        mutationFn: createBook,
+    });
+    const deleteMutation = useMutation({
+        mutationFn: deleteBook,
+    });
+    const updateMutation = useMutation({
+        mutationFn: updateBookInfo
     });
 
     const createBookNote = () => {
-        mutate({ title: 'New book note' });
+        createMutation.mutate({ title: 'New book note' });
+    }
+    const updateBookNote = (noteId: string) => {
+        const noteInfo = handleNoteStorage().getAllInfo(noteId);
+
+        updateMutation.mutate({
+            id: noteId,
+            ...noteInfo
+        });
+    }
+    const deleteBookNote = (noteId: string) => {
+        deleteMutation.mutate(noteId);
     }
 
     return {
         createBookNote,
-        createNoteStatus: status,
-        newNote: data as BookNote,
-        error,
+        createStatus: createMutation.status,
+        newNote: createMutation.data,
+        updateBookNote,
+        updateStatus: updateMutation.status,
+        deleteBookNote,
+        deleteStatus: deleteMutation.status,
     }
 }
 
