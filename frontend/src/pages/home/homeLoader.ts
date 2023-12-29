@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { redirect } from 'react-router-dom';
 import { getUserInfo } from '../../api/users';
+import { getAllBooks } from '../../api/books';
 import handleAuth from '../../utils/auth';
 
 
@@ -12,7 +13,7 @@ const homeLoader = async () => {
     }
 
     try {
-        return await getUserInfo();
+        return await Promise.all([getUserInfo(), getAllBooks()]);
     } catch (err) {
         if (err instanceof AxiosError) {
             let statusCode = err.response?.status;
