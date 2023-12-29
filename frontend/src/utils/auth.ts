@@ -29,16 +29,14 @@ const handleAuth = () => {
         delAuthData();
     }
 
-    let authData = getAuthData();
-
     const isAuth = (() => {
-        if (authData.token) {
+        if (getAuthData().token) {
             return true;
         }
         return false;
     })();
 
-    const getToken = () => authData.token;
+    const getToken = () => getAuthData().token;
 
     return {
         finishSession: finishSession,
