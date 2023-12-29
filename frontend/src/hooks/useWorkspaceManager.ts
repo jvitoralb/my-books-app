@@ -18,7 +18,7 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, deleteNoteStatu
         if (createNoteStatus === 'success' && newNote) {
             selectNote(newNote.id);
         } else if (deleteNoteStatus === 'success') {
-            storageHandler.deleteAllInfo(note!.id);
+            storageHandler.deleteAllInfo(note?.id || '');
             resetNote();
         }
     }, [notes, createNoteStatus, deleteNoteStatus]);
