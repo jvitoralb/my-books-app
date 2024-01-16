@@ -10,19 +10,17 @@ type NoteSettingsProps = {
   deleteStatus: MutationStatus;
 }
 
-function NoteSettings({ workNoteId, updateNote, deleteNote, deleteStatus }: NoteSettingsProps) {
+function NoteSettings({ workNoteId, updateNote, deleteNote }: NoteSettingsProps) {
   const {
     isOpen,
     onOpen,
     onClose,
     cancelRef,
-    overlayClick,
-    setOverlayClick,
-  } = useDeleteDialogConfig(deleteStatus);
+  } = useDeleteDialogConfig();
 
   const handleDeleteNote = () => {
     deleteNote(workNoteId);
-    setOverlayClick(false);
+    onClose();
   }
 
   const handleUpdateNote = () => {
@@ -51,7 +49,6 @@ function NoteSettings({ workNoteId, updateNote, deleteNote, deleteStatus }: Note
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
           onClose={onClose}
-          closeOnOverlayClick={overlayClick}
         >
           <AlertDialogOverlay>
             <AlertDialogContent maxW="300px">
@@ -67,7 +64,7 @@ function NoteSettings({ workNoteId, updateNote, deleteNote, deleteStatus }: Note
                 <Button id="cancel-delete-note-button" ref={cancelRef} onClick={onClose}>
                   Cancel
                 </Button>
-                <Button id="delete-note-button" colorScheme="red" onClick={handleDeleteNote} isLoading={deleteStatus === 'loading'}>
+                <Button id="delete-note-button" colorScheme="red" onClick={handleDeleteNote}>
                   Delete
                 </Button>
               </Flex>
