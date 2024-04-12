@@ -1,5 +1,6 @@
 import { Input } from '@chakra-ui/react';
-import useCustomAttributes, { EditableInputAttr } from './hooks/useCustomAttributes';
+import useCustomAttributes from './hooks/useCustomAttributes';
+import { EditableInputAttr } from '../../types';
 
 type EditableElemProps =  {
   inputId: string;

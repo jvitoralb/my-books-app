@@ -1,5 +1,6 @@
 import { Textarea } from '@chakra-ui/react';
-import useCustomAttributes, { EditableTextAreaAttr } from './hooks/useCustomAttributes';
+import useCustomAttributes from './hooks/useCustomAttributes';
+import { EditableTextAreaAttr } from '../../types';
 
 type EditableTextAreaProps =  {
   inputId: string;

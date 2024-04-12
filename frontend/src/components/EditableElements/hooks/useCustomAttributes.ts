@@ -1,24 +1,5 @@
-export type EditableTextAreaAttr = {
-    maxLength?: number;
-    height?: string;
-    minHeight?: string;
-    maxHeight?: string;
-    width?: string;
-    minWidth?: string;
-    maxWidth?: string;
-    numberOfLines?: number[];
-    refObserver?: React.RefObject<HTMLTextAreaElement>;
-}
+import { EditableInputAttr, EditableTextAreaAttr } from "../../../types";
 
-export type EditableInputAttr = {
-    maxLength?: number;
-    height?: string;
-    minHeight?: string;
-    maxHeight?: string;
-    width?: string;
-    minWidth?: string;
-    maxWidth?: string;
-}
 
 const useCustomAttributes = (customAttr: EditableTextAreaAttr | EditableInputAttr, src?: string) => {
     const defaults: { textarea: EditableTextAreaAttr; input: EditableInputAttr; } = {
