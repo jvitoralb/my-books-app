@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { InputSubject } from '../types';
-import { treatLabels } from '../utils/strings';
+import { InputSubject } from '../../../types';
+import { treatLabels } from '../../../utils/strings';
 
 type SubjectConfig = {
     isInvalid: boolean;
@@ -21,7 +21,9 @@ const defaultPlaceholders = {
     confirm_new_email: '',
     name: 'Jane Doe',
     password: '',
-    confirm_password: ''
+    confirm_password: '',
+    new_password: '',
+    confirm_new_password: '',
 }
 
 const useInputSubject = ({ subject, displayWarning, subjectWarning }: InputSubjectOptions): SubjectConfig => {
