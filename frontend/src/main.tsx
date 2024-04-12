@@ -5,8 +5,9 @@ import {
   QueryClientProvider,
   QueryClient
 } from '@tanstack/react-query';
-import browserAppRouter from './routes';
 import { ChakraProvider } from '@chakra-ui/react';
+import App from './App';
+import browserAppRouter from './routes';
 import './styles/index.css';
 
 
@@ -18,7 +19,10 @@ ReactDOM
   <React.StrictMode>
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={browserAppRouter}/>
+        <RouterProvider
+          router={browserAppRouter}
+          fallbackElement={<App />}
+        />
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>
