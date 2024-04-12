@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CustomAxiosError } from '../types';
-import { firstCharToUpper } from '../utils/strings';
+import { CustomAxiosError } from '../../../types';
+import { firstCharToUpper } from '../../../utils/strings';
 
 type SettingsStatus = {
     area: 'email' | 'password';
