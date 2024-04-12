@@ -1,6 +1,6 @@
 import { FormHelperText } from '@chakra-ui/react';
 import { InputSubject } from '../../types';
-import useTextSubject from '../../hooks/useTextSubject';
+import useTextSubject from './hooks/useTextSubject';
 
 type HelperTextProps = {
   isInvalid: boolean;

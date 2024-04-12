@@ -3,8 +3,8 @@ import { Heading } from '@chakra-ui/react';
 import InputControl from '../../InputControl';
 import SubmitButton from '../../SubmitButton';
 import { EmailSettings } from '../../../types';
-import useWarningsEmailSettings from '../../../hooks/useWarningsEmailSettings';
-import useSettingsStatusHandler from '../../../hooks/useSettingsStatusHandler';
+import useWarningsEmailSettings from '../hooks/useWarningsEmailSettings';
+import useSettingsStatusHandler from '../hooks/useSettingsStatusHandler';
 
 
 function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, sendUpdates, status, error }: EmailSettings) {

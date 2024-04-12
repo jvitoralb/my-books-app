@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MutationStatus } from '@tanstack/react-query';
-import { BookNote, BooksUseQueryRefetch } from '../types';
+import { BookNote, BooksUseQueryRefetch } from '../../../types';
 
 type NotesManager = {
     notes: BookNote[];

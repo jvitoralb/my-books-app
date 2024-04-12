@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { InputControlProps } from '../../types';
-import useInputSubject from '../../hooks/useInputSubject';
+import useInputSubject from './hooks/useInputSubject';
 import HelperText from './HelperText';
 
 

@@ -3,8 +3,8 @@ import { Heading } from '@chakra-ui/react';
 import InputControl from '../../InputControl';
 import SubmitButton from '../../SubmitButton';
 import { PasswordSettings } from '../../../types';
-import useWarningsPasswordSettings from '../../../hooks/useWarningsPasswordSettings';
-import useSettingsStatusHandler from '../../../hooks/useSettingsStatusHandler';
+import useWarningsPasswordSettings from '../hooks/useWarningsPasswordSettings';
+import useSettingsStatusHandler from '../hooks/useSettingsStatusHandler';
 
 
 function PasswordSettingsArea({ setPswdValues, stateValues, isValid, fields, sendUpdates, status, error }: PasswordSettings) {
