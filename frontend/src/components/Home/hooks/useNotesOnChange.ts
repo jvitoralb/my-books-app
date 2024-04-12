@@ -1,6 +1,6 @@
 import { MutationStatus } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
-import { BookNote } from '../types';
+import { BookNote } from '../../../types';
 
 type DisabledConfig = {
     updateNote: string | null;

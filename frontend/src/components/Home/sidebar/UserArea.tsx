@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Flex, Avatar, Heading, Spacer, Menu, MenuButton, MenuGroup, MenuItem, MenuList, IconButton, MenuDivider } from '@chakra-ui/react';
-import useLogout from '../../../hooks/useLogout';
+import useLogout from '../hooks/useLogout';
 import { User } from '../../../types';
 
 

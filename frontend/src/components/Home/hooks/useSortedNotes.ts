@@ -1,4 +1,4 @@
-import { BookNote } from '../types';
+import { BookNote } from '../../../types';
 
 
 const useSortedNotes = (notes: BookNote[]) => {

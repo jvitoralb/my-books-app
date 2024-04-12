@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import handleNoteStorage from '../utils/noteStorage';
+import handleNoteStorage from '../../../utils/noteStorage';
 
 type EditalbeTextNote = {
     noteId: string;

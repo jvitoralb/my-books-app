@@ -1,7 +1,7 @@
 import { Flex, Text, Heading, IconButton, VStack } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import useSortedNotes from '../../../hooks/useSortedNotes';
-import useNotesOnChange from '../../../hooks/useNotesOnChange';
+import useSortedNotes from '../hooks/useSortedNotes';
+import useNotesOnChange from '../hooks/useNotesOnChange';
 import { BookNoteProps } from '../../../types';
 
 
