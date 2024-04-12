@@ -11,6 +11,7 @@ export type ServerErrorMessage = {
 export type CustomAxiosError = AxiosError<ServerErrorMessage, any> | null
 export type FieldsArray = ['email' | null, 'password' | 'confirm_password' | null];
 export type UseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
+export type BooksUseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<BookNote[], unknown>>;
 
 /**
  * Input Control Component related Types
@@ -141,4 +142,66 @@ export type PasswordSettings = {
     sendUpdates: (updates: PasswordUpdates) => void;
     status: MutationStatus;
     error: CustomAxiosError;
+}
+
+/**
+ * Home Component related Types
+**/
+export type BookNote = {
+    id: string;
+    user_id: string;
+    title: string;
+    author: null | string;
+    about: string;
+    section: null | string;
+    created_at: string;
+}
+export type BookNoteProps = {
+    notes: BookNote[];
+    createBookNote: () => void;
+    createStatus: MutationStatus;
+    newNote: BookNote | undefined;
+    selectNote?: (id: string) => void;
+    selectedUpdateNote?: BookNote | null;
+    selectedDeleteNote?: BookNote | null;
+    updateBookNote: (id: string) => void;
+    updateStatus: MutationStatus;
+    deleteBookNote: (id: string) => void;
+    deleteStatus: MutationStatus;
+}
+export type BookInfo = {
+    title: string;
+    author?: string;
+    about?: string;
+}
+export type BookInfoUpdates = {
+    id: string;
+    title: string;
+    author: string | null;
+    about: string | null;
+}
+
+/**
+ * EditableElements Component related Types
+**/
+export type EditableTextAreaAttr = {
+    maxLength?: number;
+    height?: string;
+    minHeight?: string;
+    maxHeight?: string;
+    width?: string;
+    minWidth?: string;
+    maxWidth?: string;
+    numberOfLines?: number[];
+    refObserver?: React.RefObject<HTMLTextAreaElement>;
+}
+
+export type EditableInputAttr = {
+    maxLength?: number;
+    height?: string;
+    minHeight?: string;
+    maxHeight?: string;
+    width?: string;
+    minWidth?: string;
+    maxWidth?: string;
 }
