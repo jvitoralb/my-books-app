@@ -15,7 +15,7 @@ function Sidebar({ user, books }: SidebarProps) {
       p="5px"
       shadow="md"
       borderWidth="1px"
-      overflowY="scroll"
+      overflowY="auto"
     >
       <UserArea
         {...user}

@@ -1,7 +1,10 @@
-import { Box, Flex, GridItem, Text } from '@chakra-ui/react';
+import { Flex, GridItem, Text } from '@chakra-ui/react';
 import { MutationStatus } from '@tanstack/react-query';
-import EditableText from './EditableText';
 import NoteSettings from './NoteSettings';
+import NoteTitle from './NoteTitle';
+import NoteAuthor from './NoteAuthor';
+import NoteAbout from './NoteAbout';
+import NoteSection from './NoteSection';
 import { BookNote } from '../../../types';
 
 type WorkspaceProps = {
@@ -20,15 +23,16 @@ function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus }:
       p="8px"
       shadow="md"
       borderWidth="1px"
+      overflowY="scroll"
     >
       {
         !workNote ?
         <Text>Hello, {username}</Text> :
         <>
           <Flex justifyContent="space-between" alignItems="baseline">
-            <EditableText
+            <NoteTitle
               workNoteId={workNote.id}
-              textValue={workNote.title}
+              titleText={workNote.title}
               inputName="title"
             />
             <NoteSettings
@@ -39,25 +43,21 @@ function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus }:
             />
           </Flex>
 
-          <Flex>
-            <Text minW="10vw" color="GrayText" py="4px">Author</Text>
-            <EditableText
-              workNoteId={workNote.id}
-              textValue={workNote.author}
-              inputName="author"
-            />
-          </Flex>
-
-          <Flex>
-            <Text minW="10vw" color="GrayText" py="4px">About</Text>
-            <EditableText
-              workNoteId={workNote.id}
-              textValue={workNote.about}
-              inputName="about"
-            />
-          </Flex>
-
-          <Box>{workNote.section}</Box>
+          <NoteAuthor
+            workNoteId={workNote.id}
+            authorText={workNote.author}
+            inputName="author"
+          />
+          <NoteAbout
+            workNoteId={workNote.id}
+            aboutText={workNote.about}
+            inputName="about"
+          />
+          <NoteSection
+            workNoteId={workNote.id}
+            sectionText={workNote.section}
+            inputName="section"
+          />
         </>
       }
     </GridItem>

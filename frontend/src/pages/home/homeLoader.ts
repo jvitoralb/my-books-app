@@ -25,6 +25,7 @@ const homeLoader = async () => {
         // 'Something went wrong, please try again later!' ->
         // carregar uma pagina de crash, sinalizando o error
         console.error(err)
+        return null;
     }
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MutationStatus } from '@tanstack/react-query';
-import handleNoteStorage from '../utils/noteStorage';
-import { BookNote } from '../types';
+import handleNoteStorage from '../../../utils/noteStorage';
+import { BookNote } from '../../../types';
 
 type WorkspaceManager = {
     notes: BookNote[];
@@ -14,12 +14,14 @@ type WorkspaceManager = {
 type ManagerConfig = {
     note: BookNote | null;
     savingNote: BookNote | null;
+    removingNote: BookNote | null;
 }
 
 const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatus, deleteNoteStatus }: WorkspaceManager) => {
     const [config, setConfig] = useState<ManagerConfig>({
         note: null,
         savingNote: null,
+        removingNote: null,
     });
     const storageHandler = handleNoteStorage();
 
@@ -28,7 +30,6 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatu
             selectNote(newNote.id);
         } else if (deleteNoteStatus === 'success') {
             storageHandler.deleteAllInfo(config.note?.id || '');
-            resetNote();
         }
     }, [notes, createNoteStatus, deleteNoteStatus]);
 
@@ -45,6 +46,21 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatu
             }));
         }
     }, [updateNoteStatus]);
+
+    useEffect(() => {
+        if (deleteNoteStatus === 'loading') {
+            setConfig((prevConfig) => ({
+                ...prevConfig,
+                removingNote: prevConfig.note
+            }));
+            resetNote();
+        } else {
+            setConfig((prevConfig) => ({
+                ...prevConfig,
+                removingNote: null
+            }));
+        }
+    }, [deleteNoteStatus]);
 
     const selectNote = (id: string) => {
         for (let i = 0; i < notes.length; i++) {
@@ -73,6 +89,7 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatu
         selectNote,
         selectedNote: config.note,
         selectedUpdateNote: config.savingNote,
+        selectedDeleteNote: config.removingNote,
     }
 }
 

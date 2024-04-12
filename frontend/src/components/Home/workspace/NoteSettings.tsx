@@ -1,7 +1,7 @@
 import { Text, Menu, MenuButton, IconButton, MenuList, MenuItem, AlertDialog, AlertDialogOverlay, AlertDialogContent, Flex, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, Heading } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { MutationStatus } from '@tanstack/react-query';
-import useDeleteDialogConfig from '../../../hooks/useDeleteDialogConfig';
+import useDeleteDialogConfig from '../hooks/useDeleteDialogConfig';
 
 type NoteSettingsProps = {
   workNoteId: string;
