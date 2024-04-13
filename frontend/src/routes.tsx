@@ -12,12 +12,13 @@ import SettingsPage from './pages/settings/SettingsPage.tsx';
 import authLoader from './pages/loader/authLoader.ts';
 import homeLoader from './pages/home/homeLoader.ts';
 import settingsLoader from './pages/settings/settingsLoader.ts';
+import ErrorPage from './pages/error/ErrorPage.tsx';
 
 
 const browserAppRouter = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}>
-      <Route index element={<HomePage />} loader={homeLoader} />
+    <Route path='/' element={<App />} errorElement={<ErrorPage />}>
+      <Route index element={<HomePage />} loader={homeLoader}/>
       <Route path='/settings' element={<SettingsPage />} loader={settingsLoader} />
       <Route path='/welcome' element={<WelcomePage />} loader={authLoader} />
       <Route path='/login' element={<LogInPage />} loader={authLoader} />
