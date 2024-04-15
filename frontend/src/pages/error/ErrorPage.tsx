@@ -1,5 +1,6 @@
 import { useRouteError } from 'react-router-dom';
 import useErrorStats from './hooks/useErrorStats';
+import Error from '../../components/Error';
 
 
 function ErrorPage() {
@@ -10,7 +11,10 @@ function ErrorPage() {
   } = useErrorStats(error);
 
   return (
-    <p>{statusCode} - {message}</p>
+    <Error
+      statusCode={statusCode}
+      statusMessage={message}
+    />
   );
 }
 
