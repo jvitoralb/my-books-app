@@ -6,6 +6,7 @@ import NoteAuthor from './NoteAuthor';
 import NoteAbout from './NoteAbout';
 import NoteSection from './NoteSection';
 import { BookNote } from '../../../types';
+import '../styles/workspace.css';
 
 type WorkspaceProps = {
   username: string;
@@ -13,9 +14,10 @@ type WorkspaceProps = {
   updateNote: (noteId: string) => void;
   deleteNote: (noteId: string) => void;
   deleteStatus: MutationStatus;
+  sidebarOpen: boolean;
 }
 
-function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus }: WorkspaceProps) {
+function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus, sidebarOpen }: WorkspaceProps) {
   return (
     <GridItem
       id="workspace"
@@ -24,10 +26,15 @@ function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus }:
       shadow="md"
       borderWidth="1px"
       overflowY="scroll"
+      className={sidebarOpen ? 'lose-focus' : 'focus'}
     >
       {
         !workNote ?
-        <Text>Hello, {username}</Text> :
+        <Text marginLeft="24px" padding="18px" fontWeight="medium">
+          Hello, {username}!
+          <br />
+          What are we doing today?
+        </Text> :
         <>
           <Flex justifyContent="space-between" alignItems="baseline">
             <NoteTitle
