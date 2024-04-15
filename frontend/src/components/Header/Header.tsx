@@ -4,9 +4,9 @@ import { NavLink } from 'react-router-dom';
 
 function Header() {
   return (
-    <header id="my-books-app-header" className="flex-center-col">
-      <Heading as="h1" size="md">
-        <NavLink to="/">
+    <header id="my-books-app-header">
+      <Heading as="h1" size="md" fontWeight="semibold" textAlign="center">
+        <NavLink to="/" >
           my-books-app
         </NavLink>
       </Heading>
