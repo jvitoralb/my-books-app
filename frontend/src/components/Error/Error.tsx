@@ -1,6 +1,7 @@
 import { Flex, Heading, Text } from '@chakra-ui/react';
-import Header from '../Header';
 import { Link } from 'react-router-dom';
+import Header from '../Header';
+import './styles/error.css';
 
 type ErrorProps = {
   statusCode: number;
@@ -32,7 +33,7 @@ function Error({ statusCode, statusMessage }: ErrorProps) {
         >
           {statusMessage}
           <br />
-          You can always go <Link to='/'>home</Link>!
+          You can always go <Link to='/' className='link'>home</Link>!
         </Text>
       </Flex>
     </>
