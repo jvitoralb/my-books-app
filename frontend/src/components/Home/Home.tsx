@@ -1,6 +1,7 @@
 import { Grid } from '@chakra-ui/react';
 import Sidebar from './sidebar/Sidebar';
 import Workspace from './workspace/Workspace';
+import useSidebar from './hooks/useSidebar';
 import useWorkspaceManager from './hooks/useWorkspaceManager';
 import { BookNoteProps, User } from '../../types';
 
@@ -23,14 +24,27 @@ function Home({ user, books }: HomeProps) {
     deleteNoteStatus: books.deleteStatus,
   });
 
+  const {
+    watchingResize,
+    sidebarOpen,
+    sidebarHamburguerHandler,
+  } = useSidebar();
+
   return (
     <Grid
       templateAreas={`"nav main"`}
       gridTemplateRows={"auto"}
-      gridTemplateColumns={"1fr 4fr"}
+      gridTemplateColumns={watchingResize ? '0 4fr' : '1fr 4fr'}
       h="90vh"
       gap="1"
     >
+      <label aria-label="Open sidebar" id="hamburguer-menu" className="hamburguer-menu">
+        <input
+          id="hamburguer-checkbox" type="checkbox"
+          autoComplete="off" onClick={sidebarHamburguerHandler}
+        />
+      </label>
+
       <Sidebar
         user={user}
         books={{
@@ -39,6 +53,7 @@ function Home({ user, books }: HomeProps) {
           selectedUpdateNote,
           selectedDeleteNote
         }}
+        isOpen={sidebarOpen}
       />
 
       <Workspace
@@ -47,6 +62,7 @@ function Home({ user, books }: HomeProps) {
         updateNote={books.updateBookNote}
         deleteNote={books.deleteBookNote}
         deleteStatus={books.deleteStatus}
+        sidebarOpen={sidebarOpen}
       />
     </Grid>
   );
