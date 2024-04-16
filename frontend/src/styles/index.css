@@ -5,22 +5,13 @@
   font-family: 'Inter', sans-serif;
 }
 
+:root {
+  --color-black: black;
+  --color-white: rgb(255, 255, 255);
+  --color-blue: rgb(32, 152, 231);
+  --color-red: rgb(235, 30, 30);
+}
+
 body {
   height: 100vh;
-}
-
-header {
-  padding: 18px;
-  border-bottom: 1px solid black;
-}
-
-.flex-center-col {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.error-message {
-  color: red;
 }
