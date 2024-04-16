@@ -1,0 +1,20 @@
+.settings-options {
+    text-align: center;
+    transition: background-color 150ms ease-in-out;
+}
+
+.settings-options:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+    cursor: pointer;
+}
+
+.option-selected {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.flex-center-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
