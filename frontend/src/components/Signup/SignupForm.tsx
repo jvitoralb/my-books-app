@@ -28,7 +28,7 @@ function SignupForm({ mutate, isLoading, isError, errorFields, signupData, setSi
   }
 
   return (
-    <form id="signup-form" onSubmit={handleFormSubmit} className="flex-center-col">
+    <form id="signup-form" onSubmit={handleFormSubmit}>
       <InputControl
         subject="name"
         inputType="text"

@@ -1,8 +1,9 @@
 import { ChangeEvent } from 'react';
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
-import { InputControlProps } from '../../types';
-import useInputSubject from './hooks/useInputSubject';
 import HelperText from './HelperText';
+import useInputSubject from './hooks/useInputSubject';
+import { InputControlProps } from '../../types';
+import './styles/input-control.css';
 
 
 function InputControl({ subject, value, inputType, setFormState, displayWarning, handleWarnings, subjectWarning, customText }: InputControlProps) {
@@ -24,7 +25,7 @@ function InputControl({ subject, value, inputType, setFormState, displayWarning,
 
   return (
     <FormControl m="1" isInvalid={isInvalid}>
-      <FormLabel htmlFor={subject}>{defaultLabel}</FormLabel>
+      <FormLabel htmlFor={subject} mb="1" fontWeight="normal">{defaultLabel}</FormLabel>
 
       <Input
         required
@@ -34,6 +35,7 @@ function InputControl({ subject, value, inputType, setFormState, displayWarning,
         onChange={handleInputsChange}
         placeholder={defaultPlaceHolder}
         autoComplete="on"
+        borderRadius="base"
         value={value}
       />
 

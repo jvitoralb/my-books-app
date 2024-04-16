@@ -34,11 +34,11 @@ function ChangeEmailArea({ setEmailValues, stateValues, isValid, fields, sendUpd
 
   return (
     <>
-      <Heading as="h2" size="md" mb="18px">
+      <Heading as="h2" size="md" mb="12px" fontWeight="semibold">
         Email Settings
       </Heading>
 
-      <form id="update-email-form" onSubmit={handleFormSubmit} className="flex-center-col">
+      <form id="update-email-form" onSubmit={handleFormSubmit} className="flex-center-form">
         <InputControl
           subject="new_email"
           setFormState={setEmailValues}

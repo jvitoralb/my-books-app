@@ -1,5 +1,6 @@
 import { Heading } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
+import './styles/header.css';
 
 
 function Header() {

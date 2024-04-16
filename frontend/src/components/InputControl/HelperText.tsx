@@ -1,6 +1,6 @@
 import { FormHelperText } from '@chakra-ui/react';
-import { InputSubject } from '../../types';
 import useTextSubject from './hooks/useTextSubject';
+import { InputSubject } from '../../types';
 
 type HelperTextProps = {
   isInvalid: boolean;
@@ -13,7 +13,12 @@ function HelperText({ subject, customText, isInvalid, warningMessage }: HelperTe
   const { subjectText } = useTextSubject(subject, isInvalid, warningMessage, customText);
 
   return (
-    <FormHelperText mt="0.5">{subjectText}</FormHelperText>
+    <FormHelperText
+      mt="0.5"
+      className={isInvalid ? 'error-message' : ''}
+    >
+      {subjectText}
+    </FormHelperText>
   );
 }
 

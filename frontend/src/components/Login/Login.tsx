@@ -2,6 +2,7 @@ import { Heading } from '@chakra-ui/react';
 import { LoginProps } from '../../types';
 import LoginForm from './LoginForm';
 import useErrorHandler from '../../hooks/useErrorHandler';
+import './styles/login.css';
 
 
 function LogIn({ refetch, isLoadingRefetch, isError, error, setCredentials, isValid, fields }: LoginProps) {
@@ -12,8 +13,8 @@ function LogIn({ refetch, isLoadingRefetch, isError, error, setCredentials, isVa
 
   return (
     <main>
-      <section id="login-section" className="flex-center-col login-section">
-        <Heading as="h4" size="md" mb="3">Login</Heading>
+      <section id="login-section" className="login-section">
+        <Heading as="h4" size="md" mb="2" fontWeight="semibold">Login</Heading>
 
         <LoginForm
           refetch={refetch}

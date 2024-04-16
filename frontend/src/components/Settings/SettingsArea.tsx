@@ -44,6 +44,8 @@ function SettingsArea({ user, currentSettingArea, emailSettings, pswdSettings }:
     <Flex
       as={GridItem}
       area="main"
+      shadow="md"
+      borderWidth="1px"
       flexDirection="column"
       alignItems="center"
       p="16px"

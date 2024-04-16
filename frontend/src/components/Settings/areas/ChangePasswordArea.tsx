@@ -34,11 +34,11 @@ function PasswordSettingsArea({ setPswdValues, stateValues, isValid, fields, sen
 
   return (
     <>
-      <Heading as="h2" size="md" mb="18px">
+      <Heading as="h2" size="md" mb="12px" fontWeight="semibold">
         Password Settings
       </Heading>
 
-      <form id="update-password-form" onSubmit={handleFormSubmit} className="flex-center-col">
+      <form id="update-password-form" onSubmit={handleFormSubmit} className="flex-center-form">
         <InputControl
           subject="new_password"
           inputType="password"

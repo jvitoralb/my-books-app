@@ -28,7 +28,7 @@ function LoginForm({ refetch, isLoadingRefetch, isError, errorFields, setCredent
   }
 
   return (
-    <form id="login-form" onSubmit={handleFormSubmit} className="flex-center-col">
+    <form id="login-form" onSubmit={handleFormSubmit}>
       <InputControl
         subject="email"
         setFormState={setCredentials}

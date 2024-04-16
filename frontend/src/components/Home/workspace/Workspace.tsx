@@ -1,4 +1,4 @@
-import { Flex, GridItem, Text } from '@chakra-ui/react';
+import { Flex, GridItem, Heading, Text } from '@chakra-ui/react';
 import { MutationStatus } from '@tanstack/react-query';
 import NoteSettings from './NoteSettings';
 import NoteTitle from './NoteTitle';
@@ -30,11 +30,14 @@ function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus, s
     >
       {
         !workNote ?
-        <Text marginLeft="24px" padding="18px" fontWeight="medium">
-          Hello, {username}!
-          <br />
-          What are we doing today?
-        </Text> :
+        <>
+          <Heading padding="18px 18px 0" marginLeft="24px" as="h2" size="lg" fontWeight="medium">
+            Hello, {username}!
+          </Heading>
+          <Text px="18px" marginLeft="24px" fontSize="24px" fontWeight="medium">
+            What are we doing today?
+          </Text>
+        </> :
         <>
           <Flex justifyContent="space-between" alignItems="baseline">
             <NoteTitle

@@ -31,40 +31,42 @@ function Home({ user, books }: HomeProps) {
   } = useSidebar();
 
   return (
-    <Grid
-      templateAreas={`"nav main"`}
-      gridTemplateRows={"auto"}
-      gridTemplateColumns={watchingResize ? '0 4fr' : '1fr 4fr'}
-      h="90vh"
-      gap="1"
-    >
-      <label aria-label="Open sidebar" id="hamburguer-menu" className="hamburguer-menu">
-        <input
-          id="hamburguer-checkbox" type="checkbox"
-          autoComplete="off" onClick={sidebarHamburguerHandler}
+    <main>
+      <Grid
+        templateAreas={`"nav main"`}
+        gridTemplateRows={"auto"}
+        gridTemplateColumns={watchingResize ? '0 4fr' : '1fr 4fr'}
+        h="90vh"
+        gap="1"
+      >
+        <label aria-label="Open sidebar" id="hamburguer-menu" className="hamburguer-menu">
+          <input
+            id="hamburguer-checkbox" type="checkbox"
+            autoComplete="off" onClick={sidebarHamburguerHandler}
+          />
+        </label>
+
+        <Sidebar
+          user={user}
+          books={{
+            ...books,
+            selectNote,
+            selectedUpdateNote,
+            selectedDeleteNote
+          }}
+          isOpen={sidebarOpen}
         />
-      </label>
 
-      <Sidebar
-        user={user}
-        books={{
-          ...books,
-          selectNote,
-          selectedUpdateNote,
-          selectedDeleteNote
-        }}
-        isOpen={sidebarOpen}
-      />
-
-      <Workspace
-        username={user.name}
-        workNote={selectedNote}
-        updateNote={books.updateBookNote}
-        deleteNote={books.deleteBookNote}
-        deleteStatus={books.deleteStatus}
-        sidebarOpen={sidebarOpen}
-      />
-    </Grid>
+        <Workspace
+          username={user.name}
+          workNote={selectedNote}
+          updateNote={books.updateBookNote}
+          deleteNote={books.deleteBookNote}
+          deleteStatus={books.deleteStatus}
+          sidebarOpen={sidebarOpen}
+        />
+      </Grid>
+    </main>
   );
 }
 
