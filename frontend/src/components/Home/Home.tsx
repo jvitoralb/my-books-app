@@ -1,7 +1,8 @@
 import { Grid } from '@chakra-ui/react';
-import Sidebar from './sidebar/Sidebar';
+import Sidebar from '../Sidebar';
+import HomeSidebar from './sidebar/HomeSidebar';
 import Workspace from './workspace/Workspace';
-import useSidebar from './hooks/useSidebar';
+import useSidebarState from '../../hooks/useSidebarState';
 import useWorkspaceManager from './hooks/useWorkspaceManager';
 import { BookNoteProps, User } from '../../types';
 
@@ -25,36 +26,35 @@ function Home({ user, books }: HomeProps) {
   });
 
   const {
-    watchingResize,
-    sidebarOpen,
-    sidebarHamburguerHandler,
-  } = useSidebar();
+    setIsOpen,
+    isSidebarOpen,
+    setIsActive,
+    isSidebarResponsiveSize,
+  } = useSidebarState();
 
   return (
     <main>
       <Grid
         templateAreas={`"nav main"`}
         gridTemplateRows={"auto"}
-        gridTemplateColumns={watchingResize ? '0 4fr' : '1fr 4fr'}
+        gridTemplateColumns={isSidebarResponsiveSize ? '0 4fr' : '1fr 4fr'}
         h="90vh"
         gap="1"
       >
-        <label aria-label="Open sidebar" id="hamburguer-menu" className="hamburguer-menu">
-          <input
-            id="hamburguer-checkbox" type="checkbox"
-            autoComplete="off" onClick={sidebarHamburguerHandler}
-          />
-        </label>
-
         <Sidebar
-          user={user}
-          books={{
-            ...books,
-            selectNote,
-            selectedUpdateNote,
-            selectedDeleteNote
-          }}
-          isOpen={sidebarOpen}
+          setIsOpen={setIsOpen}
+          setIsActive={setIsActive}
+          content={
+            <HomeSidebar
+              user={user}
+              books={{
+                ...books,
+                selectNote,
+                selectedUpdateNote,
+                selectedDeleteNote
+              }}
+            />
+          }
         />
 
         <Workspace
@@ -63,7 +63,7 @@ function Home({ user, books }: HomeProps) {
           updateNote={books.updateBookNote}
           deleteNote={books.deleteBookNote}
           deleteStatus={books.deleteStatus}
-          sidebarOpen={sidebarOpen}
+          sidebarOpen={isSidebarOpen}
         />
       </Grid>
     </main>

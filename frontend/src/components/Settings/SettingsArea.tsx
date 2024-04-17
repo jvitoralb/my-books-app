@@ -1,14 +1,16 @@
 import { Flex, GridItem } from '@chakra-ui/react';
-import { EmailSettings, PasswordSettings, User } from '../../types';
 import AccountOverviewArea from './areas/AccountOverviewArea';
 import ChangeEmailArea from './areas/ChangeEmailArea';
 import PasswordSettingsArea from './areas/ChangePasswordArea';
+import { EmailSettings, PasswordSettings, User } from '../../types';
+import './styles/settings-area.css';
 
 type SettingsAreaProps = {
   user: User;
   currentSettingArea: string;
   emailSettings: EmailSettings;
   pswdSettings: PasswordSettings;
+  isSidebarOpen: boolean;
 }
 
 type AreasMap = {
@@ -19,7 +21,7 @@ type AreasMap = {
 
 type Areas = keyof AreasMap;
 
-function SettingsArea({ user, currentSettingArea, emailSettings, pswdSettings }: SettingsAreaProps) {
+function SettingsArea({ user, currentSettingArea, emailSettings, pswdSettings, isSidebarOpen }: SettingsAreaProps) {
   const areasMap: AreasMap = {
     'account-overview':
       <AccountOverviewArea
@@ -49,6 +51,7 @@ function SettingsArea({ user, currentSettingArea, emailSettings, pswdSettings }:
       flexDirection="column"
       alignItems="center"
       p="16px"
+      className={isSidebarOpen ? 'lose-focus' : 'focus'}
     >
       {isValidArea(currentSettingArea) && areasMap[currentSettingArea]}
     </Flex>

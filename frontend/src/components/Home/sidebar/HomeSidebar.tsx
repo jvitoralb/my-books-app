@@ -2,15 +2,13 @@ import { GridItem } from '@chakra-ui/react';
 import UserArea from './UserArea';
 import BooksNotesArea from './BooksNotesArea';
 import { BookNoteProps, User } from '../../../types';
-import '../styles/sidebar.css';
 
-type SidebarProps = {
+type HomeSidebarProps = {
   user: User;
   books: BookNoteProps;
-  isOpen: boolean;
 }
 
-function Sidebar({ user, books, isOpen }: SidebarProps) {
+function HomeSidebar({ user, books }: HomeSidebarProps) {
   return (
     <GridItem
       area="nav"
@@ -18,7 +16,7 @@ function Sidebar({ user, books, isOpen }: SidebarProps) {
       shadow="md"
       borderWidth="1px"
       overflowY="auto"
-      className={'sidebar' + (isOpen ? ' sidebar-open' : '')}
+      height="90vh"
     >
       <UserArea
         {...user}
@@ -31,4 +29,4 @@ function Sidebar({ user, books, isOpen }: SidebarProps) {
   );
 }
 
-export default Sidebar;
+export default HomeSidebar;
