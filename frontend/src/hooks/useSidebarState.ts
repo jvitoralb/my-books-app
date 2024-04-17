@@ -1,50 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 
-const useSidebar = () => {
-    const [ state, setState ] = useState({
-        open: false,
-        active: false
+const useSidebarState = () => {
+    const [state, setState] = useState({
+        isOpen: false,
+        isActive: false
     });
 
-    useEffect(() => {
-        if (window.innerWidth > 920) return;
-
-        const handleResize = () => {
-            if (window.innerWidth < 920) {
-                setState((prevState) => ({
-                    ...prevState,
-                    active: true
-                }));
-                return;
-            }
-            setState((prevState) => ({
-                ...prevState,
-                active: false
-            }));
-        }
-
-        window.addEventListener("resize", handleResize);
-
-        handleResize();
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        }
-    }, [window.innerWidth]);
-
-    const hamburguerHandler = () => {
-        setState((prevState) => ({
-            ...prevState,
-            open: !prevState.open
+    const setIsOpen = (val: boolean) => {
+        setState((prev) => ({
+            ...prev,
+            isOpen: val
+        }));
+    }
+    const setIsActive = (val: boolean) => {
+        setState((prev) => ({
+            ...prev,
+            isActive: val
         }));
     }
 
     return {
-        watchingResize: state.active,
-        sidebarOpen: state.open,
-        sidebarHamburguerHandler: hamburguerHandler,
+        setIsOpen,
+        isSidebarOpen: state.isOpen,
+        setIsActive,
+        isSidebarResponsiveSize: state.isActive,
     }
 }
 
-export default useSidebar;
+export default useSidebarState;
