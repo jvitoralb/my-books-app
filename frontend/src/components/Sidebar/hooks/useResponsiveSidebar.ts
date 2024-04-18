@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
+type SidebarResponsive = {
+    checked: boolean;
+}
 
-const useSidebarResponsive = (setInputChecked: (val: boolean) => void) => {
+const useSidebarResponsive = ({ checked }: SidebarResponsive) => {
     const [ state, setState ] = useState({
         open: false,
         active: false
@@ -32,20 +35,15 @@ const useSidebarResponsive = (setInputChecked: (val: boolean) => void) => {
     }, [window.innerWidth]);
 
     useEffect(() => {
-        setInputChecked(state.open);
-    }, [state.open]);
-
-    const hamburguerHandler = () => {
         setState((prevState) => ({
             ...prevState,
-            open: !prevState.open
+            open: checked
         }));
-    }
+    }, [checked]);
 
     return {
         isOpen: state.open,
         isResponsiveSize: state.active,
-        hamburguerHandler: hamburguerHandler,
     }
 }
 

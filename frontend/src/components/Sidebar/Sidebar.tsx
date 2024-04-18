@@ -20,8 +20,9 @@ function Sidebar({ content, setIsOpen, setIsActive }: SidebarProps) {
   const {
     isOpen,
     isResponsiveSize,
-    hamburguerHandler,
-  } = useSidebarResponsive(setInputChecked);
+  } = useSidebarResponsive({
+    checked,
+  });
 
   const {
     navRef,
@@ -29,7 +30,7 @@ function Sidebar({ content, setIsOpen, setIsActive }: SidebarProps) {
   } = useOutsideClick({
     isOpen,
     isResponsiveSize,
-    hamburguerHandler,
+    setInputChecked,
   });
 
   useSidebarStateHandler({
@@ -47,8 +48,7 @@ function Sidebar({ content, setIsOpen, setIsActive }: SidebarProps) {
       >
         <input
           id="hamburguer-checkbox" type="checkbox"
-          autoComplete="off" onClick={hamburguerHandler}
-          onChange={onChangeCheckedHandler} checked={checked}
+          autoComplete="off" onChange={onChangeCheckedHandler} checked={checked}
         />
       </label>
 

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-type OutsideClickProps = {
+type OutsideClick = {
     isResponsiveSize: boolean;
     isOpen: boolean;
-    hamburguerHandler: () => void;
+    setInputChecked: (val: boolean) => void;
 }
 
-const useOutsideClick = ({ isResponsiveSize, isOpen, hamburguerHandler }: OutsideClickProps) => {
+const useOutsideClick = ({ isResponsiveSize, isOpen, setInputChecked }: OutsideClick) => {
     const navRef = useRef<HTMLElement>(null);
     const hamburguerMenuRef = useRef<HTMLLabelElement>(null);
     const [ outsideClick, setOutsideClick ] = useState(false);
@@ -28,8 +28,8 @@ const useOutsideClick = ({ isResponsiveSize, isOpen, hamburguerHandler }: Outsid
     }, []);
 
     useEffect(() => {
-        if (isResponsiveSize && isOpen) {
-            hamburguerHandler();
+        if (outsideClick && isResponsiveSize && isOpen) {
+            setInputChecked(false);
         }
     }, [outsideClick]);
 
