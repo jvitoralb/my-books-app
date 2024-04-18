@@ -31,7 +31,7 @@ function NoteSection({ sectionText, workNoteId, inputName }: NoteSectionProps) {
 
   return (
     <>
-      <Text minW="10vw" color="GrayText" py="4px" fontSize="sm">Note</Text>
+      <Text minW="10vw" color="GrayText" pt="3px" fontSize="sm" className="workspace-note-heading">Note</Text>
       {
       isEditing ? 
       <EditableTextArea
@@ -53,6 +53,7 @@ function NoteSection({ sectionText, workNoteId, inputName }: NoteSectionProps) {
         mx="12px"
         minH="50vh"
         maxW="75vw"
+        lineHeight="20px"
         ref={divBoxObserver}
         onDoubleClick={switchOn}
       >

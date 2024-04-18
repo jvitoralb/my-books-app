@@ -6,7 +6,6 @@ import NoteAuthor from './NoteAuthor';
 import NoteAbout from './NoteAbout';
 import NoteSection from './NoteSection';
 import { BookNote } from '../../../types';
-import '../styles/workspace.css';
 
 type WorkspaceProps = {
   username: string;

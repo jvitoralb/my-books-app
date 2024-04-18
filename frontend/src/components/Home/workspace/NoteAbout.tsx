@@ -24,7 +24,7 @@ function NoteAbout({ workNoteId, inputName, aboutText }: AboutProps) {
   
   return (
     <>
-      <Text minW="10vw" color="GrayText" py="4px" fontSize="sm">About</Text>
+      <Text minW="10vw" color="GrayText" pt="3px" fontSize="sm" className="workspace-note-heading">About</Text>
       {
         isEditing ? 
         <EditableTextArea
@@ -45,6 +45,7 @@ function NoteAbout({ workNoteId, inputName, aboutText }: AboutProps) {
           maxW="75vw"
           noOfLines={[4, 5, 6]}
           onDoubleClick={switchOn}
+          lineHeight="20px"
         >
           {
             value

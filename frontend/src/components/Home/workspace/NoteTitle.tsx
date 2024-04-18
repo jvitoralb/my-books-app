@@ -23,7 +23,7 @@ function NoteTitle({ workNoteId, titleText, inputName }: TitleProps) {
 
   return (
     <Box>
-      <Text minW="10vw" color="GrayText" py="4px" fontSize="sm">Title</Text>
+      <Text minW="10vw" color="GrayText" pt="3px" fontSize="sm" className="workspace-note-heading">Title</Text>
       {
         isEditing ? 
         <EditableInput

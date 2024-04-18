@@ -23,7 +23,7 @@ function NoteAuthor({ workNoteId, authorText, inputName }: NoteAuthorProps) {
 
   return (
     <>
-      <Text minW="10vw" color="GrayText" py="4px" fontSize="sm">Author</Text>
+      <Text minW="10vw" color="GrayText" pt="3px" fontSize="sm" className="workspace-note-heading">Author</Text>
       {
         isEditing ? 
         <EditableInput
