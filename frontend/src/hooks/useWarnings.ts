@@ -36,7 +36,7 @@ const useWarnings = (isValid: boolean, isError: boolean) => {
             }
             if (warnFields[1] !== null) {
                 if (isValid === false) {
-                    if (warnFields[1] === 'password') passwordMsg = 'Invalid password!';
+                    if (warnFields[1] === 'password') passwordMsg = 'Minimum password length is 8!';
                     if (warnFields[1] === 'confirm_password') passwordMsg = 'Passwords do not match!';
                 }
                 if (isError === true) passwordMsg = 'Wrong password!';
