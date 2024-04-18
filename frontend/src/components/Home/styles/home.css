@@ -1,0 +1,13 @@
+.sidebar-heading {
+    user-select: none;
+    cursor: default;
+}
+
+.notes-btn {
+    cursor: pointer;
+    width: 100%;
+}
+
+.notes-btn:hover {
+    background-color: rgba(67, 100, 136, 0.1);
+}

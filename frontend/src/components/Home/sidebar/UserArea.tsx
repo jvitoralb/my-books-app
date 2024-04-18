@@ -12,7 +12,7 @@ function UserArea({ name }: User) {
     <Flex id="user-area" my="5px" alignItems="center">
       <Avatar size="sm" />
 
-      <Heading as="h2" size="md" mx="8px">
+      <Heading as="h2" size="md" mx="8px" className="sidebar-heading">
         {name}
       </Heading>
 

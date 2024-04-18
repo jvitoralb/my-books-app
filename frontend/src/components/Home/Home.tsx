@@ -5,6 +5,7 @@ import Workspace from './workspace/Workspace';
 import useSidebarState from '../../hooks/useSidebarState';
 import useWorkspaceManager from './hooks/useWorkspaceManager';
 import { BookNoteProps, User } from '../../types';
+import './styles/home.css';
 
 type HomeProps = {
   user: User;

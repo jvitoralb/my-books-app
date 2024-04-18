@@ -30,7 +30,7 @@ function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, updat
   return (
     <>
       <Flex alignItems="baseline" justifyContent="space-between">
-        <Heading as="h3" size="sm" mt="45px" mb="5px">
+        <Heading as="h3" size="sm" mt="45px" mb="5px" className="sidebar-heading">
           Books Notes
         </Heading>
         
@@ -58,6 +58,9 @@ function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, updat
               onClick={handleNoteClick}
               color={isEditing(note.id) ? 'GrayText' : undefined}
               as={isEditing(note.id) ? 'i' : undefined}
+              py="3px"
+              px="6px"
+              className="notes-btn"
             >
               {
                 (updateNoteId === note.id) ? 'Saving...' : 
