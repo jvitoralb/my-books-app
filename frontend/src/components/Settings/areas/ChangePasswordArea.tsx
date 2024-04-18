@@ -47,6 +47,7 @@ function PasswordSettingsArea({ setPswdValues, stateValues, isValid, fields, sen
           handleWarnings={handleWarnings}
           subjectWarning={newPswdWarning}
           value={stateValues.new_password}
+          customText='Should be at least 8 characters long.'
         />
 
         <InputControl

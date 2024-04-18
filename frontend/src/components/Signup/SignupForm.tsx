@@ -52,6 +52,7 @@ function SignupForm({ mutate, isLoading, isError, errorFields, signupData, setSi
         displayWarning={displayWarning}
         handleWarnings={handleWarnings}
         subjectWarning={passwordWarning}
+        customText='Should be at least 8 characters long.'
       />
 
       <InputControl
