@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputSubject } from '../types';
+import { InputSubject } from '../../../types';
 
 
 const useTextSubject = (subject: InputSubject, isInvalid: boolean, warningMessage: string, customText?: string) => {
