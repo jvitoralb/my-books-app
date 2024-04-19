@@ -18,7 +18,7 @@ function SettingsSidebar({ handleCurrentSetting, currentSetting }: SettingsSideb
       overflowY="auto"
       h="90vh"
     >
-      <ul className="settings-options-list">
+      <ul id="settings-nav-options" className="settings-options-list">
         {
           settingsOptions.map((opt, idx) => (
             <li key={`${opt}-${idx}`} id={`${opt}-${idx}-list-item`}>

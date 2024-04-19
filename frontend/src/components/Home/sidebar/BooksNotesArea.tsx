@@ -1,4 +1,4 @@
-import { Flex, Text, Heading, IconButton, VStack } from '@chakra-ui/react';
+import { Flex, Text, Heading, IconButton } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import useSortedNotes from '../hooks/useSortedNotes';
 import useNotesOnChange from '../hooks/useNotesOnChange';
@@ -28,9 +28,9 @@ function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, updat
   }
 
   return (
-    <>
-      <Flex alignItems="baseline" justifyContent="space-between">
-        <Heading as="h3" size="sm" mt="45px" mb="5px" className="sidebar-heading">
+    <section id="books-notes-area">
+      <Flex id="books-notes-header" alignItems="baseline" justifyContent="space-between">
+        <Heading as="h3" size="sm" my="5px" className="sidebar-heading">
           Books Notes
         </Heading>
         
@@ -44,34 +44,31 @@ function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, updat
           isLoading={createStatus === 'loading'}
         />
       </Flex>
-
-      <VStack align="start" spacing="3px">
-        {
-          !notes.length ?
-          <p title="Create a new note...">Create a new note...</p> :
-          notes.map((note, idx) => (
-            <Text
-              key={`note-${note.id}-${idx}`}
-              id={note.id}
-              title={note.title}
-              noOfLines={1}
-              onClick={handleNoteClick}
-              color={isEditing(note.id) ? 'GrayText' : undefined}
-              as={isEditing(note.id) ? 'i' : undefined}
-              py="3px"
-              px="6px"
-              className="notes-btn"
-            >
-              {
-                (updateNoteId === note.id) ? 'Saving...' : 
-                (deleteNoteId === note.id) ? 'Deleting...' : 
-                note.title
-              }
-            </Text>
-          ))
-        }
-      </VStack>
-    </>
+      {
+        !notes.length ?
+        <p title="Create a new note...">Create a new note...</p> :
+        notes.map((note, idx) => (
+          <Text
+            key={`note-${note.id}-${idx}`}
+            id={note.id}
+            title={note.title}
+            noOfLines={1}
+            onClick={handleNoteClick}
+            color={isEditing(note.id) ? 'GrayText' : undefined}
+            as={isEditing(note.id) ? 'i' : undefined}
+            py="3px"
+            px="6px"
+            className="notes-btn"
+          >
+            {
+              (updateNoteId === note.id) ? 'Saving...' : 
+              (deleteNoteId === note.id) ? 'Deleting...' : 
+              note.title
+            }
+          </Text>
+        ))
+      }
+    </section>
   );
 }
 
