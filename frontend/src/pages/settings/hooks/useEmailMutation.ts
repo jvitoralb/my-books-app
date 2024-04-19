@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { updateUserEmail } from '../../../api/users';
 import { CustomAxiosError, UserAuth, EmailUpdates } from '../../../types';
+import { useEffect } from 'react';
 
 
 const useEmailMutation = (authToken: string) => {
@@ -8,10 +9,19 @@ const useEmailMutation = (authToken: string) => {
         data,
         mutate,
         status,
-        error
+        error,
+        reset
     } = useMutation<UserAuth, CustomAxiosError, EmailUpdates>({
         mutationFn: updateUserEmail
     });
+
+    useEffect(() => {
+        if (status === 'idle') return;
+
+        const timer = setTimeout(() => reset(), 5000);
+
+        return () => clearTimeout(timer);
+    }, [status]);
 
     const sendUpdates = (updates: EmailUpdates) => {
         mutate(updates);
