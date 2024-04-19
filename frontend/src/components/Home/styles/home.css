@@ -3,6 +3,16 @@
     cursor: default;
 }
 
+.user-area-section {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.spacer {
+    height: 50px;
+}
+
 .notes-btn {
     cursor: pointer;
     width: 100%;

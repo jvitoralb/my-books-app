@@ -22,6 +22,8 @@ function HomeSidebar({ user, books }: HomeSidebarProps) {
         {...user}
       />
 
+      <div className="spacer"></div>
+
       <BooksNotesArea
         {...books}
       />
