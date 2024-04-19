@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FieldsArrayEmails } from '../types';
+import { FieldsArrayEmails } from '../../../types';
 
 type SettingsWarnings = {
     display: boolean;
