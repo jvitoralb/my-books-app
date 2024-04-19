@@ -20,7 +20,7 @@ const useEmailSettings = (userEmail: string, mutationStatus: MutationStatus) => 
     });
 
     useEffect(() => validate(), [config.new_email, config.confirm_new_email]);
-    useEffect(() => { if (mutationStatus === 'success') stateReset(); }, [mutationStatus]);
+    useEffect(() => { if (mutationStatus === 'success') stateReset(); }, [mutationStatus, userEmail]);
 
     const validate = () => {
         let fieldsMock: FieldsArrayEmails = [null, null];
@@ -54,6 +54,7 @@ const useEmailSettings = (userEmail: string, mutationStatus: MutationStatus) => 
     const stateReset = () => {
         setConfig((prevData) => ({
             ...prevData,
+            email: userEmail,
             new_email: '',
             confirm_new_email: ''
         }));

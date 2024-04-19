@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { User } from '../../types';
 import Settings from '../../components/Settings';
 import useAuth from '../../hooks/useAuth';
+import useUserInfo from './hooks/useUserInfo';
 import useEmailSettings from './hooks/useEmailSettings';
 import useEmailMutation from './hooks/useEmailMutation';
 import usePasswordSettings from './hooks/usePasswordSettings';
 import usePasswordMutation from './hooks/usePasswordMutation';
+import { User } from '../../types';
 
 
 function SettingsPage() {
-  const user = useLoaderData() as User;
+  const loaderUserInfo = useLoaderData() as User;
+  const {
+    user,
+    refreshUserInfo,
+  } = useUserInfo(loaderUserInfo);
 
   const {
     token,
@@ -45,7 +50,10 @@ function SettingsPage() {
   } = usePasswordSettings(pswdStatus);
 
   useEffect(() => {
-    if (emailStatus === 'success') updateAuth(emailMutationRes);
+    if (emailStatus === 'success') {
+      updateAuth(emailMutationRes);
+      refreshUserInfo();
+    }
   }, [emailStatus]);
 
   return (
