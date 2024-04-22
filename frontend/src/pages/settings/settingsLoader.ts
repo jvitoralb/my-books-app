@@ -16,14 +16,14 @@ const settingsLoader = async () => {
     } catch (err) {
         if (err instanceof AxiosError) {
             let statusCode = err.response?.status;
-            if (statusCode === 400 || statusCode === 401 || statusCode === 403) {
+            if (statusCode === 401 || statusCode === 403) {
                 finishSession();
                 return redirect('/login');
+            } else if (statusCode === 400) {
+                throw new Response('This is a Bad Request.', { status: 400 });
             }
         }
-        // 'Something went wrong, please try again later!' ->
-        // carregar uma pagina de crash, sinalizando o error
-        console.error(err);
+        throw new Response('Something went wrong', { status: 500 });
     }
 }
 
