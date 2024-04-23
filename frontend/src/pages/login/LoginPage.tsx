@@ -1,12 +1,14 @@
-import { Navigate } from 'react-router-dom';
+import LogIn from '../../components/Login';
+import useLoginPage from './hooks/useLoginPage';
 import useAuth from '../../hooks/useAuth';
 import useLoginCredentials from './hooks/useLoginCredentials';
 import useLoginQuery from './hooks/useLoginQuery';
-import LogIn from '../../components/Login';
 import { LoginProps } from '../../types';
 
 
 function LogInPage() {
+  const { isUserLogged, loginUser } = useAuth();
+
   const {
     credentials,
     setCredentials,
@@ -19,10 +21,16 @@ function LogInPage() {
     isError,
     error,
     refetch,
-    isLoadingRefetch
+    isLoadingRefetch,
+    status
   } = useLoginQuery(credentials);
 
-  const { isAuth } = useAuth(data);
+  useLoginPage({
+    isLogged: isUserLogged,
+    loginStatus: status,
+    loginUser: loginUser,
+    userAuthentication: data,
+  });
 
   const loginProps: LoginProps = {
     refetch,
@@ -34,7 +42,7 @@ function LogInPage() {
     isLoadingRefetch
   }
 
-  return (isAuth ? <Navigate to="/" /> : <LogIn {...loginProps} />);
+  return (<LogIn {...loginProps} />);
 }
 
 export default LogInPage;

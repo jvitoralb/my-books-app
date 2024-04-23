@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 
 
 const useSignupMutation = () => {
-    const { data, mutate, isError, error, isLoading } = useMutation<UserAuth, AxiosError<ServerErrorMessage>, SignupUserData>({
+    const { data, mutate, isError, error, isLoading, status } = useMutation<UserAuth, AxiosError<ServerErrorMessage>, SignupUserData>({
         mutationFn: register
     });
 
@@ -14,7 +14,8 @@ const useSignupMutation = () => {
         mutate,
         isLoading,
         isError,
-        error
+        error,
+        status,
     }
 }
 

@@ -1,12 +1,14 @@
-import { Navigate } from 'react-router-dom';
+import SignUp from '../../components/Signup';
 import useAuth from '../../hooks/useAuth';
+import useSignupPage from './hooks/useSignupPage';
 import useSignupData from './hooks/useSignupData';
 import useSignupMutation from './hooks/useSignupMutation';
-import SignUp from '../../components/Signup';
 import { SignupProps } from '../../types';
 
 
 function SignUpPage() {
+  const { isUserLogged, loginUser } = useAuth();
+
   const {
     signupData,
     setSignupData,
@@ -19,10 +21,16 @@ function SignUpPage() {
     mutate,
     isLoading,
     isError,
-    error
+    error,
+    status,
   } = useSignupMutation();
 
-  const { isAuth } = useAuth(data);
+  useSignupPage({
+    isLogged: isUserLogged,
+    loginUser: loginUser,
+    signupStatus: status,
+    userAuthentication: data,
+  });
 
   const signupProps: SignupProps = {
     mutate,
@@ -35,7 +43,7 @@ function SignUpPage() {
     fields
   }
 
-  return (isAuth ? <Navigate to="/" /> : <SignUp { ...signupProps } />);
+  return (<SignUp { ...signupProps } />);
 }
 
 export default SignUpPage;

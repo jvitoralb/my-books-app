@@ -4,10 +4,10 @@ import useAuth from '../../../hooks/useAuth';
 
 const useLogout = () => {
     const navigate = useNavigate();
-    const { finishSession } = useAuth();
+    const { logoutUser } = useAuth();
 
     const handleLogout = () => {
-        finishSession();
+        logoutUser();
         navigate('/login');
     }
 
