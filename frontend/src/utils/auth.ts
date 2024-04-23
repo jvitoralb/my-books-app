@@ -1,13 +1,14 @@
+import { redirect } from 'react-router-dom';
 import { UserAuth } from '../types';
 
 
 const AUTH_KEY = 'u-auth';
 
-export const setAuthData = (authData: UserAuth): void => {
+const setAuthData = (authData: UserAuth): void => {
     localStorage.setItem(AUTH_KEY, JSON.stringify(authData));
 }
 
-export const getAuthData = (): UserAuth => {
+const getAuthData = (): UserAuth => {
     let storageItem = localStorage.getItem(AUTH_KEY);
 
     if (typeof storageItem === 'string') {
@@ -20,28 +21,42 @@ export const getAuthData = (): UserAuth => {
     };
 }
 
-export const delAuthData = (): void => {
+const delAuthData = (): void => {
     localStorage.removeItem(AUTH_KEY);
 }
 
 const handleAuth = () => {
+    const startSession = (auth: UserAuth) => {
+        setAuthData(auth);
+    }
     const finishSession = () => {
         delAuthData();
     }
-
-    const isAuth = (() => {
+    const isAuth = () => {
         if (getAuthData().token) {
             return true;
         }
         return false;
-    })();
+    }
+    const getToken = () => {
+        return getAuthData().token;
+    }
+    const requireAuth = (customPath?: string) => {
+        const data = getAuthData();
+        // const expired = false;
 
-    const getToken = () => getAuthData().token;
+        if (!data.token) {
+            let path = customPath ? customPath : '/login';
+            throw redirect(path);
+        }
+    }
 
     return {
-        finishSession: finishSession,
         isAuth: isAuth,
-        getToken: getToken
+        getToken: getToken,
+        startSession: startSession,
+        finishSession: finishSession,
+        requireAuth: requireAuth,
     }
 }
 

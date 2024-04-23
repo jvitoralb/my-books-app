@@ -1,57 +1,30 @@
-import { useEffect, useState } from 'react';
-import { delAuthData, getAuthData, setAuthData } from '../utils/auth';
+import handleAuth from '../utils/auth';
 import { UserAuth } from '../types';
 
-type AuthState = {
-    isAuth: boolean;
-    token: string;
-}
+const useAuth = () => {
+    const handler = handleAuth();
 
-const useAuth = (userAuth?: UserAuth) => {
-    const [ options, setOptions ] = useState<AuthState>({
-        isAuth: false,
-        token: ''
-    });
-
-    useEffect(() => {
-        let savedAuth = getAuthData();
-
-        if (savedAuth.token) setAuthState(savedAuth.token);
-    }, []);
-    useEffect(() => {
-        if (userAuth) {
-            saveUserAuth(userAuth);
-            setAuthState(userAuth.token);
-        }
-    }, [userAuth]);
-
-    const saveUserAuth = (userAuth: UserAuth) => {
-        setAuthData(userAuth);
+    const loginUser = (userAuth: UserAuth) => {
+        handler.startSession(userAuth);
+    }
+    const logoutUser = () => {
+        handler.finishSession();
     }
     const updateUserAuth = (userAuth: UserAuth) => {
-        delAuthData();
-        setAuthData(userAuth);
-    }
-    const deleteAuth = () => {
-        delAuthData();
-        setAuthState('');
-    }
-    const setAuthState = (newToken: string) => {
-        setOptions({
-            isAuth: newToken !== '' ? true : false,
-            token: newToken
-        });
+        handler.finishSession();
+        handler.startSession(userAuth);
     }
 
     return {
+        loginUser: loginUser,
+        logoutUser: logoutUser,
+        isUserLogged: handler.isAuth(),
+        token: handler.getToken(),
         updateAuth: (update?: UserAuth) => {
             if (update) {
                 updateUserAuth(update);
             }
         },
-        finishSession: deleteAuth,
-        isAuth: options.isAuth,
-        token: options.token
     }
 }
 
