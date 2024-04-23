@@ -5,11 +5,8 @@ import handleAuth from '../../utils/auth';
 
 
 const settingsLoader = async () => {
-    const { isAuth, finishSession } = handleAuth();
-
-    if (!isAuth) {
-        return redirect('/welcome');
-    }
+    const authHandler = handleAuth();
+    authHandler.requireAuth();
 
     try {
         return await getUserInfo();
@@ -17,7 +14,7 @@ const settingsLoader = async () => {
         if (err instanceof AxiosError) {
             let statusCode = err.response?.status;
             if (statusCode === 401 || statusCode === 403) {
-                finishSession();
+                authHandler.finishSession();
                 return redirect('/login');
             } else if (statusCode === 400) {
                 throw new Response('This is a Bad Request.', { status: 400 });

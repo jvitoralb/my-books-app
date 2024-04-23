@@ -9,7 +9,6 @@ import WelcomePage from './pages/welcome/WelcomePage.tsx';
 import LogInPage from './pages/login/LoginPage.tsx';
 import SignUpPage from './pages/signup/SignupPage.tsx';
 import SettingsPage from './pages/settings/SettingsPage.tsx';
-import authLoader from './pages/loader/authLoader.ts';
 import homeLoader from './pages/home/homeLoader.ts';
 import settingsLoader from './pages/settings/settingsLoader.ts';
 import ErrorPage from './pages/error/ErrorPage.tsx';
@@ -18,11 +17,11 @@ import ErrorPage from './pages/error/ErrorPage.tsx';
 const browserAppRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />} errorElement={<ErrorPage />}>
-      <Route index element={<HomePage />} loader={homeLoader}/>
+      <Route index element={<HomePage />} loader={homeLoader} />
       <Route path='/settings' element={<SettingsPage />} loader={settingsLoader} />
-      <Route path='/welcome' element={<WelcomePage />} loader={authLoader} />
-      <Route path='/login' element={<LogInPage />} loader={authLoader} />
-      <Route path='/signup' element={<SignUpPage />} loader={authLoader} />
+      <Route path='/welcome' element={<WelcomePage />} />
+      <Route path='/login' element={<LogInPage />} />
+      <Route path='/signup' element={<SignUpPage />} />
     </Route>
   )
 );
