@@ -2,6 +2,7 @@ import { Text, Menu, MenuButton, IconButton, MenuList, MenuItem, AlertDialog, Al
 import { SettingsIcon } from '@chakra-ui/icons';
 import { MutationStatus } from '@tanstack/react-query';
 import useDeleteDialogConfig from '../hooks/useDeleteDialogConfig';
+import handleNoteStorage from '../../../utils/noteStorage';
 
 type NoteSettingsProps = {
   workNoteId: string;
@@ -19,6 +20,8 @@ function NoteSettings({ workNoteId, updateNote, deleteNote }: NoteSettingsProps)
   } = useDeleteDialogConfig();
 
   const handleDeleteNote = () => {
+    const handler = handleNoteStorage();
+    handler.deleteAllInfo(workNoteId);
     deleteNote(workNoteId);
     onClose();
   }
