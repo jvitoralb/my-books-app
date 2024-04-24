@@ -42,6 +42,7 @@ function NoteAuthor({ workNoteId, authorText, inputName }: NoteAuthorProps) {
           px="6px"
           mx="12px"
           maxW="75vw"
+          height={!value ? "28px" : undefined}
           onDoubleClick={switchOn}
         >
           {value}
