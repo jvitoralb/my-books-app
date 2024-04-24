@@ -2,6 +2,7 @@ type NoteInfo = {
     title: string;
     author: string | null;
     about: string | null;
+    section: string | null;
 }
 
 type NoteInfoKeys = keyof NoteInfo;
@@ -11,11 +12,12 @@ const handleNoteStorage = () => {
         return localStorage.getItem(key);
     }
     const getAllInfo = (noteId: string): NoteInfo => {
-        const noteProps: NoteInfoKeys[] = ['title', 'author', 'about'];
+        const noteProps: NoteInfoKeys[] = ['title', 'author', 'about', 'section'];
         const noteInfo: NoteInfo = {
             title: '',
             author: null,
-            about: null
+            about: null,
+            section: null
         };
 
         noteProps.forEach((prop) => {
@@ -39,7 +41,7 @@ const handleNoteStorage = () => {
         localStorage.removeItem(key);
     }
     const deleteAllInfo = (noteId: string) => {
-        const noteProps: NoteInfoKeys[] = ['title', 'author', 'about'];
+        const noteProps: NoteInfoKeys[] = ['title', 'author', 'about', 'section'];
         noteProps.forEach((prop) => {
             localStorage.removeItem(`${prop}_${noteId}`); 
         });
