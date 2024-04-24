@@ -46,6 +46,9 @@ const handleNoteStorage = () => {
             localStorage.removeItem(`${prop}_${noteId}`); 
         });
     }
+    const clearAllInfo = () => {
+        localStorage.clear();
+    }
 
     return {
         getText,
@@ -54,6 +57,7 @@ const handleNoteStorage = () => {
         setAllInfo,
         deleteText,
         deleteAllInfo,
+        clearAllInfo,
     }
 }
 
