@@ -5,7 +5,16 @@ import { UserAuth } from '../types';
 const AUTH_KEY = 'u-auth';
 
 const setAuthData = (authData: UserAuth): void => {
-    localStorage.setItem(AUTH_KEY, JSON.stringify(authData));
+    const userAuth: UserAuth = {
+        token: '',
+        expires: ''
+    }
+    let expireTime = (1000 * 60 * 60 * 24 * Number(authData.expires.split('')[0]));
+    let todayTime = Date.now();
+
+    userAuth.expires = String(todayTime + expireTime);
+    userAuth.token = authData.token;
+    localStorage.setItem(AUTH_KEY, JSON.stringify(userAuth));
 }
 
 const getAuthData = (): UserAuth => {
@@ -43,9 +52,18 @@ const handleAuth = () => {
     }
     const requireAuth = (customPath?: string) => {
         const data = getAuthData();
-        // const expired = false;
+        const expired: boolean = (() => {
+            if (!data.expires) {
+                return true;
+            }
+            if (Number(data.expires) > Date.now()) {
+                return false;
+            }
+            return true;
+        })();
 
-        if (!data.token) {
+        if (!data.token || expired) {
+            finishSession();
             let path = customPath ? customPath : '/login';
             throw redirect(path);
         }
