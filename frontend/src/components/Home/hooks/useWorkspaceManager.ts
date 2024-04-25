@@ -73,6 +73,7 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatu
                     title: notes[i].title,
                     author: notes[i].author || '',
                     about: notes[i].about,
+                    section: notes[i].section,
                 });
                 break;
             }
