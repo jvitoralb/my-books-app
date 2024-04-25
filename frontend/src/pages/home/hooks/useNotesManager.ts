@@ -21,11 +21,18 @@ const useNotesManager = ({ notes, createStatus, newNote, updateStatus, deleteSta
                 newNote,
                 ...lastUpdate,
             ]);
-        } else if (deleteStatus === 'success' || updateStatus === 'success') {
+        }
+    }, [createStatus]);
+    useEffect(() => {
+        if (updateStatus === 'success') {
             fetchBooks();
         }
-    }, [createStatus, updateStatus, deleteStatus]);
-
+    }, [updateStatus]);
+    useEffect(() => {
+        if (deleteStatus === 'success') {
+            fetchBooks();
+        }
+    }, [deleteStatus]);
     useEffect(() => {
         if (fetchResult) {
             setNotesTracked([...fetchResult]);
