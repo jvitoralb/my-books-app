@@ -28,10 +28,8 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatu
     useEffect(() => {
         if (createNoteStatus === 'success' && newNote) {
             selectNote(newNote.id);
-        } else if (deleteNoteStatus === 'success') {
-            storageHandler.deleteAllInfo(config.note?.id || '');
         }
-    }, [notes, createNoteStatus, deleteNoteStatus]);
+    }, [notes, createNoteStatus]);
 
     useEffect(() => {
         if (updateNoteStatus === 'loading') {
@@ -54,6 +52,8 @@ const useWorkspaceManager = ({ notes, createNoteStatus, newNote, updateNoteStatu
                 removingNote: prevConfig.note
             }));
             resetNote();
+        } else if (deleteNoteStatus === 'success') {
+            storageHandler.deleteAllInfo(config.note?.id || '');
         } else {
             setConfig((prevConfig) => ({
                 ...prevConfig,
