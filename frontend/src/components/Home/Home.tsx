@@ -51,8 +51,9 @@ function Home({ user, books }: HomeProps) {
               books={{
                 ...books,
                 selectNote,
+                selectedNote,
                 selectedUpdateNote,
-                selectedDeleteNote
+                selectedDeleteNote,
               }}
             />
           }

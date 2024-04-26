@@ -5,7 +5,7 @@ import useNotesOnChange from '../hooks/useNotesOnChange';
 import { BookNoteProps } from '../../../types';
 
 
-function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, updateStatus, selectedUpdateNote, deleteStatus, selectedDeleteNote }: BookNoteProps) {
+function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, selectedNote, updateStatus, selectedUpdateNote, deleteStatus, selectedDeleteNote }: BookNoteProps) {
   useSortedNotes(notes);
 
   const {
@@ -58,7 +58,7 @@ function BooksNotesArea({ notes, createBookNote, createStatus, selectNote, updat
             as={isEditing(note.id) ? 'i' : undefined}
             py="3px"
             px="6px"
-            className="notes-btn"
+            className={`${updateNoteId === note.id || deleteNoteId === note.id ? 'sidebar-heading' : 'notes-btn'} ${selectedNote?.id === note.id ? 'selected-note-btn' : ''}`}
           >
             {
               (updateNoteId === note.id) ? 'Saving...' : 

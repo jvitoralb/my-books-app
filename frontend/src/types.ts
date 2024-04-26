@@ -162,6 +162,7 @@ export type BookNoteProps = {
     createStatus: MutationStatus;
     newNote: BookNote | undefined;
     selectNote?: (id: string) => void;
+    selectedNote: BookNote | null;
     selectedUpdateNote?: BookNote | null;
     selectedDeleteNote?: BookNote | null;
     updateBookNote: (id: string) => void;

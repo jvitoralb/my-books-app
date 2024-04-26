@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.selected-note-btn {
+    background-color: rgba(67, 100, 136, 0.1);
+}
+
 .notes-btn:hover {
     background-color: rgba(67, 100, 136, 0.1);
 }
