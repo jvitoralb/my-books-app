@@ -1,15 +1,3 @@
-#navigation-bar {
-    font-size: 14px;
-    padding: 2px;
-}
-
-#navigation-bar ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-
 #welcome-section {
     display: flex;
     align-items: center;

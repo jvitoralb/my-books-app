@@ -13,13 +13,6 @@ function Welcome() {
 
   return (
     <main>
-      <nav id="navigation-bar">
-        <ul>
-          <li><Link to="/login" className="welcome-links">Login</Link></li>
-          <li><Link to="/signup" className="welcome-links">Signup</Link></li>
-        </ul>
-      </nav>
-
       <section id="welcome-section">
         <Heading
           ref={welcomeHeadingRef} as="h2" id="welcome-heading"
