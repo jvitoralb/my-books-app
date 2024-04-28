@@ -1,4 +1,25 @@
 header {
-    padding: 18px;
+    padding: 9px;
     border-bottom: 1px solid var(--color-black);
+}
+
+#navigation-bar {
+    font-size: 14px;
+}
+
+#navigation-bar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.nav-bar-link {
+    color: var(--color-blue);
+    text-decoration: underline;
+}
+
+.nav-bar-link:hover {
+    color: var(--color-blue);
+    text-decoration: unset;
 }
