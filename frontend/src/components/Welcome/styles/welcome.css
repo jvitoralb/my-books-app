@@ -1,0 +1,56 @@
+#navigation-bar {
+    font-size: 14px;
+    padding: 2px;
+}
+
+#navigation-bar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#welcome-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 90vh;
+}
+
+#welcome-heading {
+    text-align: center;
+}
+
+.display-effect-starter {
+    color: transparent;
+    translate: 0 -20px;
+    transition: translate 200ms ease-in-out, color 300ms ease-in-out;
+}
+
+.display-effect-end {
+    color: var(--color-black);
+    translate: 0 -50px;
+}
+
+.welcome-links {
+    color: var(--color-blue);
+    text-decoration: underline;
+}
+
+.welcome-links:hover {
+    color: var(--color-blue);
+    text-decoration: unset;
+}
+
+#about-section {
+    padding: 6px 18px;
+}
+
+#about-section p {
+    padding: 6px 0;
+}
+
+.article {
+    padding: 6px 0;
+}
