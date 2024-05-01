@@ -1,0 +1,80 @@
+@media(min-width: 640px) {
+    #docs-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+#docs-menu-section,
+#book-section,
+#user-section,
+#auth-section {
+    padding: 12px 18px;
+}
+
+.doc-heading {
+    text-align: center;
+    padding: 12px;
+}
+
+#services-section-list {
+    margin: 12px 36px;
+    list-style-position: inside;
+}
+
+@media(min-width: 640px) {
+    #services-section-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+#services-section-list li {
+    font-weight: 600;
+    font-style: italic;
+}
+
+#services-section-list li a:hover {
+    font-weight: 400;
+}
+
+.crud-heading {
+    padding: 6px 0;
+}
+
+.require-list {
+    list-style-position: inside;
+    margin: 6px 0px 0px 0px;
+}
+
+.require-list li {
+    margin: 2px 6px;
+}
+
+.note-text {
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.crud-response-text {
+    padding: 6px 0;
+}
+
+.code-block-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.docs-highlight {
+    padding: 2px 5px;
+    border-radius: 5px;
+    background-color: rgba(189, 186, 186, 0.5);
+}
+
+.docs-endpoint {
+    font-style: italic;
+}
