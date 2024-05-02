@@ -1,12 +1,14 @@
 import { GridItem, Heading, Divider } from '@chakra-ui/react';
 import { treatLabelsHyphen } from '../../utils/strings';
+import { ThemeManager } from '../../types';
 
 type SettingsSidebarProps = {
+  theme: ThemeManager;
   handleCurrentSetting: (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => void;
   currentSetting: string;
 }
 
-function SettingsSidebar({ handleCurrentSetting, currentSetting }: SettingsSidebarProps) {
+function SettingsSidebar({ theme, handleCurrentSetting, currentSetting }: SettingsSidebarProps) {
   const settingsOptions = ['account-overview', 'email-settings', 'password-settings'];
 
   return (
@@ -31,7 +33,10 @@ function SettingsSidebar({ handleCurrentSetting, currentSetting }: SettingsSideb
                 fontWeight="semibold"
                 py="16px"
                 my="3px"
-                className={'settings-options' + (opt === currentSetting ? ' option-selected' : '')}
+                className={
+                  `settings-options ${theme.currentTheme === 'dark' && 'settings-options-dark'} ` + 
+                  `${opt === currentSetting ? 'option-selected' : ''}${theme.currentTheme === 'dark' ? '-dark' : ''}`
+                }
               >
                 {treatLabelsHyphen(opt)}
               </Heading>

@@ -1,14 +1,15 @@
 import { GridItem } from '@chakra-ui/react';
 import UserArea from './UserArea';
 import BooksNotesArea from './BooksNotesArea';
-import { BookNoteProps, User } from '../../../types';
+import { BookNoteProps, ThemeManager, User } from '../../../types';
 
 type HomeSidebarProps = {
+  theme: ThemeManager;
   user: User;
   books: BookNoteProps;
 }
 
-function HomeSidebar({ user, books }: HomeSidebarProps) {
+function HomeSidebar({ theme, user, books }: HomeSidebarProps) {
   return (
     <GridItem
       area="nav"
@@ -19,7 +20,8 @@ function HomeSidebar({ user, books }: HomeSidebarProps) {
       height="90vh"
     >
       <UserArea
-        {...user}
+        theme={theme}
+        user={user}
       />
 
       <div className="spacer"></div>

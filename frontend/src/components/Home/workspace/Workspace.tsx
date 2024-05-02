@@ -5,9 +5,10 @@ import NoteTitle from './NoteTitle';
 import NoteAuthor from './NoteAuthor';
 import NoteAbout from './NoteAbout';
 import NoteSection from './NoteSection';
-import { BookNote } from '../../../types';
+import { BookNote, ThemeManager } from '../../../types';
 
 type WorkspaceProps = {
+  theme: ThemeManager;
   username: string;
   workNote: BookNote | null;
   updateNote: (noteId: string) => void;
@@ -16,7 +17,7 @@ type WorkspaceProps = {
   sidebarOpen: boolean;
 }
 
-function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus, sidebarOpen }: WorkspaceProps) {
+function Workspace({ theme, username, workNote, updateNote, deleteNote, deleteStatus, sidebarOpen }: WorkspaceProps) {
   return (
     <GridItem
       id="workspace"
@@ -25,7 +26,9 @@ function Workspace({ username, workNote, updateNote, deleteNote, deleteStatus, s
       shadow="md"
       borderWidth="1px"
       overflowY="scroll"
-      className={sidebarOpen ? 'lose-focus' : 'focus'}
+      className={
+        sidebarOpen ? (theme.currentTheme === 'dark' ? 'home-lose-focus  home-lose-focus-dark' : 'home-lose-focus') : 'home-focus'
+      }
     >
       {
         !workNote ?

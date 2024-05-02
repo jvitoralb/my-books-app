@@ -1,22 +1,30 @@
-.lose-focus {
+.settings-lose-focus {
     background-color: rgba(0, 0, 0, 0.6);
     z-index: -1;
     user-select: none;
     transition: background-color 150ms ease-in;
 }
 
-.focus {
+.settings-lose-focus-dark {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.settings-focus {
     transition: background-color 150ms ease-in-out;
 }
 
 @media(min-width: 940px) {
-    .lose-focus {
+    .settings-lose-focus {
         background-color: unset;
         z-index: unset;
         transition: unset;
     }
+
+    .settings-lose-focus {
+        background-color: unset;
+    }
     
-    .focus {
+    .settings-focus {
         transition: unset;
     }
 }

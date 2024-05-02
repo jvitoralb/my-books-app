@@ -1,10 +1,11 @@
+import { useOutletContext } from 'react-router-dom';
 import { Grid } from '@chakra-ui/react';
 import Sidebar from '../Sidebar';
 import HomeSidebar from './sidebar/HomeSidebar';
 import Workspace from './workspace/Workspace';
 import useSidebarState from '../../hooks/useSidebarState';
 import useWorkspaceManager from './hooks/useWorkspaceManager';
-import { BookNoteProps, User } from '../../types';
+import { AppOutletContext, BookNoteProps, User } from '../../types';
 import './styles/home.css';
 
 type HomeProps = {
@@ -13,6 +14,8 @@ type HomeProps = {
 }
 
 function Home({ user, books }: HomeProps) {
+  const { theme } = useOutletContext<AppOutletContext>();
+
   const {
     selectNote,
     selectedNote,
@@ -47,6 +50,7 @@ function Home({ user, books }: HomeProps) {
           setIsActive={setIsActive}
           content={
             <HomeSidebar
+              theme={theme}
               user={user}
               books={{
                 ...books,
@@ -60,6 +64,7 @@ function Home({ user, books }: HomeProps) {
         />
 
         <Workspace
+          theme={theme}
           username={user.name}
           workNote={selectedNote}
           updateNote={books.updateBookNote}

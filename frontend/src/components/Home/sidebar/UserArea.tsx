@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Avatar, Heading, Spacer, Menu, MenuButton, MenuGroup, MenuItem, MenuList, IconButton, MenuDivider } from '@chakra-ui/react';
+import { Avatar, Heading, Spacer, Menu, MenuButton, MenuGroup, MenuItem, MenuList, IconButton, MenuDivider, Text } from '@chakra-ui/react';
 import useLogout from '../hooks/useLogout';
-import { User } from '../../../types';
+import { ThemeManager, User } from '../../../types';
 
+type UserAreaProps = {
+  user: User;
+  theme: ThemeManager
+}
 
-function UserArea({ name }: User) {
+function UserArea({ theme, user }: UserAreaProps) {
   const { handleLogout } = useLogout();
 
   return (
@@ -15,7 +19,7 @@ function UserArea({ name }: User) {
         as="h2" size="md" mx="8px"
         className="sidebar-heading" fontWeight="semibold"
       >
-        {name}
+        {user.name}
       </Heading>
 
       <Spacer />
@@ -31,6 +35,11 @@ function UserArea({ name }: User) {
           <MenuGroup title="My Account" my="4px" mx="8px" className="sidebar-heading">
             <MenuItem as={Link} fontSize="14px" to="/settings" target="_blank">
               Settings
+            </MenuItem>
+          </MenuGroup>
+          <MenuGroup title="Preferences" my="4px" mx="8px" className="sidebar-heading">
+            <MenuItem as={Text} fontSize="14px" onClick={theme.updateTheme}>
+              Theme: {theme.currentTheme}
             </MenuItem>
           </MenuGroup>
 

@@ -1,3 +1,4 @@
+import { ColorMode } from '@chakra-ui/react';
 import { MutationStatus, QueryObserverResult, RefetchOptions, RefetchQueryFilters, UseMutateFunction } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { HTMLInputTypeAttribute } from 'react';
@@ -12,6 +13,13 @@ export type CustomAxiosError = AxiosError<ServerErrorMessage, any> | null
 export type FieldsArray = ['email' | null, 'password' | 'confirm_password' | null];
 export type UseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<UserAuth, AxiosError<ServerErrorMessage, any>>>;
 export type BooksUseQueryRefetch = <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<BookNote[], unknown>>;
+export type ThemeManager = {
+    currentTheme: ColorMode;
+    updateTheme: () => void;
+}
+export type AppOutletContext = {
+    theme: ThemeManager
+}
 
 /**
  * Input Control Component related Types

@@ -1,7 +1,9 @@
+import { useOutletContext } from 'react-router-dom';
 import useSidebarStateHandler from './hooks/useSidebarStateHandler';
 import useSidebarResponsive from './hooks/useResponsiveSidebar';
 import useInputChecked from './hooks/useInputChecked';
 import useOutsideClick from './hooks/useOutsideClick';
+import { AppOutletContext } from '../../types';
 import './styles/sidebar.css';
 
 type SidebarProps = {
@@ -11,6 +13,8 @@ type SidebarProps = {
 }
 
 function Sidebar({ content, setIsOpen, setIsActive }: SidebarProps) {
+  const { theme } = useOutletContext<AppOutletContext>();
+
   const {
     checked,
     setInputChecked,
@@ -43,8 +47,8 @@ function Sidebar({ content, setIsOpen, setIsActive }: SidebarProps) {
   return (
     <>
       <label
-        aria-label="Open sidebar" id="hamburguer-menu"
-        className="hamburguer-menu" ref={hamburguerMenuRef}
+        ref={hamburguerMenuRef} aria-label="Open sidebar" id="hamburguer-menu" 
+        className={`hamburguer-menu ${theme.currentTheme === 'dark' && 'hamburguer-menu-dark'}`}
       >
         <input
           id="hamburguer-checkbox" type="checkbox"
@@ -54,7 +58,7 @@ function Sidebar({ content, setIsOpen, setIsActive }: SidebarProps) {
 
       <nav
         ref={navRef}
-        className={'sidebar' + (isOpen ? ' sidebar-open' : '')}
+        className={`sidebar ${isOpen && 'sidebar-open'} ${theme.currentTheme === 'dark' && 'sidebar-dark'}`}
       >
         {content}
       </nav>

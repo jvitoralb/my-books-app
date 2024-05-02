@@ -4,8 +4,9 @@ import Sidebar from '../Sidebar';
 import SettingsSidebar from './SettingsSidebar';
 import SettingsArea from './SettingsArea';
 import useSidebarState from '../../hooks/useSidebarState';
-import { EmailSettings, PasswordSettings, User } from '../../types';
+import { AppOutletContext, EmailSettings, PasswordSettings, User } from '../../types';
 import './styles/settings.css';
+import { useOutletContext } from 'react-router-dom';
 
 type SettingsProps = {
   user: User;
@@ -14,6 +15,7 @@ type SettingsProps = {
 }
 
 function Settings({ user, emailSettings, pswdSettings }: SettingsProps) {
+  const { theme } = useOutletContext<AppOutletContext>();
   const [ currentSetting, setCurrentSetting ] = useState('account-overview');
 
   const {
@@ -45,6 +47,7 @@ function Settings({ user, emailSettings, pswdSettings }: SettingsProps) {
           setIsOpen={setIsOpen}
           content={
             <SettingsSidebar
+              theme={theme}
               handleCurrentSetting={handleCurrentSetting}
               currentSetting={currentSetting}
             />
@@ -52,6 +55,7 @@ function Settings({ user, emailSettings, pswdSettings }: SettingsProps) {
         />
 
         <SettingsArea
+          theme={theme}
           user={user}
           currentSettingArea={currentSetting}
           emailSettings={emailSettings}

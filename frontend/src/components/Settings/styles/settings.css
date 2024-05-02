@@ -8,8 +8,17 @@
     cursor: pointer;
 }
 
+.settings-options-dark:hover {
+    background-color: rgba(255, 255, 255, 0.075);
+    cursor: pointer;
+}
+
 .option-selected {
     background-color: rgba(0, 0, 0, 0.075);
+}
+
+.option-selected-dark {
+    background-color: rgba(255, 255, 255, 0.075);
 }
 
 .flex-center-form {

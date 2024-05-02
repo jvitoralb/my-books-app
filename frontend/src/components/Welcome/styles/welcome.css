@@ -17,7 +17,7 @@
 }
 
 .display-effect-end {
-    color: var(--color-black);
+    color: inherit;
     translate: 0 -50px;
 }
 

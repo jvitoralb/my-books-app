@@ -26,24 +26,32 @@
     background-color: rgba(67, 100, 136, 0.1);
 }
 
-.lose-focus {
+.home-lose-focus {
     background-color: rgba(0, 0, 0, 0.6);
     z-index: -1;
     transition: background-color 150ms ease-in;
 }
 
-.focus {
+.home-lose-focus-dark {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.home-focus {
     transition: background-color 150ms ease-in-out;
 }
 
 @media(min-width: 940px) {
-    .lose-focus {
+    .home-lose-focus {
         background-color: unset;
         z-index: unset;
         transition: unset;
     }
+
+    .home-lose-focus-dark {
+        background-color: unset;
+    }
     
-    .focus {
+    .home-focus {
         transition: unset;
     }
 }
