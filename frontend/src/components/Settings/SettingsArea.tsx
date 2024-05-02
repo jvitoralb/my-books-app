@@ -3,7 +3,6 @@ import AccountOverviewArea from './areas/AccountOverviewArea';
 import ChangeEmailArea from './areas/ChangeEmailArea';
 import PasswordSettingsArea from './areas/ChangePasswordArea';
 import { EmailSettings, PasswordSettings, ThemeManager, User } from '../../types';
-import './styles/settings-area.css';
 
 type SettingsAreaProps = {
   theme: ThemeManager;

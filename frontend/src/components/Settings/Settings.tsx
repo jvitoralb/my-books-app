@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Grid } from '@chakra-ui/react';
+import { useOutletContext } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import SettingsSidebar from './SettingsSidebar';
 import SettingsArea from './SettingsArea';
 import useSidebarState from '../../hooks/useSidebarState';
 import { AppOutletContext, EmailSettings, PasswordSettings, User } from '../../types';
 import './styles/settings.css';
-import { useOutletContext } from 'react-router-dom';
 
 type SettingsProps = {
   user: User;
