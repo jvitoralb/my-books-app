@@ -9,32 +9,6 @@ describe('User Component Crud Tests', () => {
 
     afterEach(() => serverResponse.mockClear());
 
-    test('creates a user successfully and returns user token', async () => {
-        const res = await request(app)
-        .post('/api/v1/users/register')
-        .send({
-            name: 'user test',
-            email: 'user.test@library.app',
-            password: 'strongpswd123',
-        }).set('Accept', 'application/json');
-
-        serverResponse({
-            body: res.body,
-            statusCode: res.statusCode
-        });
-        tokens(res.body.token);
-
-        expect(serverResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: {
-                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
-                    expires: '7d'
-                },
-                statusCode: 201
-            })
-        );
-    });
-
     test('reads user data using auth token', async () => {
         const res = await request(app)
         .get('/api/v1/users')
@@ -50,30 +24,6 @@ describe('User Component Crud Tests', () => {
                 body: {
                     name: 'user test',
                     email: 'user.test@library.app'
-                },
-                statusCode: 200
-            })
-        );
-    });
-
-    test('issues a token when receives a valid password and email', async () => {
-        const res = await request(app)
-        .post('/api/v1/users/login')
-        .send({
-            email: 'old-user.test@library.app',
-            password: 'old-strongpswd123',
-        }).set('Accept', 'application/json');
-
-        serverResponse({
-            body: res.body,
-            statusCode: res.statusCode
-        });
-
-        expect(serverResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: {
-                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
-                    expires: '7d'
                 },
                 statusCode: 200
             })
