@@ -1,29 +1,31 @@
 import Repository from '../database/repository';
 import PasswordsHandler from '../../../lib/auth/password';
-import AuthToken from '../../../lib/auth/jwt';
 import { BadRequestError } from '../../../lib/errors/custom';
+import AuthToken from '../../../lib/auth/jwt';
 
-export type RegisterUserData = {
+type RegisterUserData = {
     name: string;
     email: string;
-    password: string;
+    pswdHashSalt: {
+        hash: string;
+        salt: string;
+    }
 }
-export type LoginCredentials = {
+type LoginCredentials = {
     email: string;
-    password: string;
 }
 export type UserIdentification = {
     id: string;
     email: string;
 }
-type UserAccessData = {
+export type UserAccessData = {
     token: string;
     expires: string;
 }
 
 interface Service {
-    registerUser(registerData: RegisterUserData): Promise<UserAccessData>;
-    logUser(userCredentials: LoginCredentials): Promise<UserAccessData>;
+    registerUser(registerData: RegisterUserData): Promise<User>;
+    loginUser(userCredentials: LoginCredentials): Promise<User>;
     searchUser(userIds: UserIdentification): Promise<{ name: string; email: string; }>;
     changeEmail(userIds: UserIdentification, newEmail: string): Promise<UserAccessData>;
     changePassword(id: string, password: string): Promise<void>;
@@ -100,43 +102,17 @@ class UserService extends UserData implements Service {
         this.repository = new Repository();
     }
 
-    registerUser = async ({ name, email, password }: RegisterUserData): Promise<UserAccessData> => {
-        const pswdHashSalt = new PasswordsHandler(password).generate();
-
+    registerUser = async ({ name, email, pswdHashSalt }: RegisterUserData): Promise<User> => {
         this.setPswd = pswdHashSalt;
         this.setEmail = email;
         this.setName = name;
 
-        const insertedDoc = await this.repository.insert(this.getUser);
-        const tokenInfo = new AuthToken().issue({
-            id: String(insertedDoc.id),
-            email: this.getUser.email
-        })!;
-
-        return {
-            token: tokenInfo.token,
-            expires: tokenInfo.expires
-        };
+        return await this.repository.insert(this.getUser);
     }
-    logUser = async ({ email, password }: LoginCredentials): Promise<UserAccessData> => {
+    loginUser = async ({ email }: LoginCredentials): Promise<User> => {
         this.setEmail = email;
 
-        const userDoc = await this.repository.findDocument(this.getUser);
-        const validPswd = new PasswordsHandler(password, userDoc.pswd_hash, userDoc.pswd_salt).validate();
-
-        if (!validPswd) {
-            throw new BadRequestError('Invalid password');
-        }
-
-        const tokenInfo = new AuthToken().issue({
-            id: userDoc.id,
-            email: userDoc.email
-        })!;
-
-        return {
-            token: tokenInfo.token,
-            expires: tokenInfo.expires
-        };
+        return await this.repository.findDocument(this.getUser);
     }
     searchUser = async ({ id, email }: UserIdentification): Promise<{ name: string; email: string; }> => {
         this.setId = id;
