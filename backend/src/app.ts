@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import authRouter from './components/auth/api/routes';
 import userRouter from './components/user/api/routes';
 import bookRouter from './components/book/api/routes';
 import errorHandler from './lib/errors/handler';
@@ -18,6 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/books', bookRouter);
 
