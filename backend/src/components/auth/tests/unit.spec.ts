@@ -1,9 +1,36 @@
 import httpMocks from 'node-mocks-http';
 import AuthMiddleware from '../api/middlewares';
-import { AuthenticationError } from '../../../lib/errors/custom';
+import { AuthenticationError, BadRequestError } from '../../../lib/errors/custom';
 
 
 describe('Authentication Middleware', () => {
+    test('throws a BadRequestError when user credentials are missing', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'POST',
+            path: '/api/v1/users/login',
+            body: { email: 'user.test@library.app' }
+        }, {});
+        let next = () => {};
+
+        expect(() => new AuthMiddleware().validCredentials(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
+    });
+
+    test('throws BadRequestError when is missing data for creating a user', () => {
+        let { req, res } = httpMocks.createMocks({
+            method: 'POST',
+            path: '/api/v1/users/register',
+            body: {
+                name: 'user test',
+                password: 'strongpswd123'
+            }
+        }, {});
+        let next = () => {};
+
+        expect(() => new AuthMiddleware().validCreate(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
+    });
+
     test('should return undefined for a valid a token', () => {
         let { req, res } = httpMocks.createMocks({
             headers: {
