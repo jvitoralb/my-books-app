@@ -4,14 +4,28 @@ import app from '../../../app';
 
 
 describe('User Component Crud Tests', () => {
+    const authEndpoint = '/api/v1/auth';
+    const usersEndpoint = '/api/v1/users';
     const tokens = jest.fn((token: string) => token);
     const serverResponse = jest.fn((call: { body: any, statusCode: number, equalTokens?: boolean }) => call);
 
     afterEach(() => serverResponse.mockClear());
 
+    beforeAll(async () => {
+        const res = await request(app)
+        .post(`${authEndpoint}/register`)
+        .send({
+            name: 'users user test',
+            email: 'users.user.test@mynotes.app',
+            password: 'strongpswd123',
+        }).set('Accept', 'application/json');
+
+        tokens(res.body.token);
+    });
+
     test('reads user data using auth token', async () => {
         const res = await request(app)
-        .get('/api/v1/users')
+        .get(usersEndpoint)
         .set('Authorization', tokens.mock.results[0].value as string);
 
         serverResponse({
@@ -22,8 +36,8 @@ describe('User Component Crud Tests', () => {
         expect(serverResponse).toHaveBeenCalledWith(
             expect.objectContaining({
                 body: {
-                    name: 'user test',
-                    email: 'user.test@library.app'
+                    name: 'users user test',
+                    email: 'users.user.test@mynotes.app'
                 },
                 statusCode: 200
             })
@@ -32,7 +46,7 @@ describe('User Component Crud Tests', () => {
 
     test('updates a user email successfully and returns a new token', async () => {
         const res = await request(app)
-        .put('/api/v1/users/email')
+        .put(`${usersEndpoint}/email`)
         .send({ new_email: 'user.test.novo@library.app' })
         .set('Authorization', tokens.mock.results[0].value as string);
 
@@ -57,7 +71,7 @@ describe('User Component Crud Tests', () => {
 
     test('updates a user password successfully and returns status code 204', async () => {
         const res = await request(app)
-        .put('/api/v1/users/password')
+        .put(`${usersEndpoint}/password`)
         .send({ new_password: 'strongpswd123NOVO' })
         .set('Authorization', tokens.mock.results[0].value as string);
 
@@ -76,7 +90,7 @@ describe('User Component Crud Tests', () => {
 
     test('deletes a user successfully and returns status code 204', async () => {
         const res = await request(app)
-        .delete('/api/v1/users')
+        .delete(usersEndpoint)
         .set('Authorization', tokens.mock.results[1].value as string);
 
         serverResponse({
