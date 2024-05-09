@@ -54,8 +54,6 @@ class CheckRequestInputs {
 }
 
 interface Middleware {
-    validateCreate(req: Request, res: Response, next: NextFunction): void
-    validateReadCredentials(req: Request, res: Response, next: NextFunction): void
     validateUpdateEmail(req: Request, res: Response, next: NextFunction): void
     validateUpdatePswd(req: Request, res: Response, next: NextFunction): void
 }
@@ -63,23 +61,6 @@ interface Middleware {
 class UserMiddleware extends CheckRequestInputs implements Middleware {
     constructor() {
         super();
-    }
-    validateCreate = (req: Request, res: Response, next: NextFunction): void => {
-        this.setRequest = req;
-
-        this.checkForName();
-        this.checkForEmail();
-        this.checkForPassword();
-        
-        next();
-    }
-    validateReadCredentials = (req: Request, res: Response, next: NextFunction): void => {
-        this.setRequest = req;
-
-        this.checkForEmail();
-        this.checkForPassword();
-        
-        next();
     }
     validateUpdateEmail = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
