@@ -26,7 +26,7 @@ describe('User Component Crud Tests', () => {
     test('reads user data using auth token', async () => {
         const res = await request(app)
         .get(usersEndpoint)
-        .set('Authorization', tokens.mock.results[0].value as string);
+        .set('Authorization', 'Bearer ' + tokens.mock.results[0].value as string);
 
         serverResponse({
             body: res.body,
@@ -48,7 +48,7 @@ describe('User Component Crud Tests', () => {
         const res = await request(app)
         .put(`${usersEndpoint}/email`)
         .send({ new_email: 'user.test.novo@library.app' })
-        .set('Authorization', tokens.mock.results[0].value as string);
+        .set('Authorization', 'Bearer ' + tokens.mock.results[0].value as string);
 
         serverResponse({
             body: res.body,
@@ -60,7 +60,7 @@ describe('User Component Crud Tests', () => {
         expect(serverResponse).toHaveBeenCalledWith(
             expect.objectContaining({
                 body: {
-                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
+                    token: expect.stringMatching(/^\S+\.\S+\.\S+$/),
                     expires: '7d'
                 },
                 statusCode: 200,
@@ -73,7 +73,7 @@ describe('User Component Crud Tests', () => {
         const res = await request(app)
         .put(`${usersEndpoint}/password`)
         .send({ new_password: 'strongpswd123NOVO' })
-        .set('Authorization', tokens.mock.results[0].value as string);
+        .set('Authorization', 'Bearer ' + tokens.mock.results[0].value as string);
 
         serverResponse({
             body: res.body,
@@ -91,7 +91,7 @@ describe('User Component Crud Tests', () => {
     test('deletes a user successfully and returns status code 204', async () => {
         const res = await request(app)
         .delete(usersEndpoint)
-        .set('Authorization', tokens.mock.results[1].value as string);
+        .set('Authorization', 'Bearer ' + tokens.mock.results[1].value as string);
 
         serverResponse({
             body: res.body,
