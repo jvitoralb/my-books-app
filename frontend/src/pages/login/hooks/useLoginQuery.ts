@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { login } from '../../../api/users';
+import { login } from '../../../api/auth';
 import { LoginCredentials, ServerErrorMessage } from '../../../types';
 
 

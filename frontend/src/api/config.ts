@@ -11,8 +11,8 @@ const axiosInstance = axios.create({
     }
 });
 
-const USER_LOGIN_URL = '/users/login';
-const USER_REGISTER_URL = '/users/register';
+const USER_LOGIN_URL = '/auth/login';
+const USER_REGISTER_URL = '/auth/register';
 const publicUrls: [string, string] = [USER_LOGIN_URL, USER_REGISTER_URL];
 const auth = handleAuth();
 
