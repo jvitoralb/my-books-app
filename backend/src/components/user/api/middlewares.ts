@@ -1,75 +1,31 @@
-import { NextFunction, Request, Response, request } from 'express';
-import { BadRequestError } from '../../../lib/errors/custom';
-
-
-class CheckRequestInputs {
-    private req: Request;
-
-    constructor() {
-        this.req = request;
-    }
-
-    protected set setRequest(req: Request) {
-        this.req = req;
-    }
-    protected get getRequest(): Request {
-        return this.req;
-    }
-
-    protected checkForPassword(): void {
-        const { password } = this.req.body;
-
-        if (!password) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
-    protected checkForEmail(): void {
-        const { email } = this.req.body;
-
-        if (!email) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
-    protected checkForName(): void {
-        const { name } = this.req.body;
-
-        if (!name) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
-    protected checkForNewEmail(): void {
-        const { new_email } = this.req.body;
-
-        if (!new_email) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
-    protected checkForNewPassword(): void {
-        const { new_password } = this.req.body;
-
-        if (!new_password) {
-            throw new BadRequestError('Missing required field');
-        }
-    }
-}
+import { NextFunction, Request, Response } from 'express';
+import AuthRequestValidations from '../../../lib/middlewares/auth-request-validations';
 
 interface Middleware {
-    validateUpdateEmail(req: Request, res: Response, next: NextFunction): void
-    validateUpdatePswd(req: Request, res: Response, next: NextFunction): void
+    validRequest(req: Request, res: Response, next: NextFunction): void;
+    validUpdateEmail(req: Request, res: Response, next: NextFunction): void;
+    validUpdatePswd(req: Request, res: Response, next: NextFunction): void;
 }
 
-class UserMiddleware extends CheckRequestInputs implements Middleware {
+class UserMiddleware extends AuthRequestValidations implements Middleware {
     constructor() {
         super();
     }
-    validateUpdateEmail = (req: Request, res: Response, next: NextFunction): void => {
+    validRequest = (req: Request, res: Response, next: NextFunction) => {
+        this.setRequest = req;
+
+        this.checkToken();
+
+        next();
+    }
+    validUpdateEmail = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForNewEmail();
 
         next();
     }
-    validateUpdatePswd = (req: Request, res: Response, next: NextFunction): void => {
+    validUpdatePswd = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForNewPassword();
