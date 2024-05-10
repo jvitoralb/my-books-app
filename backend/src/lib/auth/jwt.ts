@@ -47,7 +47,7 @@ class AuthToken implements Authentication {
             const signature = this.signPayload(payload);
             
             return {
-                token: 'Bearer ' + signature,
+                token: signature,
                 expires: this.EXPIRES
             }
         } catch(err) {

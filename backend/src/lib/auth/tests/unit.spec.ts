@@ -11,24 +11,24 @@ describe('JWT Authentication', () => {
 
         expect(generatedToken).toHaveBeenCalledWith(
             expect.objectContaining({
-                token: expect.stringMatching(/Bearer\s\S+\.\S+\.\S+/),
+                token: expect.stringMatching(/^\S+\.\S+\.\S+$/),
                 expires: '7d'
             })
         );
     });
 
     test('should successfully validate a token', () => {
-        const authorizationHeader = generatedToken.mock.lastCall[0].token;
+        const authorizationHeader = 'Bearer ' + generatedToken.mock.lastCall[0].token;
         const auth = new AuthToken();
 
-        expect(auth.validate(authorizationHeader)).toBe(true);
+        expect(auth.validate(authorizationHeader).valid).toBe(true);
     });
 
     test('should return false for a invalid token', () => {
         const authorizationHeader = 'Bearer tHiS.1s.4-1nVAL1d-_toK3N'
         const auth = new AuthToken();
 
-        expect(auth.validate(authorizationHeader)).toBe(false);
+        expect(auth.validate(authorizationHeader).valid).toBe(false);
     });
 });
 
