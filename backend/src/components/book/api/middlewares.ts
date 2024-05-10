@@ -1,5 +1,6 @@
 import { request, Request, Response, NextFunction } from 'express';
-import { BadRequestError } from '../../../lib/errors/custom';
+import { AuthenticationError, BadRequestError } from '../../../lib/errors/custom';
+import AuthToken from '../../../lib/auth/jwt';
 
 
 class CheckRequest {
@@ -12,7 +13,19 @@ class CheckRequest {
     protected set setRequest(req: Request) {
         this.req = req;
     }
+    protected checkToken(): void {
+        const authToken = this.req.get('Authorization');
 
+        if (!authToken) {
+            throw new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401);
+        }
+
+        const authorized = new AuthToken().validate(authToken);
+
+        if (!authorized.valid) {
+            throw new AuthenticationError('Not Authorized', 'FORBIDDEN', 403, authorized.description);
+        }
+    }
     protected checkForId(): void {
         const { id } = this.req.params;
 
@@ -51,32 +64,32 @@ class CheckRequest {
 }
 
 interface Middleware {
-    validateCreate(req: Request, res: Response, next: NextFunction): void;
-    validateUpdateInfo(req: Request, res: Response, next: NextFunction): void;
-    validateUpdateSection(req: Request, res: Response, next: NextFunction): void;
-    validateDelete(req: Request, res: Response, next: NextFunction): void;
+    validRequest(req: Request, res: Response, next: NextFunction): void;
+    validCreate(req: Request, res: Response, next: NextFunction): void;
+    validUpdateInfo(req: Request, res: Response, next: NextFunction): void;
+    validUpdateSection(req: Request, res: Response, next: NextFunction): void;
+    validDelete(req: Request, res: Response, next: NextFunction): void;
 }
 
 class BookMiddleware extends CheckRequest implements Middleware {
     constructor() {
         super();
     }
+    validRequest = (req: Request, res: Response, next: NextFunction) => {
+        this.setRequest = req;
 
-    validateCreate = (req: Request, res: Response, next: NextFunction): void => {
+        this.checkToken();
+
+        next();
+    }
+    validCreate = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForTitle();
 
         next();
     }
-    validateDelete = (req: Request, res: Response, next: NextFunction): void => {
-        this.setRequest = req;
-
-        this.checkForId();
-
-        next();
-    }
-    validateUpdateInfo = (req: Request, res: Response, next: NextFunction): void => {
+    validUpdateInfo = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForId();
@@ -86,11 +99,18 @@ class BookMiddleware extends CheckRequest implements Middleware {
 
         next();
     }
-    validateUpdateSection = (req: Request, res: Response, next: NextFunction): void => {
+    validUpdateSection = (req: Request, res: Response, next: NextFunction): void => {
         this.setRequest = req;
 
         this.checkForId();
         this.checkForSection();
+
+        next();
+    }
+    validDelete = (req: Request, res: Response, next: NextFunction): void => {
+        this.setRequest = req;
+
+        this.checkForId();
 
         next();
     }
