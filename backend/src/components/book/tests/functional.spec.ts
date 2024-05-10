@@ -4,23 +4,25 @@ import app from '../../../app'
 
 
 describe('Book Component Crud Tests', () => {
+    const authEndpoint = '/api/v1/auth';
+    const booksEndpoint = '/api/v1/books';
     const userToken = jest.fn((token: string): string => token);
     const serverResponse = jest.fn((res: { body: any, statusCode: number }) => res);
 
     beforeAll(async () => {
         const res = await request(app)
-        .post('/api/v1/users/login')
+        .post(`${authEndpoint}/login`)
         .send({
             email: 'old-user.test@library.app',
             password: 'old-strongpswd123'
         }).set('Accept', 'application/json')
 
-        userToken(res.body.token)
+        userToken(res.body.token);
     });
 
     test('should be able to create a book successfully', async () => {
         const res = await request(app)
-        .post('/api/v1/books')
+        .post(booksEndpoint)
         .send({ title: 'A volta dos que não foram' })
         .set('Authorization', userToken.mock.results[0].value)
         .set('Accept', 'application/json');
@@ -43,7 +45,7 @@ describe('Book Component Crud Tests', () => {
 
     test('should answer with all created books', async () => {
         const res = await request(app)
-        .get('/api/v1/books')
+        .get(booksEndpoint)
         .set('Authorization', userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
@@ -69,7 +71,7 @@ describe('Book Component Crud Tests', () => {
 
     test('should answer with 204 when successfully updates info', async () => {
         const res = await request(app)
-        .put(`/api/v1/books/${serverResponse.mock.results[0].value.body.id}/info`)
+        .put(`${booksEndpoint}/${serverResponse.mock.results[0].value.body.id}/info`)
         .send({
             title: 'A volta dos que não foram',
             author: 'ninguém',
@@ -83,7 +85,7 @@ describe('Book Component Crud Tests', () => {
 
     test('should answer with 204 when successfully updates section', async () => {
         const res = await request(app)
-        .put(`/api/v1/books/${serverResponse.mock.results[0].value.body.id}/section`)
+        .put(`${booksEndpoint}/${serverResponse.mock.results[0].value.body.id}/section`)
         .send({ section: 'section update' })
         .set('Authorization', userToken.mock.results[0].value)
         .set('Accept', 'application/json');
@@ -93,7 +95,7 @@ describe('Book Component Crud Tests', () => {
 
     test('should be able to delete a book successfully and return 204', async () => {
         const res = await request(app)
-        .delete(`/api/v1/books/${serverResponse.mock.results[0].value.body.id}`)
+        .delete(`${booksEndpoint}/${serverResponse.mock.results[0].value.body.id}`)
         .set('Authorization', userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 

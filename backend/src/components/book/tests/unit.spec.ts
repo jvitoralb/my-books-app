@@ -1,10 +1,20 @@
 import { expect, test } from '@jest/globals';
 import httpMocks from 'node-mocks-http';
-import { BadRequestError } from '../../../lib/errors/custom';
 import BookMiddleware from '../api/middlewares';
+import { AuthenticationError, BadRequestError } from '../../../lib/errors/custom';
 
 
 describe('Books Components Validations', () => {
+    test('throws AuthenticationError when there\'s no auth token', () => {
+        let { req, res } = httpMocks.createMocks({
+            headers: {}
+        });
+        let next = () => {}
+        
+        expect(() => new BookMiddleware().validRequest(req, res, next))
+        .toThrow(new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401));
+    });
+
     test('throws BadRequestError when trying to create book with undefined title', () => {
         let { req, res } = httpMocks.createMocks({
             method: 'POST',
@@ -13,7 +23,8 @@ describe('Books Components Validations', () => {
         }, {});
         let next = () => {};
 
-        expect(() => new BookMiddleware().validateCreate(req, res, next)).toThrow(new BadRequestError('Missing required field'));
+        expect(() => new BookMiddleware().validCreate(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
     });
 
     test('throws BadRequestError when trying to update info with empty strings', () => {
@@ -29,7 +40,8 @@ describe('Books Components Validations', () => {
         }, {});
         let next = () => {};
 
-        expect(() => new BookMiddleware().validateUpdateInfo(req, res, next)).toThrow(new BadRequestError('Missing required field'));
+        expect(() => new BookMiddleware().validUpdateInfo(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
     });
 
     test('throws BadRequestError when trying to update info with undefined fields', () => {
@@ -41,7 +53,8 @@ describe('Books Components Validations', () => {
         }, {});
         let next = () => {};
 
-        expect(() => new BookMiddleware().validateUpdateInfo(req, res, next)).toThrow(new BadRequestError('Missing required field'));
+        expect(() => new BookMiddleware().validUpdateInfo(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
     });
 
     test('returns undefined when updating info with null fields and valid title', () => {
@@ -57,7 +70,7 @@ describe('Books Components Validations', () => {
         }, {});
         let next = () => {};
 
-        expect(new BookMiddleware().validateUpdateInfo(req, res, next)).toBe(undefined);
+        expect(new BookMiddleware().validUpdateInfo(req, res, next)).toBe(undefined);
     });
 
     test('throws BadRequestError when trying to update section with empty string', () => {
@@ -69,7 +82,8 @@ describe('Books Components Validations', () => {
         }, {});
         let next = () => {};
 
-        expect(() => new BookMiddleware().validateUpdateSection(req, res, next)).toThrow(new BadRequestError('Missing required field'));
+        expect(() => new BookMiddleware().validUpdateSection(req, res, next))
+        .toThrow(new BadRequestError('Missing required field'));
     });
 
     test('throws BadRequestError when trying to delete a book without id', () => {
@@ -80,6 +94,7 @@ describe('Books Components Validations', () => {
         }, {});
         let next = () => {};
 
-        expect(() => new BookMiddleware().validateDelete(req, res, next)).toThrow(new BadRequestError('Missing params'));
+        expect(() => new BookMiddleware().validDelete(req, res, next))
+        .toThrow(new BadRequestError('Missing params'));
     });
 });
