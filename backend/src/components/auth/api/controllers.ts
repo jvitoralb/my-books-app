@@ -18,7 +18,9 @@ class AuthController implements AuthController {
             const createUserData: UserRegisterAuthData = req.body;
             const newUser = await this.service.register(createUserData);
     
-            res.status(201).json(newUser);
+            res.status(201)
+            .cookie('access_token', newUser.token, { maxAge: 1000 * 60 * 60 * (24 * 7) })
+            .json(newUser);
         } catch(err) {
             next(err);
         }
@@ -28,7 +30,9 @@ class AuthController implements AuthController {
             const userCredentials: LoginAuthCredendials = req.body;
             const userAccess = await this.service.login(userCredentials);
 
-            res.status(200).json(userAccess);
+            res.status(200)
+            .cookie('access_token', userAccess.token, { maxAge: 1000 * 60 * 60 * (24 * 7) })
+            .json(userAccess);
         } catch(err) {
             next(err);
         }
