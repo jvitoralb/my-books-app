@@ -4,9 +4,6 @@ import app from '../../../app';
 
 describe('Auth Component Crud Tests', () => {
     const authEndpoint = '/api/v1/auth';
-    const serverResponse = jest.fn((call: { body: any, statusCode: number, equalTokens?: boolean }) => call);
-
-    afterEach(() => serverResponse.mockClear());
 
     test('creates a user successfully and returns user token', async () => {
         const res = await request(app)
@@ -17,20 +14,8 @@ describe('Auth Component Crud Tests', () => {
             password: 'strongpswd123',
         }).set('Accept', 'application/json');
 
-        serverResponse({
-            body: res.body,
-            statusCode: res.statusCode
-        });
-
-        expect(serverResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: {
-                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
-                    expires: '7d'
-                },
-                statusCode: 201
-            })
-        );
+        expect(res.get('Set-Cookie').find(c => c.includes('access_token')))
+        .toMatch(/[access_token=]\S+\.\S+\.\S+/);
     });
 
     test('issues a token when receives a valid password and email', async () => {
@@ -41,19 +26,7 @@ describe('Auth Component Crud Tests', () => {
             password: 'old-strongpswd123',
         }).set('Accept', 'application/json');
 
-        serverResponse({
-            body: res.body,
-            statusCode: res.statusCode
-        });
-
-        expect(serverResponse).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: {
-                    token: expect.stringMatching(/Bearer \S+\.\S+\.\S+/),
-                    expires: '7d'
-                },
-                statusCode: 200
-            })
-        );
+        expect(res.get('Set-Cookie').find(c => c.includes('access_token')))
+        .toMatch(/[access_token=]\S+\.\S+\.\S+/);
     });
 });
