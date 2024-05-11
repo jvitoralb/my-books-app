@@ -14,7 +14,7 @@ function LoginForm({ refetch, isLoadingRefetch, isError, errorFields, setCredent
   } = useWarnings(isValid, isError);
 
   useEffect(() => {
-    if (isError) handleWarnings(errorFields);
+    if (isError) handleWarnings(errorFields, 'login');
   }, [errorFields]);
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
