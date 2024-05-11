@@ -4,7 +4,7 @@ import { CustomAxiosError, UserAuth, EmailUpdates } from '../../../types';
 import { useEffect } from 'react';
 
 
-const useEmailMutation = (authToken: string) => {
+const useEmailMutation = () => {
     const {
         data,
         mutate,

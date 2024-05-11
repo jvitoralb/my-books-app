@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 type UseLoginPage = {
     isLogged: boolean;
-    loginUser: (userAuth: UserAuth) => void;
+    loginUser?: (userAuth: UserAuth) => void;
     loginStatus: QueryStatus;
-    userAuthentication: UserAuth | undefined;
+    userAuthentication?: UserAuth | undefined;
 }
 
-const useLoginPage = ({ isLogged, loginUser, loginStatus, userAuthentication }: UseLoginPage) => {
+const useLoginPage = ({ isLogged, loginStatus }: UseLoginPage) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,8 +20,7 @@ const useLoginPage = ({ isLogged, loginUser, loginStatus, userAuthentication }: 
     }, []);
 
     useEffect(() => {
-        if (userAuthentication && loginStatus === 'success') {
-            loginUser(userAuthentication);
+        if (loginStatus === 'success') {
             navigateHome();
         }
     }, [loginStatus]);

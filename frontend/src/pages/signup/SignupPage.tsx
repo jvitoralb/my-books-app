@@ -3,11 +3,10 @@ import useAuth from '../../hooks/useAuth';
 import useSignupPage from './hooks/useSignupPage';
 import useSignupData from './hooks/useSignupData';
 import useSignupMutation from './hooks/useSignupMutation';
-import { SignupProps } from '../../types';
 
 
 function SignUpPage() {
-  const { isUserLogged, loginUser } = useAuth();
+  const { isUserLogged } = useAuth();
 
   const {
     signupData,
@@ -17,7 +16,6 @@ function SignUpPage() {
   } = useSignupData();
 
   const {
-    data,
     mutate,
     isLoading,
     isError,
@@ -27,23 +25,21 @@ function SignUpPage() {
 
   useSignupPage({
     isLogged: isUserLogged,
-    loginUser: loginUser,
     signupStatus: status,
-    userAuthentication: data,
   });
 
-  const signupProps: SignupProps = {
-    mutate,
-    isLoading,
-    isError,
-    error,
-    setSignupData,
-    signupData,
-    isValid,
-    fields
-  }
-
-  return (<SignUp { ...signupProps } />);
+  return (
+    <SignUp
+      mutate={mutate}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      setSignupData={setSignupData}
+      signupData={signupData}
+      isValid={isValid}
+      fields={fields}
+    />
+  );
 }
 
 export default SignUpPage;

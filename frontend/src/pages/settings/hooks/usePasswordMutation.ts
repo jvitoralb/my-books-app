@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 import { useEffect } from 'react';
 
 
-const usePasswordMutation = (authToken: string) => {
+const usePasswordMutation = () => {
     const {
         status,
         mutate,

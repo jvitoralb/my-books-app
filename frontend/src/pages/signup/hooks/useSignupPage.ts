@@ -5,12 +5,12 @@ import { UserAuth } from '../../../types';
 
 type UseSignupPage = {
     isLogged: boolean;
-    loginUser: (userAuth: UserAuth) => void;
+    loginUser?: (userAuth: UserAuth) => void;
     signupStatus: MutationStatus;
-    userAuthentication: UserAuth | undefined;
+    userAuthentication?: UserAuth | undefined;
 }
 
-const useSignupPage = ({ isLogged, loginUser, signupStatus, userAuthentication }: UseSignupPage) => {
+const useSignupPage = ({ isLogged, signupStatus }: UseSignupPage) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,8 +20,7 @@ const useSignupPage = ({ isLogged, loginUser, signupStatus, userAuthentication }
     }, []);
 
     useEffect(() => {
-        if (userAuthentication && signupStatus === 'success') {
-            loginUser(userAuthentication);
+        if (signupStatus === 'success') {
             navigateHome();
         }
     }, [signupStatus]);

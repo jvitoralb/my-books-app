@@ -3,11 +3,10 @@ import useLoginPage from './hooks/useLoginPage';
 import useAuth from '../../hooks/useAuth';
 import useLoginCredentials from './hooks/useLoginCredentials';
 import useLoginQuery from './hooks/useLoginQuery';
-import { LoginProps } from '../../types';
 
 
 function LogInPage() {
-  const { isUserLogged, loginUser } = useAuth();
+  const { isUserLogged } = useAuth();
 
   const {
     credentials,
@@ -17,7 +16,6 @@ function LogInPage() {
   } = useLoginCredentials();
 
   const {
-    data,
     isError,
     error,
     refetch,
@@ -28,21 +26,19 @@ function LogInPage() {
   useLoginPage({
     isLogged: isUserLogged,
     loginStatus: status,
-    loginUser: loginUser,
-    userAuthentication: data,
   });
 
-  const loginProps: LoginProps = {
-    refetch,
-    isError,
-    error,
-    setCredentials,
-    isValid,
-    fields,
-    isLoadingRefetch
-  }
-
-  return (<LogIn {...loginProps} />);
+  return (
+    <LogIn
+      refetch={refetch}
+      isError={isError}
+      error={error}
+      setCredentials={setCredentials}
+      isValid={isValid}
+      fields={fields}
+      isLoadingRefetch={isLoadingRefetch}
+    />
+  );
 }
 
 export default LogInPage;

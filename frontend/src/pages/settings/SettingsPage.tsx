@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Settings from '../../components/Settings';
-import useAuth from '../../hooks/useAuth';
 import useUserInfo from './hooks/useUserInfo';
 import useEmailSettings from './hooks/useEmailSettings';
 import useEmailMutation from './hooks/useEmailMutation';
@@ -18,16 +17,10 @@ function SettingsPage() {
   } = useUserInfo(loaderUserInfo);
 
   const {
-    token,
-    updateAuth
-  } = useAuth();
-
-  const {
     emailSendUpdates,
     emailStatus,
     emailError,
-    emailMutationRes
-  } = useEmailMutation(token);
+  } = useEmailMutation();
 
   const {
     emailState,
@@ -40,7 +33,7 @@ function SettingsPage() {
     pswdSendUpdates,
     pswdStatus,
     pswdError
-  } = usePasswordMutation(token);
+  } = usePasswordMutation();
 
   const {
     pswdIsValid,
@@ -51,7 +44,6 @@ function SettingsPage() {
 
   useEffect(() => {
     if (emailStatus === 'success') {
-      updateAuth(emailMutationRes);
       refreshUserInfo();
     }
   }, [emailStatus]);
