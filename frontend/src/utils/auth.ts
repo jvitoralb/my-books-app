@@ -1,69 +1,38 @@
 import { redirect } from 'react-router-dom';
-import { UserAuth } from '../types';
 
 
-const AUTH_KEY = 'u-auth';
+const getAccessToken = (): string => {
+    const accessToken = document.cookie.split(';').find(c => c.includes('access_token'));
 
-const setAuthData = (authData: UserAuth): void => {
-    const userAuth: UserAuth = {
-        token: '',
-        expires: ''
+    if (accessToken) {
+        const [ _, token ] = accessToken.split('=');
+        return token;
     }
-    let expireTime = (1000 * 60 * 60 * 24 * Number(authData.expires.split('')[0]));
-    let todayTime = Date.now();
-
-    userAuth.expires = String(todayTime + expireTime);
-    userAuth.token = authData.token;
-    localStorage.setItem(AUTH_KEY, JSON.stringify(userAuth));
+    return '';
 }
 
-const getAuthData = (): UserAuth => {
-    let storageItem = localStorage.getItem(AUTH_KEY);
-
-    if (typeof storageItem === 'string') {
-        let authData: UserAuth = JSON.parse(storageItem);
-        return authData;
-    }
-    return {
-        token: '',
-        expires: ''
-    };
-}
-
-const delAuthData = (): void => {
-    localStorage.removeItem(AUTH_KEY);
+const delAccessToken = (): void => {
+    document.cookie = 'access_token=' + '; expires=Thu, 01 Jan 1970 00:00:01 GMT';
 }
 
 const handleAuth = () => {
-    const startSession = (auth: UserAuth) => {
-        setAuthData(auth);
-    }
+    const startSession = () => {}
     const finishSession = () => {
-        delAuthData();
+        delAccessToken();
     }
     const isAuth = () => {
-        if (getAuthData().token) {
+        if (getAccessToken()) {
             return true;
         }
         return false;
     }
     const getToken = () => {
-        return getAuthData().token;
+        return getAccessToken();
     }
     const requireAuth = (customPath?: string) => {
-        const data = getAuthData();
-        const expired: boolean = (() => {
-            if (!data.expires) {
-                return true;
-            }
-            if (Number(data.expires) > Date.now()) {
-                return false;
-            }
-            return true;
-        })();
+        const token = getAccessToken();
 
-        if (!data.token || expired) {
-            finishSession();
+        if (!token) {
             let path = customPath ? customPath : '/login';
             throw redirect(path);
         }
