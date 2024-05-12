@@ -3,7 +3,7 @@ import { AuthenticationError, BadRequestError } from '../../../lib/errors/custom
 import AuthToken from '../../../lib/auth/jwt';
 
 
-class CheckRequest {
+class BookRequestValidations {
     private req: Request;
 
     constructor() {
@@ -71,7 +71,7 @@ interface Middleware {
     validDelete(req: Request, res: Response, next: NextFunction): void;
 }
 
-class BookMiddleware extends CheckRequest implements Middleware {
+class BookMiddleware extends BookRequestValidations implements Middleware {
     constructor() {
         super();
     }
