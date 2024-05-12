@@ -19,7 +19,7 @@ class AuthController implements AuthController {
             const newUser = await this.service.register(createUserData);
     
             res.status(201)
-            .cookie('access_token', newUser.token, { maxAge: 1000 * 60 * 60 * (24 * 7) })
+            .cookie('access_token', newUser.token, { maxAge: Number(newUser.expires) })
             .json(newUser);
         } catch(err) {
             next(err);
@@ -31,7 +31,7 @@ class AuthController implements AuthController {
             const userAccess = await this.service.login(userCredentials);
 
             res.status(200)
-            .cookie('access_token', userAccess.token, { maxAge: 1000 * 60 * 60 * (24 * 7) })
+            .cookie('access_token', userAccess.token, { maxAge: Number(userAccess.expires) })
             .json(userAccess);
         } catch(err) {
             next(err);
