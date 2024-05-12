@@ -1,9 +1,10 @@
+import 'dotenv/config';
 import { ErrorRequestHandler } from 'express';
 import { AppError, ServerError } from './custom';
 
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    console.log(err);
+    if (process.env.NODE_ENV === 'DEV') console.log(err);
 
     if (!(err instanceof AppError)) {
         err = new ServerError();
