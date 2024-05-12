@@ -26,7 +26,7 @@ describe('Book Component Error Handling Tests', () => {
         const res = await request(app)
         .post(booksEndpoint)
         .send({})
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         serverResponse({
@@ -46,7 +46,7 @@ describe('Book Component Error Handling Tests', () => {
         const res = await request(app)
         .put(`${booksEndpoint}/book-uuid/info`)
         .send({ title: 'valid title' })
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         serverResponse({
@@ -69,7 +69,7 @@ describe('Book Component Error Handling Tests', () => {
             title: 'valid title',
             about: null
         })
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         serverResponse({
@@ -89,7 +89,7 @@ describe('Book Component Error Handling Tests', () => {
         const res = await request(app)
         .put(`${booksEndpoint}/book-uuid/section`)
         .send({ section: '' })
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         serverResponse({

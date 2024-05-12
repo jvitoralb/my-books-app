@@ -49,7 +49,7 @@ describe('User Validation Tests', () => {
         let next = () => {}
         
         expect(() => new UserMiddleware().validRequest(req, res, next))
-        .toThrow(new AuthenticationError('Not Authorized', 'FORBIDDEN', 403));
+        .toThrow(new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401));
     });
 
     test('should throw AuthenticationError when there\'s no token', () => {

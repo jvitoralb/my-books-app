@@ -24,7 +24,7 @@ describe('Book Component Crud Tests', () => {
         const res = await request(app)
         .post(booksEndpoint)
         .send({ title: 'A volta dos que não foram' })
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         serverResponse({
@@ -46,7 +46,7 @@ describe('Book Component Crud Tests', () => {
     test('should answer with all created books', async () => {
         const res = await request(app)
         .get(booksEndpoint)
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         serverResponse({
@@ -77,7 +77,7 @@ describe('Book Component Crud Tests', () => {
             author: 'ninguém',
             about: null
         })
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         expect(res.statusCode).toBe(204);
@@ -87,7 +87,7 @@ describe('Book Component Crud Tests', () => {
         const res = await request(app)
         .put(`${booksEndpoint}/${serverResponse.mock.results[0].value.body.id}/section`)
         .send({ section: 'section update' })
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         expect(res.statusCode).toBe(204);
@@ -96,7 +96,7 @@ describe('Book Component Crud Tests', () => {
     test('should be able to delete a book successfully and return 204', async () => {
         const res = await request(app)
         .delete(`${booksEndpoint}/${serverResponse.mock.results[0].value.body.id}`)
-        .set('Authorization', userToken.mock.results[0].value)
+        .set('Authorization', 'Bearer ' + userToken.mock.results[0].value)
         .set('Accept', 'application/json');
 
         expect(res.statusCode).toBe(204);

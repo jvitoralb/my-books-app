@@ -23,7 +23,7 @@ class CheckRequest {
         const authorized = new AuthToken().validate(authToken);
 
         if (!authorized.valid) {
-            throw new AuthenticationError('Not Authorized', 'FORBIDDEN', 403, authorized.description);
+            throw new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401);
         }
     }
     protected checkForId(): void {

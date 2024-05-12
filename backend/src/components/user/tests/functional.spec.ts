@@ -61,7 +61,7 @@ describe('User Component Crud Tests', () => {
             expect.objectContaining({
                 body: {
                     token: expect.stringMatching(/^\S+\.\S+\.\S+$/),
-                    expires: '7d'
+                    expires: String(1000 * (60 * 60) * (24 * 7))
                 },
                 statusCode: 200,
                 equalTokens: false
