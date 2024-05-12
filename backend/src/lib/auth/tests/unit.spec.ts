@@ -1,5 +1,6 @@
 import AuthToken from '../jwt';
 import PasswordsHandler from '../password';
+import { AuthenticationError } from '../../errors/custom';
 
 
 describe('JWT Authentication', () => {
@@ -12,9 +13,29 @@ describe('JWT Authentication', () => {
         expect(generatedToken).toHaveBeenCalledWith(
             expect.objectContaining({
                 token: expect.stringMatching(/^\S+\.\S+\.\S+$/),
-                expires: '7d'
+                expires: String(1000 * (60 * 60) * (24 * 7))
             })
         );
+    });
+
+    test('should successfully decode a token payload', () => {
+        const authorizationHeader = 'Bearer ' + generatedToken.mock.lastCall[0].token;
+        const auth = new AuthToken();
+
+        expect(auth.decode(authorizationHeader)).toMatchObject(
+            expect.objectContaining({
+                sub: expect.stringMatching('test-jwt-user-id'),
+                email: expect.stringMatching('test-user@books.app')
+            })
+        );
+    });
+
+    test('should throw error when decoding a invalid token payload', () => {
+        const authorizationHeader = 'Bearer tHiS.1s.4-1nVAL1d-_toK3N';
+        const auth = new AuthToken();
+
+        expect(() => auth.decode(authorizationHeader))
+        .toThrow(new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401));
     });
 
     test('should successfully validate a token', () => {
@@ -24,11 +45,19 @@ describe('JWT Authentication', () => {
         expect(auth.validate(authorizationHeader).valid).toBe(true);
     });
 
-    test('should return false for a invalid token', () => {
-        const authorizationHeader = 'Bearer tHiS.1s.4-1nVAL1d-_toK3N'
+    test('should return false for a invalid bearer token', () => {
+        const authorizationHeader = 'eitHiS.1s.4-1nVAL1d-_toK3N';
         const auth = new AuthToken();
 
         expect(auth.validate(authorizationHeader).valid).toBe(false);
+    });
+
+    test('should throw error for a invalid token', () => {
+        const authorizationHeader = 'Bearer eitHiS.1s.4-1nVAL1d-_toK3N';
+        const auth = new AuthToken();
+
+        expect(() => auth.validate(authorizationHeader).valid)
+        .toThrow(new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401));
     });
 });
 

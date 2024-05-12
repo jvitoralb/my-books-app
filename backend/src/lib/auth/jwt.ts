@@ -4,21 +4,20 @@ import { join } from 'node:path';
 import jwt from 'jsonwebtoken';
 import { AuthenticationError, ServerError } from '../errors/custom';
 
-interface Data {
+type Data = {
     id: string;
     email: string;
 }
-interface Payload {
+type Payload = {
     sub: string;
     email: string;
 }
-interface Token {
+type Token = {
     token: string;
     expires: string;
 }
-interface Validation {
+type Validation = {
     valid: boolean;
-    description?: string;
 }
 interface Authentication {
     issue(data: Data): Token | undefined;
@@ -34,7 +33,7 @@ class AuthToken implements Authentication {
     constructor() {
         this.PRIV_KEY = String(process.env.PRIVATE_KEY);
         this.PUB_KEY = fs.readFileSync(join(process.cwd(), '/pub-key.pem'), 'utf8');
-        this.EXPIRES = '7d';
+        this.EXPIRES = '604800000';
     }
 
     public issue(data: Data): Token | undefined {
@@ -55,6 +54,20 @@ class AuthToken implements Authentication {
             throw new ServerError('Internal Server Error', 'SERVER ERROR', 500, 'Token signature error');
         }
     }
+    public decode(bearerToken: string): Payload {
+        const [b, token] = bearerToken.split(' ');
+        const decodedPayload: unknown = this.decodePayload(token);
+        return this.verifyDecoded(decodedPayload);
+    }
+    public validate(authorizationHeader: string): Validation {
+        const [ b, token ] = authorizationHeader.split(' ');
+
+        if (b === 'Bearer' && token.match(/^\S+\.\S+\.\S+$/)) {
+            this.decode(authorizationHeader);
+            return { valid: true };
+        }
+        return { valid: false };
+    }
     private signPayload(payload: Payload): string {
         const signed = jwt.sign(payload, this.PRIV_KEY, {
             expiresIn: this.EXPIRES,
@@ -63,42 +76,29 @@ class AuthToken implements Authentication {
     
         return signed;
     }
-    public decode(bearerToken: string): Payload {
-        const [b, token] = bearerToken.split(' ');
-
-        const decoded: unknown = jwt.verify(token, this.PUB_KEY, { algorithms: ['RS256'] });
-        const decodedPayload: Payload = this.verifyDecoded(decoded);
-
-        return decodedPayload;
+    private decodePayload(token: string): unknown {
+        try {
+            return jwt.verify(token, this.PUB_KEY, { algorithms: ['RS256'] });
+        } catch(err) {
+            if (err instanceof jwt.JsonWebTokenError) {
+                throw new AuthenticationError('Not Authenticated', 'UNAUTHORIZED', 401);
+            }
+            if (err instanceof jwt.TokenExpiredError) {
+                throw new AuthenticationError('Not Authorized', 'FORBIDDEN', 403);
+            }
+            throw err;
+        }
     }
     private verifyDecoded(decoded: unknown): Payload {
         if (!(decoded instanceof Object)) {
-            throw new AuthenticationError('Decoded token error', 'UNAUTHORIZED', 401, 'Token must be an object');
+            throw new AuthenticationError('Token payload error', 'UNAUTHORIZED', 401, 'Payload must be an object');
         }
 
         if (!(decoded!.hasOwnProperty('email')) || !(decoded!.hasOwnProperty('sub')) || !(decoded!.hasOwnProperty('iat'))) {
-            throw new AuthenticationError('Decoded token error', 'UNAUTHORIZED', 401, 'Missing required field in decoded token');
+            throw new AuthenticationError('Token payload error', 'UNAUTHORIZED', 401, 'Missing required fields');
         }
 
         return decoded as Payload;
-    }
-    public validate(authorizationHeader: string): Validation {
-        const [ bearer, token ] = authorizationHeader.split(' ');
-
-        if (bearer === 'Bearer' && token.match(/\S+\.\S+\.\S+/)) {
-            try {
-                jwt.verify(token, this.PUB_KEY, { algorithms: ['RS256'] });
-                return { valid: true };
-            } catch(err) {
-                let validation: Validation = { valid: false }
-
-                if (err instanceof jwt.TokenExpiredError) {
-                    validation.description = 'Token expired';
-                }
-                return validation;
-            }
-        }
-        return { valid: false };
     }
 }
 
