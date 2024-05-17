@@ -13,9 +13,15 @@ export type LoginAuthCredendials = {
     email: string;
     password: string;
 };
+type NewUserAuthData = {
+    token: string;
+    expires: string
+    name: string;
+    email: string;
+}
 
 interface AuthenticationServices {
-    register(userData: UserRegisterAuthData): Promise<UserAuthData>;
+    register(userData: UserRegisterAuthData): Promise<NewUserAuthData>;
     login(userCredentials: LoginAuthCredendials): Promise<UserAuthData>;
 }
 
@@ -28,7 +34,7 @@ class AuthService implements AuthenticationServices {
         this.userService = new UserService();
     }
 
-    async register({ name, email, password }: UserRegisterAuthData): Promise<UserAuthData> {
+    async register({ name, email, password }: UserRegisterAuthData): Promise<NewUserAuthData> {
         const pswdHashSalt = new PasswordsHandler(password).generate();
 
         const insertedUserDoc = await this.userService.registerUser({
@@ -43,8 +49,10 @@ class AuthService implements AuthenticationServices {
         })!;
 
         return {
+            email: insertedUserDoc.email,
+            name: insertedUserDoc.name,
             token: tokenInfo.token,
-            expires: tokenInfo.expires
+            expires: tokenInfo.expires,
         };
     }
     async login({ email, password }: LoginAuthCredendials): Promise<UserAuthData> {

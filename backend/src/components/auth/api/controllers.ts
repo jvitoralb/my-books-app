@@ -20,7 +20,10 @@ class AuthController implements AuthController {
     
             res.status(201)
             .cookie('access_token', newUser.token, { maxAge: Number(newUser.expires) })
-            .json(newUser);
+            .json({
+                name: newUser.name,
+                email: newUser.email,
+            });
         } catch(err) {
             next(err);
         }
@@ -30,9 +33,9 @@ class AuthController implements AuthController {
             const userCredentials: LoginAuthCredendials = req.body;
             const userAccess = await this.service.login(userCredentials);
 
-            res.status(200)
+            res.status(204)
             .cookie('access_token', userAccess.token, { maxAge: Number(userAccess.expires) })
-            .json(userAccess);
+            .json();
         } catch(err) {
             next(err);
         }

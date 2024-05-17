@@ -42,9 +42,9 @@ class UserController implements Controller {
 
             const updatedUser = await this.service.changeEmail(userIds, req.body.new_email);
 
-            res.status(200)
+            res.status(204)
             .cookie('access_token', updatedUser.token, { maxAge: Number(updatedUser.expires) })
-            .json(updatedUser);
+            .json();
         } catch(err) {
             next(err);
         }
