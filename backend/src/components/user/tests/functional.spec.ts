@@ -6,7 +6,7 @@ import app from '../../../app';
 describe('User Component Crud Tests', () => {
     const authEndpoint = '/api/v1/auth';
     const usersEndpoint = '/api/v1/users';
-    const tokens = jest.fn((token: string) => token);
+    const tokens = jest.fn((token: string | undefined) => token);
     const serverResponse = jest.fn((call: { body: any, statusCode: number, equalTokens?: boolean }) => call);
 
     afterEach(() => serverResponse.mockClear());
@@ -50,20 +50,22 @@ describe('User Component Crud Tests', () => {
         .send({ new_email: 'user.test.novo@library.app' })
         .set('Authorization', 'Bearer ' + tokens.mock.results[0].value as string);
 
+        const accessToken = res.get('Set-Cookie')
+        .find(c => c.includes('access_token'))
+        ?.split('; ')[0]
+        .slice('access_token'.length + 1);
+
         serverResponse({
             body: res.body,
             statusCode: res.statusCode,
-            equalTokens: (tokens.mock.results[0].value === res.body.token)
+            equalTokens: (tokens.mock.results[0].value === accessToken)
         });
-        tokens(res.body.token);
+        tokens(accessToken);
 
         expect(serverResponse).toHaveBeenCalledWith(
             expect.objectContaining({
-                body: {
-                    token: expect.stringMatching(/^\S+\.\S+\.\S+$/),
-                    expires: String(1000 * (60 * 60) * (24 * 7))
-                },
-                statusCode: 200,
+                body: {},
+                statusCode: 204,
                 equalTokens: false
             })
         );
