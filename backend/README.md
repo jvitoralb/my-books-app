@@ -7,7 +7,7 @@
 
 
 ### book
-#### Create
+#### POST
 Send a `POST` request to `/api/v1/books`
 
 **Requires**:
@@ -24,7 +24,7 @@ Server should answer successfully a status code `201` and a response body equals
 }
 ```
 
-#### Read
+#### GET
 Send a `GET` request to `/api/v1/books`
 
 **Requires**:
@@ -45,7 +45,7 @@ Server should answer successfully a status code `200` and a response body equals
 ]
 ```
 
-#### Update
+#### PUT
 
 ##### Book information
 Send a `PUT` request to `/api/v1/books/{id}/info`
@@ -71,7 +71,7 @@ Send a `PUT` request to `/api/v1/books/{id}/section`
 
 Server should answer successfully a status code `204`.
 
-#### Delete
+#### DELETE
 Send a `DELETE` request to `/api/v1/books/{id}`
 
 **Requires**:
@@ -80,21 +80,7 @@ Send a `DELETE` request to `/api/v1/books/{id}`
 Server should answer successfully a status code `204`.
 
 ### user
-#### Create
-Send a `POST` request to `/api/v1/users/register`
-
-**Requires**:
-1. User name, email, and password
-
-Server should answer successfully a status code `201` and a response body equals to:
-```
-{
-    token: "Bearer token",
-    expires: "7d"
-}
-```
-
-#### Read
+#### GET
 Send a `GET` request to `/api/v1/users`
 
 **Requires**:
@@ -108,7 +94,7 @@ Server should answer successfully a status code `200` and a response body equals
 }
 ```
 
-#### Update
+#### PUT
 
 ##### Update email
 Send a `PUT` request to `/api/v1/users/email`
@@ -117,13 +103,7 @@ Send a `PUT` request to `/api/v1/users/email`
 1. Authorization header
 2. New email
 
-Server should answer successfully a status code `200` and a response body equals to:
-```
-{
-    token: "New Bearer token",
-    expires: "7d"
-}
-```
+Server should answer successfully a status code `204` and a `access_token` cookie with an authentication token.
 
 ##### Update password
 Send a `PUT` request to `/api/v1/users/password`
@@ -134,7 +114,7 @@ Send a `PUT` request to `/api/v1/users/password`
 
 Server should answer successfully a status code `204`.
 
-#### Delete
+#### DELETE
 Send a `DELETE` request to `/api/v1/users`
 
 **Requires**:
@@ -143,7 +123,26 @@ Send a `DELETE` request to `/api/v1/users`
 Server should answer successfully a status code `204`.
 
 ### auth
-#### Create
-#### Read
-#### Update
-#### Delete
+#### POST
+
+##### Register
+Send a `POST` request to `/api/v1/auth/register`
+
+**Requires**:
+1. User name, email, and password
+
+The server should answer successfully a status code `201`, an `access_token` cookie with an authentication token, and a response body equals to:
+```
+{
+    email: "user@email",
+    name: "User name",
+}
+```
+
+##### Login
+Send a `POST` request to `/api/v1/auth/login`
+
+**Requires**:
+1. User email and password
+
+The server should answer successfully a status code `204` and a `access_token` cookie with an authentication token.
