@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Heading } from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
 import Instruction from './Instruction';
 import RequireList from './RequireList';
 import Response from './Response';
@@ -81,7 +81,7 @@ function Docs() {
 
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Update</Heading>
 
-        <Heading as="h6" size="sm" fontWeight="semibold" py="3px">Book information</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Book information</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/books/{id}/info'
@@ -98,7 +98,7 @@ function Docs() {
           code='204'
         />
         
-        <Heading as="h6" size="sm" fontWeight="semibold" py="3px">Book Section</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Book Section</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/books/{id}/section'
@@ -132,25 +132,6 @@ function Docs() {
       <section ref={userSectionRef} id="user-section">
         <Heading as="h4" size="md" fontWeight="semibold">User</Heading>
 
-        <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Create</Heading>
-        <Instruction
-          crud='POST'
-          endpoint='/api/v1/users/register'
-        />
-        <RequireList
-          listItems={['User name, email, and password']}
-        />
-        <Response
-          status='successfully'
-          code='201'
-          body={`
-{
-  "token": "Bearer token",
-  "expires": "7d"
-}
-          `}
-        />
-
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Read</Heading>
         <Instruction
           crud='GET'
@@ -172,7 +153,7 @@ function Docs() {
 
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Update</Heading>
 
-        <Heading as="h6" size="sm" fontWeight="semibold" py="3px">Update email</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Update email</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/users/email'
@@ -182,16 +163,13 @@ function Docs() {
         />
         <Response
           status='successfully'
-          code='200'
-          body={`
-{
-  "token": "New Bearer token",
-  "expires": "7d"
-}
-          `}
+          code='204'
         />
+        <Text className="note-text">
+          Note: The <span className='docs-highlight'>access_token</span> cookie is sent in the response headers with a JWT.
+        </Text>
 
-        <Heading as="h6" size="sm" fontWeight="semibold" py="3px">Update password</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Update password</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/users/password'
@@ -221,9 +199,46 @@ function Docs() {
       <section ref={authSectionRef} id="auth-section">
         <Heading as="h4" size="md" fontWeight="semibold">Auth</Heading>
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Create</Heading>
+
+        <Heading as="h6" size="xs" fontWeight="semibold" className="crud-heading">Register</Heading>
+        <Instruction
+          crud='POST'
+          endpoint='/api/v1/auth/register'
+        />
+        <RequireList
+          listItems={['User name, email, and password']}
+        />
+        <Response
+          status='successfully'
+          code='201'
+          body={`
+{
+  email: "user@email",
+  name: "User name",
+}
+          `}
+        />
+        <Text className="note-text">
+          Note: The <span className='docs-highlight'>access_token</span> cookie is sent in the response headers with a JWT.
+        </Text>
+
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Read</Heading>
-        <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Update</Heading>
-        <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Delete</Heading>
+
+        <Heading as="h6" size="xs" fontWeight="semibold" className="crud-heading">Login</Heading>
+        <Instruction
+          crud='POST'
+          endpoint='/api/v1/auth/login'
+        />
+        <RequireList
+          listItems={['User email and password']}
+        />
+        <Response
+          status='successfully'
+          code='201'
+        />
+        <Text className="note-text">
+          Note: The <span className='docs-highlight'>access_token</span> cookie is sent in the response headers with a JWT.
+        </Text>
       </section>
     </main>
   );
