@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Heading, Text } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import Instruction from './Instruction';
 import RequireList from './RequireList';
 import Response from './Response';
@@ -81,7 +81,7 @@ function Docs() {
 
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Update</Heading>
 
-        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Book information</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" className="crud-heading">Book information</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/books/{id}/info'
@@ -98,7 +98,7 @@ function Docs() {
           code='204'
         />
         
-        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Book Section</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" className="crud-heading">Book Section</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/books/{id}/section'
@@ -153,7 +153,7 @@ function Docs() {
 
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Update</Heading>
 
-        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Update email</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" className="crud-heading">Update email</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/users/email'
@@ -164,12 +164,10 @@ function Docs() {
         <Response
           status='successfully'
           code='204'
+          responseNotes={['The access_token cookie is sent in the response headers with a JWT.']}
         />
-        <Text className="note-text">
-          Note: The <span className='docs-highlight'>access_token</span> cookie is sent in the response headers with a JWT.
-        </Text>
 
-        <Heading as="h6" size="xs" fontWeight="semibold" py="3px">Update password</Heading>
+        <Heading as="h6" size="xs" fontWeight="semibold" className="crud-heading">Update password</Heading>
         <Instruction
           crud='PUT'
           endpoint='/api/v1/users/password'
@@ -217,10 +215,8 @@ function Docs() {
   name: "User name",
 }
           `}
+          responseNotes={['The access_token cookie is sent in the response headers with a JWT.']}
         />
-        <Text className="note-text">
-          Note: The <span className='docs-highlight'>access_token</span> cookie is sent in the response headers with a JWT.
-        </Text>
 
         <Heading as="h5" size="sm" fontWeight="semibold" className="crud-heading">Read</Heading>
 
@@ -235,10 +231,8 @@ function Docs() {
         <Response
           status='successfully'
           code='201'
+          responseNotes={['The access_token cookie is sent in the response headers with a JWT.']}
         />
-        <Text className="note-text">
-          Note: The <span className='docs-highlight'>access_token</span> cookie is sent in the response headers with a JWT.
-        </Text>
       </section>
     </main>
   );
