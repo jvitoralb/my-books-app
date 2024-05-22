@@ -189,6 +189,10 @@ export type BookInfoUpdates = {
     author: string | null;
     about: string | null;
 }
+export type BookSectionUpdates = {
+    id: string;
+    section: string | null;
+}
 
 /**
  * EditableElements Component related Types

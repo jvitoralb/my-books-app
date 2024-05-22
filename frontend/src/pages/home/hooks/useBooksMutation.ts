@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { createBook, deleteBook, updateBookInfo } from '../../../api/books';
+import { createBook, deleteBook, updateBookInfo, updateBookSection } from '../../../api/books';
 import handleNoteStorage from '../../../utils/noteStorage';
 
 
@@ -13,16 +13,23 @@ const useBooksMutation = () => {
     const updateMutation = useMutation({
         mutationFn: updateBookInfo
     });
+    const updateSectionMutation = useMutation({
+        mutationFn: updateBookSection
+    });
 
     const createBookNote = () => {
         createMutation.mutate({ title: 'New book note' });
     }
     const updateBookNote = (noteId: string) => {
-        const noteInfo = handleNoteStorage().getAllInfo(noteId);
-
+        const { section, ...noteInfo } = handleNoteStorage().getAllInfo(noteId);
+        
         updateMutation.mutate({
             id: noteId,
             ...noteInfo
+        });
+        updateSectionMutation.mutate({
+            id: noteId,
+            section: section,
         });
     }
     const deleteBookNote = (noteId: string) => {
