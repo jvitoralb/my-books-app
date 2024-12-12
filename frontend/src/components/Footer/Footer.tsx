@@ -13,7 +13,7 @@ function Footer({ location }: FooterProps) {
   return (
     isPublicRoute &&
     <footer>
-      <p>Created by jvitoralb</p>
+      <p title="by jvitoralb">Created by jvitoralb</p>
     </footer>
   );
 }

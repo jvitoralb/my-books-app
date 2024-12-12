@@ -1,10 +1,8 @@
 header {
     padding: 9px;
     border-bottom: 1px solid var(--color-black);
-}
-
-.header-dark-theme {
-    border-color: var(--color-white);
+    box-shadow: 0 0.35px 7px rgba(0, 0, 0, 0.45);
+    font-weight: 600;
 }
 
 #navigation-bar {

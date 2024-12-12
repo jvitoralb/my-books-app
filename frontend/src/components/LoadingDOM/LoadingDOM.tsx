@@ -6,7 +6,7 @@ function LoadingDOM() {
     <Flex
       alignItems="center"
       justifyContent="center"
-      height="50vh"
+      height="90vh"
     >
       <Spinner size='xl' />
     </Flex>

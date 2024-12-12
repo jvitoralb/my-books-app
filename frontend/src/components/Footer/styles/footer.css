@@ -2,6 +2,8 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 0.35px 7px rgba(0, 0, 0, 0.2);
+    padding: 4px;
 }
 
 footer p {
